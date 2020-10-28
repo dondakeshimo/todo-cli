@@ -38,6 +38,19 @@ func main() {
                     },
                 },
             },
+            {
+                Name: "close",
+                Aliases: []string{"c"},
+                Usage: "close a task",
+                Action: commands.Close,
+                Flags: []cli.Flag{
+                    &cli.StringFlag{
+                        Name: "id",
+                        Aliases: []string{"i"},
+                        Usage: "task's ID",
+                    },
+                },
+            },
         },
     }
 

@@ -112,3 +112,18 @@ func (t *TaskHandler) Write() error {
 
     return nil
 }
+
+func (t *TaskHandler) Remove(id int) {
+    if id > len(t.TaskList.Tasks) {
+        return
+    }
+
+    t.TaskList.Tasks = append(t.TaskList.Tasks[:id], t.TaskList.Tasks[id+1:]...)
+    t.align()
+}
+
+func (th *TaskHandler) align() {
+    for i, t := range th.TaskList.Tasks {
+        t.Id = i + 1
+    }
+}
