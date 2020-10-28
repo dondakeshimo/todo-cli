@@ -2,7 +2,8 @@ package commands
 
 import (
     "os"
-    "fmt"
+    "strconv"
+    "text/tabwriter"
 
     "github.com/dondakeshimo/todo-cli/internal/entities/task"
     "github.com/urfave/cli/v2"
@@ -11,10 +12,22 @@ import (
 func List(c *cli.Context) error {
     th, err := task.NewTaskHandler()
     if err != nil {
-        fmt.Fprintln(os.Stderr, err)
+        return err
     }
+
+    w := tabwriter.NewWriter(os.Stdout, 0, 4, 2, ' ', 0)
+
+    tasks := [][]byte{}
     for _, task := range th.TaskList.Tasks {
-        fmt.Printf("id: %d, task: %s, deadline: %s", task.Id, task.Task, task.Deadline)
+        tasks = append(tasks, []byte(strconv.Itoa(task.Id) + "\t" + task.Task + "\t" + task.Deadline + "\n"))
     }
+
+    defer w.Flush()
+
+    w.Write([]byte("ID\tTask\tDeadline\n"))
+    for _, t := range tasks {
+        w.Write(t)
+    }
+
     return nil
 }

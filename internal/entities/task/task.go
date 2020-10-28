@@ -28,7 +28,10 @@ type TaskHandler struct {
 
 func NewTaskHandler() (*TaskHandler, error) {
     t := new(TaskHandler)
-    t.setJsonPath()
+
+    if err := t.exploreJsonPath(); err != nil {
+        return nil, err
+    }
 
     bytes, err := ioutil.ReadFile(t.JsonPath)
     if err != nil {
@@ -42,7 +45,7 @@ func NewTaskHandler() (*TaskHandler, error) {
     return t, nil
 }
 
-func (t *TaskHandler) setJsonPath() {
+func (t *TaskHandler) exploreJsonPath() error {
     dataHome := os.Getenv("XDG_DATA_HOME")
     var jsonPath string
     var homeDir, _ = os.UserHomeDir()
@@ -52,7 +55,49 @@ func (t *TaskHandler) setJsonPath() {
         jsonPath = filepath.Join(homeDir, ".local/share/", jsonFile)
     }
 
+    if err := createJsonFile(jsonPath); err != nil {
+        return err
+    }
+
     t.JsonPath = jsonPath
+    return nil
+}
+
+func createJsonFile(path string) error {
+    if _, err := os.Stat(filepath.Dir(path)); err != nil {
+        if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
+            return err
+        }
+    }
+
+    if _, err := os.Stat(path); err != nil {
+        if err := writeInitialSample(path); err != nil {
+            return err
+        }
+    }
+
+    return nil
+}
+
+func writeInitialSample(path string) error {
+    taskList := &TaskList{[]*Task{
+        {
+            Id: 1,
+            Task: "deleting or modifying this task is your first TODO",
+            Deadline: "2099/01/01 00:00",
+        },
+    }}
+
+    bytes, err := json.Marshal(taskList)
+    if err != nil {
+        return err
+    }
+
+    if err := ioutil.WriteFile(path, bytes, 0644); err != nil {
+        return err
+    }
+
+    return nil
 }
 
 func (t *TaskHandler) Write() error {
