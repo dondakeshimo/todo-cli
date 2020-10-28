@@ -1,15 +1,16 @@
-package main
+package commands
 
 import (
     "os"
     "fmt"
     "time"
 
+    "github.com/dondakeshimo/todo-cli/internal/entities/task"
     "github.com/urfave/cli/v2"
 )
 
 func Add(c *cli.Context) error {
-    th, err := NewTaskHandler()
+    th, err := task.NewTaskHandler()
     if err != nil {
         fmt.Fprintln(os.Stderr, err)
     }
@@ -29,7 +30,7 @@ func Add(c *cli.Context) error {
     }
 
     tl := th.TaskList
-    tl.Tasks = append(tl.Tasks, &Task{
+    tl.Tasks = append(tl.Tasks, &task.Task{
         Id: len(tl.Tasks) + 1,
         Task: c.String("task"),
         Deadline: c.String("deadline"),

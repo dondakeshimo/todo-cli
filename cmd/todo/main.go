@@ -4,6 +4,7 @@ import (
     "os"
     "log"
 
+    "github.com/dondakeshimo/todo-cli/internal/commands"
     "github.com/urfave/cli/v2"
 )
 
@@ -17,13 +18,13 @@ func main() {
                 Name: "list",
                 Aliases: []string{"l"},
                 Usage: "list tasks",
-                Action: List,
+                Action: commands.List,
             },
             {
                 Name: "add",
                 Aliases: []string{"a"},
                 Usage: "add a task",
-                Action: Add,
+                Action: commands.Add,
                 Flags: []cli.Flag{
                     &cli.StringFlag{
                         Name: "task",
