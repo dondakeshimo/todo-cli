@@ -1,8 +1,7 @@
 package commands
 
 import (
-    "os"
-    "fmt"
+    "errors"
     "time"
 
     "github.com/dondakeshimo/todo-cli/internal/entities/task"
@@ -12,12 +11,12 @@ import (
 func Add(c *cli.Context) error {
     th, err := task.NewTaskHandler()
     if err != nil {
-        fmt.Fprintln(os.Stderr, err)
+        return err
     }
 
     // validation
     if c.String("task") == "" {
-        fmt.Fprintln(os.Stderr, "task could not be empty")
+        return errors.New("task could not be empty")
     }
 
 
@@ -25,7 +24,7 @@ func Add(c *cli.Context) error {
         layout := "2006/01/02 15:04"
         _, err := time.Parse(layout, c.String("deadline"))
         if err != nil {
-            fmt.Fprintln(os.Stderr, err)
+            return err
         }
     }
 
@@ -37,7 +36,7 @@ func Add(c *cli.Context) error {
     })
 
     if err := th.Write(); err != nil {
-        fmt.Fprintln(os.Stderr, err)
+        return err
     }
 
     return nil
