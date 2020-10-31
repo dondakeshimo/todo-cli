@@ -38,8 +38,11 @@ fmt: ## format go files
 	$(GOIMPORTS) -w .
 
 .PHONY: lint
+# need docker to run this command
+# this command just run golangci-lint
+# so, if you hate docker, you can run equivalent this installing golangci-lint locally
 lint: ## check lint, format
-	$(GOLINT) run
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.31.0 golangci-lint run -v
 
 .PHONY: help
 help: ## DIsplay this help screen
