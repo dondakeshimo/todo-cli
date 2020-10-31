@@ -1,10 +1,8 @@
 package commands
 
 import (
-	"errors"
-	"time"
-
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 	"github.com/urfave/cli/v2"
 )
 
@@ -14,24 +12,14 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
-	// validation
-	if c.String("task") == "" {
-		return errors.New("task could not be empty")
+	d, err := timestr.Parse(c.String("deadline"))
+	if err != nil {
+		return err
 	}
 
-	if c.String("deadline") != "" {
-		layout := "2006/01/02 15:04"
-		_, err := time.Parse(layout, c.String("deadline"))
-		if err != nil {
-			return err
-		}
-	}
-
-	tl := h.TaskList
-	tl.Tasks = append(tl.Tasks, &task.Task{
-		ID:       len(tl.Tasks) + 1,
+	h.AppendTask(&task.Task{
 		Task:     c.String("task"),
-		Deadline: c.String("deadline"),
+		Deadline: d,
 	})
 
 	if err := h.Write(); err != nil {

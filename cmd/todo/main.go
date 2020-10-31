@@ -27,9 +27,10 @@ func main() {
 				Action:  commands.Add,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:    "task",
-						Aliases: []string{"t"},
-						Usage:   "write task contents",
+						Name:     "task",
+						Aliases:  []string{"t"},
+						Usage:    "write task contents",
+						Required: true,
 					},
 					&cli.StringFlag{
 						Name:    "deadline",
@@ -45,9 +46,10 @@ func main() {
 				Action:  commands.Close,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:    "id",
-						Aliases: []string{"i"},
-						Usage:   "task's ID",
+						Name:     "id",
+						Aliases:  []string{"i"},
+						Usage:    "task's ID",
+						Required: true,
 					},
 				},
 			},
@@ -58,14 +60,16 @@ func main() {
 				Action:  commands.Modify,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:    "id",
-						Aliases: []string{"i"},
-						Usage:   "task's ID",
+						Name:     "id",
+						Aliases:  []string{"i"},
+						Usage:    "task's ID",
+						Required: true,
 					},
 					&cli.StringFlag{
-						Name:    "task",
-						Aliases: []string{"t"},
-						Usage:   "write task contents",
+						Name:     "task",
+						Aliases:  []string{"t"},
+						Usage:    "write task contents",
+						Required: true,
 					},
 					&cli.StringFlag{
 						Name:    "deadline",
