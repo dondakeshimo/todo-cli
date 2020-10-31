@@ -18,7 +18,7 @@ func List(c *cli.Context) error {
 	w := tabwriter.NewWriter(os.Stdout, 0, 4, 2, ' ', 0)
 
 	tasks := [][]byte{}
-	for _, task := range h.TaskList.Tasks {
+	for _, task := range h.GetTasks() {
 		tasks = append(tasks, []byte(strconv.Itoa(task.ID)+"\t"+task.Task+"\t"+task.Deadline+"\n"))
 	}
 

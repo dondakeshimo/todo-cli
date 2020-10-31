@@ -17,13 +17,9 @@ type Task struct {
 	Deadline string `json:"deadline"`
 }
 
-type List struct {
-	Tasks []*Task `json:"tasklist"`
-}
-
 type Handler struct {
 	JSONPath string
-	TaskList *List
+	tasks []*Task
 }
 
 func NewHandler() (*Handler, error) {
@@ -38,11 +34,27 @@ func NewHandler() (*Handler, error) {
 		return nil, err
 	}
 
-	if err := json.Unmarshal(bytes, &t.TaskList); err != nil {
+	if err := json.Unmarshal(bytes, &t.tasks); err != nil {
 		return nil, err
 	}
 
 	return t, nil
+}
+
+func (h *Handler) GetTask(id int) *Task {
+	if id >= len(h.tasks) {
+		return nil
+	}
+	return h.tasks[id-1]
+}
+
+func (h *Handler) GetTasks() []*Task {
+	return h.tasks
+}
+
+func (h *Handler) AppendTask(t *Task) {
+	h.tasks = append(h.tasks, t)
+	h.align()
 }
 
 func (h *Handler) exploreJSONPath() error {
@@ -80,15 +92,15 @@ func createJSONFile(path string) error {
 }
 
 func writeInitialSample(path string) error {
-	taskList := &List{[]*Task{
+	tasks := &[]*Task{
 		{
 			ID:       1,
 			Task:     "deleting or modifying this task is your first TODO",
 			Deadline: "2099/01/01 00:00",
 		},
-	}}
+	}
 
-	bytes, err := json.Marshal(taskList)
+	bytes, err := json.Marshal(tasks)
 	if err != nil {
 		return err
 	}
@@ -101,7 +113,7 @@ func writeInitialSample(path string) error {
 }
 
 func (h *Handler) Write() error {
-	bytes, err := json.Marshal(&h.TaskList)
+	bytes, err := json.Marshal(&h.tasks)
 	if err != nil {
 		return nil
 	}
@@ -114,16 +126,16 @@ func (h *Handler) Write() error {
 }
 
 func (h *Handler) Remove(id int) {
-	if id > len(h.TaskList.Tasks) {
+	if id > len(h.tasks) {
 		return
 	}
 
-	h.TaskList.Tasks = append(h.TaskList.Tasks[:id], h.TaskList.Tasks[id+1:]...)
+	h.tasks = append(h.tasks[:id], h.tasks[id+1:]...)
 	h.align()
 }
 
 func (h *Handler) align() {
-	for i, t := range h.TaskList.Tasks {
+	for i, t := range h.tasks {
 		t.ID = i + 1
 	}
 }

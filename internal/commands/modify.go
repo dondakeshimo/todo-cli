@@ -8,29 +8,36 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func Add(c *cli.Context) error {
+func Modify(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {
 		return err
 	}
 
+	id := c.Int("id")
 	// validation
-	if c.String("task") == "" {
-		return errors.New("task could not be empty")
+	if id == 0 {
+		return errors.New("id could not be empty")
 	}
 
-	if c.String("deadline") != "" {
+	t := h.GetTask(id)
+	if t == nil {
+		return errors.New("invalid id")
+	}
+
+	// validation
+	if task := c.String("task"); task != "" {
+		t.Task = task
+	}
+
+	if d := c.String("deadline"); d != "" {
 		layout := "2006/01/02 15:04"
 		_, err := time.Parse(layout, c.String("deadline"))
 		if err != nil {
 			return err
 		}
+		t.Deadline = d
 	}
-
-	h.AppendTask(&task.Task{
-		Task:     c.String("task"),
-		Deadline: c.String("deadline"),
-	})
 
 	if err := h.Write(); err != nil {
 		return err
