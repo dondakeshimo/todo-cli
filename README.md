@@ -1,4 +1,4 @@
-[![Go test build][go-test-image]][go-test-url]
+[![Go][go-test-image]][go-test-url]
 [![golangci-lint][golangci-lint-image]][golangci-lint-url]
 
 [go-test-image]: https://github.com/dondakeshimo/todo-cli/workflows/Go/badge.svg
