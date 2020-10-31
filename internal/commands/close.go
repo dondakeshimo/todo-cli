@@ -6,14 +6,14 @@ import (
 )
 
 func Close(c *cli.Context) error {
-	th, err := task.NewTaskHandler()
+	h, err := task.NewHandler()
 	if err != nil {
 		return err
 	}
 
-	th.Remove(c.Int("id"))
+	h.Remove(c.Int("id"))
 
-	if err := th.Write(); err != nil {
+	if err := h.Write(); err != nil {
 		return err
 	}
 
