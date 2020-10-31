@@ -32,7 +32,7 @@ smoke: ## run smoke test
 .PHONY: clean
 clean: ## remove go binary
 	$(GOCLEAN)
-	rm $(BINARY_NAME)
+	rm-f $(BINARY_NAME)
 
 fmt: ## format go files
 	$(GOFMT) -l -w -s .
@@ -44,6 +44,9 @@ fmt: ## format go files
 # so, if you hate docker, you can run equivalent this installing golangci-lint locally
 lint: ## check lint, format
 	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.31.0 golangci-lint run -v
+
+uninstall: ## uninstall todo-cli
+	./scripts/uninstall.sh
 
 .PHONY: help
 help: ## DIsplay this help screen
