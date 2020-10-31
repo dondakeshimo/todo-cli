@@ -32,7 +32,7 @@ smoke: ## run smoke test
 .PHONY: clean
 clean: ## remove go binary
 	$(GOCLEAN)
-	rm-f $(BINARY_NAME)
+	rm -f $(BINARY_NAME)
 
 fmt: ## format go files
 	$(GOFMT) -l -w -s .
