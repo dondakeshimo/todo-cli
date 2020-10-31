@@ -12,28 +12,28 @@ const (
 )
 
 type Task struct {
-	Id       int    `json:"id"`
+	ID       int    `json:"id"`
 	Task     string `json:"task"`
 	Deadline string `json:"deadline"`
 }
 
-type TaskList struct {
+type List struct {
 	Tasks []*Task `json:"tasklist"`
 }
 
-type TaskHandler struct {
-	JsonPath string
-	TaskList *TaskList
+type Handler struct {
+	JSONPath string
+	TaskList *List
 }
 
-func NewTaskHandler() (*TaskHandler, error) {
-	t := new(TaskHandler)
+func NewHandler() (*Handler, error) {
+	t := new(Handler)
 
-	if err := t.exploreJsonPath(); err != nil {
+	if err := t.exploreJSONPath(); err != nil {
 		return nil, err
 	}
 
-	bytes, err := ioutil.ReadFile(t.JsonPath)
+	bytes, err := ioutil.ReadFile(t.JSONPath)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewTaskHandler() (*TaskHandler, error) {
 	return t, nil
 }
 
-func (t *TaskHandler) exploreJsonPath() error {
+func (h *Handler) exploreJSONPath() error {
 	dataHome := os.Getenv("XDG_DATA_HOME")
 	var jsonPath string
 	var homeDir, _ = os.UserHomeDir()
@@ -55,15 +55,15 @@ func (t *TaskHandler) exploreJsonPath() error {
 		jsonPath = filepath.Join(homeDir, ".local/share/", jsonFile)
 	}
 
-	if err := createJsonFile(jsonPath); err != nil {
+	if err := createJSONFile(jsonPath); err != nil {
 		return err
 	}
 
-	t.JsonPath = jsonPath
+	h.JSONPath = jsonPath
 	return nil
 }
 
-func createJsonFile(path string) error {
+func createJSONFile(path string) error {
 	if _, err := os.Stat(filepath.Dir(path)); err != nil {
 		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
 			return err
@@ -80,9 +80,9 @@ func createJsonFile(path string) error {
 }
 
 func writeInitialSample(path string) error {
-	taskList := &TaskList{[]*Task{
+	taskList := &List{[]*Task{
 		{
-			Id:       1,
+			ID:       1,
 			Task:     "deleting or modifying this task is your first TODO",
 			Deadline: "2099/01/01 00:00",
 		},
@@ -100,30 +100,30 @@ func writeInitialSample(path string) error {
 	return nil
 }
 
-func (t *TaskHandler) Write() error {
-	bytes, err := json.Marshal(&t.TaskList)
+func (h *Handler) Write() error {
+	bytes, err := json.Marshal(&h.TaskList)
 	if err != nil {
 		return nil
 	}
 
-	if err := ioutil.WriteFile(t.JsonPath, bytes, 0644); err != nil {
+	if err := ioutil.WriteFile(h.JSONPath, bytes, 0644); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (t *TaskHandler) Remove(id int) {
-	if id > len(t.TaskList.Tasks) {
+func (h *Handler) Remove(id int) {
+	if id > len(h.TaskList.Tasks) {
 		return
 	}
 
-	t.TaskList.Tasks = append(t.TaskList.Tasks[:id], t.TaskList.Tasks[id+1:]...)
-	t.align()
+	h.TaskList.Tasks = append(h.TaskList.Tasks[:id], h.TaskList.Tasks[id+1:]...)
+	h.align()
 }
 
-func (th *TaskHandler) align() {
-	for i, t := range th.TaskList.Tasks {
-		t.Id = i + 1
+func (h *Handler) align() {
+	for i, t := range h.TaskList.Tasks {
+		t.ID = i + 1
 	}
 }

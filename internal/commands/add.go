@@ -9,7 +9,7 @@ import (
 )
 
 func Add(c *cli.Context) error {
-	th, err := task.NewTaskHandler()
+	h, err := task.NewHandler()
 	if err != nil {
 		return err
 	}
@@ -27,14 +27,14 @@ func Add(c *cli.Context) error {
 		}
 	}
 
-	tl := th.TaskList
+	tl := h.TaskList
 	tl.Tasks = append(tl.Tasks, &task.Task{
-		Id:       len(tl.Tasks) + 1,
+		ID:       len(tl.Tasks) + 1,
 		Task:     c.String("task"),
 		Deadline: c.String("deadline"),
 	})
 
-	if err := th.Write(); err != nil {
+	if err := h.Write(); err != nil {
 		return err
 	}
 
