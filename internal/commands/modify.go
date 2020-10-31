@@ -15,26 +15,17 @@ func Modify(c *cli.Context) error {
 	}
 
 	id := c.Int("id")
-	// validation
-	if id == 0 {
-		return errors.New("id could not be empty")
-	}
-
 	t := h.GetTask(id)
 	if t == nil {
 		return errors.New("invalid id")
 	}
 
-	// validation
-	if task := c.String("task"); task != "" {
-		t.Task = task
-	}
-
-
 	d, err := timestr.Parse(c.String("deadline"))
 	if err != nil {
 		return err
 	}
+
+	t.Task = c.String("task")
 	t.Deadline = d
 
 	if err := h.Write(); err != nil {
