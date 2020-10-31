@@ -19,7 +19,7 @@ type Task struct {
 
 type Handler struct {
 	JSONPath string
-	tasks []*Task
+	tasks    []*Task
 }
 
 func NewHandler() (*Handler, error) {

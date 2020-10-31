@@ -1,11 +1,10 @@
 package commands
 
 import (
-	"os"
 	"strconv"
-	"text/tabwriter"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/pkg/writer"
 	"github.com/urfave/cli/v2"
 )
 
@@ -15,21 +14,16 @@ func List(c *cli.Context) error {
 		return err
 	}
 
-	w := tabwriter.NewWriter(os.Stdout, 0, 4, 2, ' ', 0)
-
-	tasks := [][]byte{}
-	for _, task := range h.GetTasks() {
-		tasks = append(tasks, []byte(strconv.Itoa(task.ID)+"\t"+task.Task+"\t"+task.Deadline+"\n"))
-	}
-
+	w := writer.NewTSVWriter()
 	defer w.Flush()
 
-	if _, err := w.Write([]byte("ID\tTask\tDeadline\n")); err != nil {
+	header := []string{"ID", "Task", "Deadline"}
+	if err := w.Write(header); err != nil {
 		return err
 	}
 
-	for _, t := range tasks {
-		if _, err := w.Write(t); err != nil {
+	for _, t := range h.GetTasks() {
+		if err := w.Write([]string{strconv.Itoa(t.ID), t.Task, t.Deadline}); err != nil {
 			return err
 		}
 	}
