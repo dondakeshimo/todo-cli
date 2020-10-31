@@ -51,6 +51,29 @@ func main() {
 					},
 				},
 			},
+			{
+				Name:    "modify",
+				Aliases: []string{"m"},
+				Usage:   "modify a task",
+				Action:  commands.Modify,
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "id",
+						Aliases: []string{"i"},
+						Usage:   "task's ID",
+					},
+					&cli.StringFlag{
+						Name:    "task",
+						Aliases: []string{"t"},
+						Usage:   "write task contents",
+					},
+					&cli.StringFlag{
+						Name:    "deadline",
+						Aliases: []string{"d"},
+						Usage:   "write deadline format -> 2020/10/27 19:35",
+					},
+				},
+			},
 		},
 	}
 
