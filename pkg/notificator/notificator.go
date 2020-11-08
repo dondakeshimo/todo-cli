@@ -1,13 +1,10 @@
 package notificator
 
 type Notificator interface {
-	Push() (Response, error)
+	Push(*Request) error
 }
 
-type Response struct {
-	string
-}
-
-type Scheduler interface {
-	Register() ()
+type Request struct {
+	Title string
+	Contents string
 }
