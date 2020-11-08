@@ -14,7 +14,7 @@ const (
 type Task struct {
 	ID       int    `json:"id"`
 	Task     string `json:"task"`
-	Deadline string `json:"deadline"`
+	RemindTime string `json:"remindtime"`
 }
 
 type Handler struct {
@@ -96,7 +96,7 @@ func writeInitialSample(path string) error {
 		{
 			ID:       1,
 			Task:     "deleting or modifying this task is your first TODO",
-			Deadline: "2099/01/01 00:00",
+			RemindTime: "2099/01/01 00:00",
 		},
 	}
 

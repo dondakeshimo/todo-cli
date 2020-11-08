@@ -18,7 +18,7 @@ type LaunchdScheduler struct {
 	plist string
 }
 
-func NewLaunchhdScheduler() {
+func NewLaunchhdScheduler() *LaunchdScheduler {
 	ls := new(LaunchdScheduler)
 	ls.plist =
 `<?xml version="1.0" encoding="UTF-8"?>
@@ -50,6 +50,8 @@ func NewLaunchhdScheduler() {
     <string>{{user}}</string>
 </dict>
 </plist>`
+
+	return ls
 }
 
 func (ls *LaunchdScheduler) Register(r *Request) error {

@@ -20,13 +20,13 @@ func Modify(c *cli.Context) error {
 		return errors.New("invalid id")
 	}
 
-	d, err := timestr.Parse(c.String("deadline"))
+	d, err := timestr.Parse(c.String("remind_time"))
 	if err != nil {
 		return err
 	}
 
 	t.Task = c.String("task")
-	t.Deadline = d
+	t.RemindTime = d
 
 	if err := h.Write(); err != nil {
 		return err

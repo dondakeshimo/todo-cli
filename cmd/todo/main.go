@@ -33,9 +33,9 @@ func main() {
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:    "deadline",
+						Name:    "remind_time",
 						Aliases: []string{"d"},
-						Usage:   "write deadline format -> 2020/10/27 19:35",
+						Usage:   "write remind_time format -> 2020/10/27 19:35",
 					},
 				},
 			},
@@ -72,9 +72,9 @@ func main() {
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:    "deadline",
+						Name:    "remind_time",
 						Aliases: []string{"d"},
-						Usage:   "write deadline format -> 2020/10/27 19:35",
+						Usage:   "write remind_time format -> 2020/10/27 19:35",
 					},
 				},
 			},

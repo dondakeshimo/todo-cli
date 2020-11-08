@@ -12,14 +12,14 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
-	d, err := timestr.Parse(c.String("deadline"))
+	d, err := timestr.Parse(c.String("remind_time"))
 	if err != nil {
 		return err
 	}
 
 	h.AppendTask(&task.Task{
 		Task:     c.String("task"),
-		Deadline: d,
+		RemindTime: d,
 	})
 
 	if err := h.Write(); err != nil {
