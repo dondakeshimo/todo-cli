@@ -8,6 +8,6 @@ type SlackNotificator struct {
 	Scheduler scheduler.Scheduler
 }
 
-func (sn *SlackNotificator) Push () (*Response, error) {
-	return nil, nil
+func (sn *SlackNotificator) Push (r *Request) error {
+	return nil
 }

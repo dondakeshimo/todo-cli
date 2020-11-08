@@ -78,6 +78,20 @@ func main() {
 					},
 				},
 			},
+			{
+				Name:    "notify",
+				Aliases: []string{"n"},
+				Usage:   "notify a task",
+				Action:  commands.Notify,
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:     "id",
+						Aliases:  []string{"i"},
+						Usage:    "task's ID",
+						Required: true,
+					},
+				},
+			},
 		},
 	}
 
