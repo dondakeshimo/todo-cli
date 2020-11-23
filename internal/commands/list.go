@@ -17,7 +17,7 @@ func List(c *cli.Context) error {
 	w := writer.NewTSVWriter()
 	defer w.Flush()
 
-	header := []string{"ID", "Task", "Deadline"}
+	header := []string{"ID", "Task", "RemindTime"}
 	if err := w.Write(header); err != nil {
 		return err
 	}
