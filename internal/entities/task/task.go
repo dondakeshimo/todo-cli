@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -15,6 +17,7 @@ type Task struct {
 	ID       int    `json:"id"`
 	Task     string `json:"task"`
 	RemindTime string `json:"remindtime"`
+	UUID string `json:"uuid"`
 }
 
 type Handler struct {
@@ -50,6 +53,16 @@ func (h *Handler) GetTask(id int) *Task {
 
 func (h *Handler) GetTasks() []*Task {
 	return h.tasks
+}
+
+func (h *Handler) FindTaskWithUUID(uuid string) *Task {
+	for _, t := range h.tasks {
+		if uuid == t.UUID {
+			return t
+		}
+	}
+
+	return nil
 }
 
 func (h *Handler) AppendTask(t *Task) {
@@ -92,11 +105,17 @@ func createJSONFile(path string) error {
 }
 
 func writeInitialSample(path string) error {
+	uu, err := uuid.NewRandom()
+	if err != nil {
+		return err
+	}
+
 	tasks := &[]*Task{
 		{
 			ID:       1,
 			Task:     "deleting or modifying this task is your first TODO",
 			RemindTime: "2099/01/01 00:00",
+			UUID: uu.String(),
 		},
 	}
 
