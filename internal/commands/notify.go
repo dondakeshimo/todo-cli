@@ -21,7 +21,7 @@ func Notify(c *cli.Context) error {
 		return errors.New("invalid id")
 	}
 
-	r := notificator.Request{
+	r := notifier.Request{
 		Title: "todo",
 		Contents: t.Task,
 	}

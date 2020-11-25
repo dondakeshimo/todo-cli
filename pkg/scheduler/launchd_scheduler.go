@@ -18,7 +18,7 @@ type LaunchdScheduler struct {
 	plist string
 }
 
-func NewLaunchhdScheduler() *LaunchdScheduler {
+func NewLaunchdScheduler() *LaunchdScheduler {
 	ls := new(LaunchdScheduler)
 	ls.plist =
 `<?xml version="1.0" encoding="UTF-8"?>

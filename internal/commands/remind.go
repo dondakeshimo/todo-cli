@@ -32,7 +32,7 @@ func Remind(c *cli.Context) error {
 		Command: fmt.Sprintf("todo notify --id %d", id),
 	}
 
-	s := scheduler.NewLaunchhdScheduler()
+	s := scheduler.NewLaunchdScheduler()
 
 	if err := s.Register(sr); err != nil {
 		return err

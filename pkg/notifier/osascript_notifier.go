@@ -1,13 +1,13 @@
-package notificator
+package notifier
 
 import (
 	"fmt"
 	"os/exec"
 )
 
-type OsascriptNotificator struct {}
+type OsascriptNotifier struct {}
 
-func (on *OsascriptNotificator) Push (r *Request) error {
+func (on *OsascriptNotifier) Push (r *Request) error {
 	c := fmt.Sprintf("display dialog \"%s\" buttons [\"done\"] with title \"%s\"", r.Contents, r.Title)
 
 	if err := exec.Command("osascript", "-e", c).Run(); err != nil {
