@@ -5,7 +5,7 @@ import (
 )
 
 type Scheduler interface {
-	Register() error
+	Register(*Request) error
 }
 
 type Request struct {
