@@ -1,6 +1,6 @@
-package notificator
+package notifier
 
-type Notificator interface {
+type Notifier interface {
 	Push(*Request) error
 }
 

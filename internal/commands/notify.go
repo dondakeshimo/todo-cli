@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/pkg/notificator"
+	"github.com/dondakeshimo/todo-cli/pkg/notifier"
 	"github.com/urfave/cli/v2"
 )
 
@@ -25,7 +25,7 @@ func Notify(c *cli.Context) error {
 		Title: "todo",
 		Contents: t.Task,
 	}
-	n := notificator.OsascriptNotificator{}
+	n := notifier.OsascriptNotifier{}
 	fmt.Printf("r: %v", r)
 
 
