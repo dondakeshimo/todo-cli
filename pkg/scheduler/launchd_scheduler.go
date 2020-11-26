@@ -60,7 +60,7 @@ func (ls *LaunchdScheduler) Register(r *Request) error {
 	// TODO: if datetime is over 1 year later, return error
 	ls.buildPlist(r)
 
-	plistName := plistPrefix + strconv.FormatInt(r.DateTime.Unix(), 10) + plistExt
+	plistName := plistPrefix + r.ID + "_" + strconv.FormatInt(r.DateTime.Unix(), 10) + plistExt
 	var homeDir, _ = os.UserHomeDir()
 	plistPath := filepath.Join(homeDir, plistDir, plistName)
 
@@ -102,7 +102,7 @@ func (ls *LaunchdScheduler) ClearExpired() {
 	files, _ := filepath.Glob(plistPaths)
 
 	for _, f := range files {
-		t := extractTimeFromPath(f)
+		_, t := extractIDAndTime(f)
 		if !isExpired(t) {
 			continue
 		}
@@ -110,13 +110,28 @@ func (ls *LaunchdScheduler) ClearExpired() {
 	}
 }
 
-func extractTimeFromPath(path string) time.Time {
+func (ls *LaunchdScheduler) RemoveWithID(id string) {
+	var homeDir, _ = os.UserHomeDir()
+	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix, "*", plistExt)
+	files, _ := filepath.Glob(plistPaths)
+
+	for _, f := range files {
+		d, _ := extractIDAndTime(f)
+		if d == id {
+			os.Remove(f)
+			return
+		}
+	}
+}
+
+func extractIDAndTime(path string) (string, time.Time) {
 	f := filepath.Base(path)
 	f = strings.Replace(f, plistPrefix, "", -1)
 	f = strings.Replace(f, plistExt, "", -1)
+	s := strings.Split(f, "_")
 
-	t, _ := strconv.ParseInt(f, 10, 64)
-	return time.Unix(t, 0)
+	t, _ := strconv.ParseInt(s[1], 10, 64)
+	return s[0], time.Unix(t, 0)
 }
 
 func isExpired(t time.Time) bool {

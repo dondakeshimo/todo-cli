@@ -36,13 +36,12 @@ func (t *Task) SetReminder(s scheduler.Scheduler) error {
 		return err
 	}
 
-	s.ClearExpired()
-
 	return err
 }
 
 func IsValidReminder(r string) bool {
-	allowReminders := []string{"macos", "slack"}
+	// TODO: add slack
+	allowReminders := []string{"macos"}
 	for _, a := range allowReminders {
 		if r == a {
 			return true
