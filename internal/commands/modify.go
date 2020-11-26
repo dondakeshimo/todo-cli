@@ -32,5 +32,9 @@ func Modify(c *cli.Context) error {
 		return err
 	}
 
+	if err := t.SetReminder(); err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -33,5 +33,7 @@ func (t *Task) SetReminder() error {
 		return err
 	}
 
+	s.ClearExpired()
+
 	return err
 }

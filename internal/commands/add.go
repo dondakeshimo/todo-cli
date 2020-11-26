@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"fmt"
+
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 	"github.com/google/uuid"
@@ -30,6 +32,14 @@ func Add(c *cli.Context) error {
 	})
 
 	if err := h.Write(); err != nil {
+		return err
+	}
+
+	t := h.FindTaskWithUUID(uu.String())
+	if t == nil {
+		return fmt.Errorf("not found uuid: %s", uu.String())
+	}
+	if err := t.SetReminder(); err != nil {
 		return err
 	}
 
