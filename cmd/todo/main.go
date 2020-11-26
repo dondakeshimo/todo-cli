@@ -9,6 +9,29 @@ import (
 )
 
 func main() {
+	flagTask := &cli.StringFlag{
+		Name: "task",
+		Aliases: []string{"t"},
+		Usage: "write task contents",
+		Required: true,
+	}
+	flagRemindTime := &cli.StringFlag{
+		Name:    "remind_time",
+		Aliases: []string{"d"},
+		Usage:   "write remind_time format -> 2020/10/27 19:35",
+	}
+	flagReminder := &cli.StringFlag{
+		Name:    "reminder",
+		Aliases: []string{"d"},
+		Usage:   "choose reminder from [macos, slack]",
+	}
+	flagID := &cli.StringFlag{
+		Name:     "id",
+		Aliases:  []string{"i"},
+		Usage:    "task's ID",
+		Required: true,
+	}
+
 	app := &cli.App{
 		Name:    "todo",
 		Usage:   "Manage Your TODO",
@@ -17,65 +40,39 @@ func main() {
 			{
 				Name:    "list",
 				Aliases: []string{"l"},
-				Usage:   "list tasks",
+				Usage:   "List tasks",
 				Action:  commands.List,
 			},
 			{
 				Name:    "add",
 				Aliases: []string{"a"},
-				Usage:   "add a task",
+				Usage:   "Add a task",
 				Action:  commands.Add,
 				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:     "task",
-						Aliases:  []string{"t"},
-						Usage:    "write task contents",
-						Required: true,
-					},
-					&cli.StringFlag{
-						Name:    "remind_time",
-						Aliases: []string{"d"},
-						Usage:   "write remind_time format -> 2020/10/27 19:35",
-					},
+					flagTask,
+					flagRemindTime,
+					flagReminder,
 				},
 			},
 			{
 				Name:    "close",
 				Aliases: []string{"c"},
-				Usage:   "close a task",
+				Usage:   "Close a task",
 				Action:  commands.Close,
 				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:     "id",
-						Aliases:  []string{"i"},
-						Usage:    "task's ID",
-						Required: true,
-					},
+					flagID,
 				},
 			},
 			{
 				Name:    "modify",
 				Aliases: []string{"m"},
-				Usage:   "modify a task",
+				Usage:   "Modify a task",
 				Action:  commands.Modify,
 				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:     "id",
-						Aliases:  []string{"i"},
-						Usage:    "task's ID",
-						Required: true,
-					},
-					&cli.StringFlag{
-						Name:     "task",
-						Aliases:  []string{"t"},
-						Usage:    "write task contents",
-						Required: true,
-					},
-					&cli.StringFlag{
-						Name:    "remind_time",
-						Aliases: []string{"d"},
-						Usage:   "write remind_time format -> 2020/10/27 19:35",
-					},
+					flagID,
+					flagTask,
+					flagRemindTime,
+					flagReminder,
 				},
 			},
 			{
@@ -84,12 +81,7 @@ func main() {
 				Usage:   "notify a task",
 				Action:  commands.Notify,
 				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:     "id",
-						Aliases:  []string{"i"},
-						Usage:    "task's ID",
-						Required: true,
-					},
+					flagID,
 				},
 			},
 		},
