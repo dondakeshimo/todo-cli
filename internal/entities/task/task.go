@@ -11,6 +11,7 @@ import (
 
 const (
 	jsonFile = "todo/todo.json"
+	defaultDataHome = ".local/share/"
 )
 
 type Task struct {
@@ -78,7 +79,7 @@ func (h *Handler) exploreJSONPath() error {
 	if dataHome != "" {
 		jsonPath = filepath.Join(dataHome, jsonFile)
 	} else {
-		jsonPath = filepath.Join(homeDir, ".local/share/", jsonFile)
+		jsonPath = filepath.Join(homeDir, defaultDataHome, jsonFile)
 	}
 
 	if err := createJSONFile(jsonPath); err != nil {
