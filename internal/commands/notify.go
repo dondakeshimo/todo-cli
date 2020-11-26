@@ -24,15 +24,17 @@ func Notify(c *cli.Context) error {
 		Title:    "todo",
 		Contents: t.Task,
 	}
-	n := notifier.OsascriptNotifier{}
+
+	var n notifier.Notifier
+	if t.Reminder == "macos" {
+		n = &notifier.OsascriptNotifier{}
+	}
 
 	if err := n.Push(&r); err != nil {
 		return err
 	}
 
-	if err := h.Write(); err != nil {
-		return err
-	}
+	// TODO: if react notification, should close task
 
 	return nil
 }
