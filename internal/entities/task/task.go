@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
+	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
 type Task struct {
@@ -29,7 +29,7 @@ func (t *Task) SetReminder(s scheduler.Scheduler) error {
 
 	sr := &scheduler.Request{
 		DateTime: *ts,
-		Command: fmt.Sprintf("%s notify --uuid %s --reminder %s", exe, t.UUID, t.Reminder),
+		Command:  fmt.Sprintf("%s notify --uuid %s --reminder %s", exe, t.UUID, t.Reminder),
 	}
 
 	if err := s.Register(sr); err != nil {

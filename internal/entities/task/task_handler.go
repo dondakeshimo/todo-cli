@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	jsonFile = "todo/todo.json"
+	jsonFile        = "todo/todo.json"
 	defaultDataHome = ".local/share/"
 )
 

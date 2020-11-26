@@ -28,7 +28,7 @@ func Modify(c *cli.Context) error {
 	}
 
 	r := c.String("reminder")
-	if r != "" && !task.IsValidReminder(r){
+	if r != "" && !task.IsValidReminder(r) {
 		return fmt.Errorf("invalid reminder: %s", r)
 	}
 
