@@ -6,11 +6,13 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
-	plistPrefix = "dondakeshimo-todo-cli-"
+	plistPrefix = "com.dondakeshimo.todo-cli."
 	plistExt    = ".plist"
+	plistDir    = "Library/LaunchAgents/"
 )
 
 type LaunchdScheduler struct {
@@ -60,7 +62,7 @@ func (ls *LaunchdScheduler) Register(r *Request) error {
 
 	plistName := plistPrefix + strconv.FormatInt(r.DateTime.Unix(), 10) + plistExt
 	var homeDir, _ = os.UserHomeDir()
-	plistPath := filepath.Join(homeDir, "Library/LaunchAgents/", plistName)
+	plistPath := filepath.Join(homeDir, plistDir, plistName)
 
 	if err := ioutil.WriteFile(plistPath, []byte(ls.plist), 0644); err != nil {
 		return err
@@ -92,4 +94,32 @@ func buildCommand(str string) string {
 		command = command + "        <string>" + s + "</string>\n"
 	}
 	return command
+}
+
+func (ls *LaunchdScheduler) ClearExpired() {
+	var homeDir, _ = os.UserHomeDir()
+	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix, "*", plistExt)
+	files, _ := filepath.Glob(plistPaths)
+
+	for _, f := range files {
+		t := extractTimeFromPath(f)
+		if !isExpired(t) {
+			continue
+		}
+		os.Remove(f)
+	}
+}
+
+func extractTimeFromPath(path string) time.Time {
+	f := filepath.Base(path)
+	f = strings.Replace(f, plistPrefix, "", -1)
+	f = strings.Replace(f, plistExt, "", -1)
+
+	t, _ := strconv.ParseInt(f, 10, 64)
+	return time.Unix(t, 0)
+}
+
+func isExpired(t time.Time) bool {
+	deadline := time.Now().Add(time.Duration(10) * time.Minute).Unix()
+	return t.Unix() < deadline
 }

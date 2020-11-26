@@ -26,6 +26,7 @@ func (t *Task) SetReminder() error {
 		Command: fmt.Sprintf("todo notify --uuid %s", t.UUID),
 	}
 
+	// TODO: abstraction
 	s := scheduler.NewLaunchdScheduler()
 
 	if err := s.Register(sr); err != nil {
