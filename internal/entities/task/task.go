@@ -15,7 +15,7 @@ type Task struct {
 	Reminder   string `json:"reminder"`
 }
 
-func (t *Task) SetReminder() error {
+func (t *Task) SetReminder(s scheduler.Scheduler) error {
 	ts, err := timestr.Parse(t.RemindTime)
 	if err != nil {
 		return err
@@ -26,9 +26,6 @@ func (t *Task) SetReminder() error {
 		Command: fmt.Sprintf("todo notify --uuid %s", t.UUID),
 	}
 
-	// TODO: abstraction
-	s := scheduler.NewLaunchdScheduler()
-
 	if err := s.Register(sr); err != nil {
 		return err
 	}
@@ -36,4 +33,15 @@ func (t *Task) SetReminder() error {
 	s.ClearExpired()
 
 	return err
+}
+
+func IsValidReminder(r string) bool {
+	allowReminders := []string{"macos", "slack"}
+	for _, a := range allowReminders {
+		if r == a {
+			return true
+		}
+	}
+
+	return false
 }

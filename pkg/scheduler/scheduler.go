@@ -6,6 +6,7 @@ import (
 
 type Scheduler interface {
 	Register(*Request) error
+	ClearExpired()
 }
 
 type Request struct {
