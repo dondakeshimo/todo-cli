@@ -22,7 +22,7 @@ func main() {
 	}
 	flagReminder := &cli.StringFlag{
 		Name:    "reminder",
-		Aliases: []string{"d"},
+		Aliases: []string{"r"},
 		Usage:   "choose reminder from [macos, slack]",
 	}
 	flagID := &cli.StringFlag{
