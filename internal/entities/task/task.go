@@ -14,11 +14,11 @@ const (
 )
 
 type Task struct {
-	ID       int    `json:"id"`
-	Task     string `json:"task"`
+	ID         int    `json:"id"`
+	Task       string `json:"task"`
 	RemindTime string `json:"remindtime"`
-	UUID string `json:"uuid"`
-	Reminder string `json:"reminder"`
+	UUID       string `json:"uuid"`
+	Reminder   string `json:"reminder"`
 }
 
 type Handler struct {
@@ -113,10 +113,10 @@ func writeInitialSample(path string) error {
 
 	tasks := &[]*Task{
 		{
-			ID:       1,
-			Task:     "deleting or modifying this task is your first TODO",
+			ID:         1,
+			Task:       "deleting or modifying this task is your first TODO",
 			RemindTime: "2099/01/01 00:00",
-			UUID: uu.String(),
+			UUID:       uu.String(),
 		},
 	}
 

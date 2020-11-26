@@ -10,5 +10,5 @@ type Scheduler interface {
 
 type Request struct {
 	DateTime time.Time
-	Command string
+	Command  string
 }

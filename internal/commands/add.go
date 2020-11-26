@@ -24,9 +24,9 @@ func Add(c *cli.Context) error {
 	}
 
 	h.AppendTask(&task.Task{
-		Task:     c.String("task"),
+		Task:       c.String("task"),
 		RemindTime: d,
-		UUID: uu.String(),
+		UUID:       uu.String(),
 	})
 
 	if err := h.Write(); err != nil {

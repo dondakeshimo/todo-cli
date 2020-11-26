@@ -10,9 +10,9 @@ import (
 
 func main() {
 	flagTask := &cli.StringFlag{
-		Name: "task",
-		Aliases: []string{"t"},
-		Usage: "write task contents",
+		Name:     "task",
+		Aliases:  []string{"t"},
+		Usage:    "write task contents",
 		Required: true,
 	}
 	flagRemindTime := &cli.StringFlag{
@@ -81,9 +81,9 @@ func main() {
 				},
 			},
 			{
-				Name:    "notify",
-				Usage:   "Notify a task (basicaly be used by system)",
-				Action:  commands.Notify,
+				Name:   "notify",
+				Usage:  "Notify a task (basicaly be used by system)",
+				Action: commands.Notify,
 				Flags: []cli.Flag{
 					flagUUID,
 				},

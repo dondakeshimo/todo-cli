@@ -1,27 +1,27 @@
 package scheduler
 
 import (
-	"os"
-	"strings"
-	"strconv"
-	"path/filepath"
 	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 const (
 	plistPrefix = "dondakeshimo-todo-cli-"
-	plistExt = ".plist"
+	plistExt    = ".plist"
 )
 
 type LaunchdScheduler struct {
 	templateVar map[string]string
-	plist string
+	plist       string
 }
 
 func NewLaunchdScheduler() *LaunchdScheduler {
 	ls := new(LaunchdScheduler)
 	ls.plist =
-`<?xml version="1.0" encoding="UTF-8"?>
+		`<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>

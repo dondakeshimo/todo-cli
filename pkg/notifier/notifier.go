@@ -5,6 +5,6 @@ type Notifier interface {
 }
 
 type Request struct {
-	Title string
+	Title    string
 	Contents string
 }

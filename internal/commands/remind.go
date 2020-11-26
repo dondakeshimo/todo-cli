@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
@@ -29,7 +29,7 @@ func Remind(c *cli.Context) error {
 
 	sr := &scheduler.Request{
 		DateTime: *ts,
-		Command: fmt.Sprintf("todo notify --id %d", id),
+		Command:  fmt.Sprintf("todo notify --id %d", id),
 	}
 
 	s := scheduler.NewLaunchdScheduler()

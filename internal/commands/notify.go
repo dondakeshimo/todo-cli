@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"errors"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/pkg/notifier"
@@ -22,7 +21,7 @@ func Notify(c *cli.Context) error {
 	}
 
 	r := notifier.Request{
-		Title: "todo",
+		Title:    "todo",
 		Contents: t.Task,
 	}
 	n := notifier.OsascriptNotifier{}
