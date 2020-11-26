@@ -15,10 +15,10 @@ func Notify(c *cli.Context) error {
 		return err
 	}
 
-	id := c.Int("id")
-	t := h.GetTask(id)
+	uuid := c.String("uuid")
+	t := h.FindTaskWithUUID(uuid)
 	if t == nil {
-		return errors.New("invalid id")
+		return fmt.Errorf("not found uuid: %s", uuid)
 	}
 
 	r := notifier.Request{
@@ -26,8 +26,6 @@ func Notify(c *cli.Context) error {
 		Contents: t.Task,
 	}
 	n := notifier.OsascriptNotifier{}
-	fmt.Printf("r: %v", r)
-
 
 	if err := n.Push(&r); err != nil {
 		return err

@@ -18,6 +18,7 @@ type Task struct {
 	Task     string `json:"task"`
 	RemindTime string `json:"remindtime"`
 	UUID string `json:"uuid"`
+	Reminder string `json:"reminder"`
 }
 
 type Handler struct {

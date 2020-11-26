@@ -31,6 +31,11 @@ func main() {
 		Usage:    "task's ID",
 		Required: true,
 	}
+	flagUUID := &cli.StringFlag{
+		Name:     "uuid",
+		Usage:    "task's UUID",
+		Required: true,
+	}
 
 	app := &cli.App{
 		Name:    "todo",
@@ -77,11 +82,10 @@ func main() {
 			},
 			{
 				Name:    "notify",
-				Aliases: []string{"n"},
-				Usage:   "notify a task",
+				Usage:   "Notify a task (basicaly be used by system)",
 				Action:  commands.Notify,
 				Flags: []cli.Flag{
-					flagID,
+					flagUUID,
 				},
 			},
 		},
