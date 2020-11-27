@@ -143,7 +143,7 @@ func (h *Handler) Remove(id int) {
 		return
 	}
 
-	h.tasks = append(h.tasks[:id], h.tasks[id+1:]...)
+	h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
 	h.align()
 }
 
