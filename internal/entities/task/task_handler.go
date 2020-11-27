@@ -149,7 +149,7 @@ func (h *Handler) RemoveTask(id int) {
 
 func (h *Handler) RemoveTasks(ids []int) {
 	for i, id := range ids {
-		if id - i > len(h.tasks) {
+		if id-i > len(h.tasks) {
 			continue
 		}
 		h.tasks = append(h.tasks[:id-i-1], h.tasks[id-i:]...)

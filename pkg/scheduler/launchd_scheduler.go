@@ -106,7 +106,7 @@ func buildCommand(str string) string {
 
 func (ls *LaunchdScheduler) ClearExpired() {
 	var homeDir, _ = os.UserHomeDir()
-	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix + "*" + plistExt)
+	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
 	files, _ := filepath.Glob(plistPaths)
 
 	for _, f := range files {
@@ -120,7 +120,7 @@ func (ls *LaunchdScheduler) ClearExpired() {
 
 func (ls *LaunchdScheduler) RemoveWithID(id string) {
 	var homeDir, _ = os.UserHomeDir()
-	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix + "*" + plistExt)
+	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
 	files, _ := filepath.Glob(plistPaths)
 
 	for _, f := range files {
