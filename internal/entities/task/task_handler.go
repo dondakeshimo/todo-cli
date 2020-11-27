@@ -148,11 +148,13 @@ func (h *Handler) RemoveTask(id int) {
 }
 
 func (h *Handler) RemoveTasks(ids []int) {
+	c := 0
 	for _, id := range ids {
 		if id > len(h.tasks) {
 			continue
 		}
-		h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
+		h.tasks = append(h.tasks[:id-c-1], h.tasks[id-c:]...)
+		c++
 	}
 	h.align()
 }
