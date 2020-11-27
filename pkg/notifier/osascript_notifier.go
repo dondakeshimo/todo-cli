@@ -9,9 +9,7 @@ import (
 type OsascriptNotifier struct{}
 
 func (on *OsascriptNotifier) Push(r *Request) (string, error) {
-	c := fmt.Sprintf("display dialog \"%s\" buttons [\"skip\",\"done\"] with title \"%s\"", r.Contents, r.Title)
-
-	out, err := exec.Command("osascript", "-e", c).Output()
+	out, err := exec.Command("osascript", "-e", buildScript(r)).Output()
 
 	if err != nil {
 		return "", err
@@ -22,4 +20,17 @@ func (on *OsascriptNotifier) Push(r *Request) (string, error) {
 	o = strings.Trim(o, "\n")
 
 	return o, nil
+}
+
+func buildScript(r *Request) string {
+	const baseScript = "display dialog \"%s\" buttons [%s] with title \"%s\""
+
+	as := make([]string, len(r.Answer))
+	for i, a := range r.Answer {
+		as[i] = "\"" + a + "\""
+	}
+
+	ans := strings.Join(as, ",")
+
+	return fmt.Sprintf(baseScript, r.Contents, ans, r.Title)
 }

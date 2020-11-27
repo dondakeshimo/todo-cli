@@ -23,6 +23,7 @@ func Notify(c *cli.Context) error {
 	r := notifier.Request{
 		Title:    "todo",
 		Contents: t.Task,
+		Answer:   []string{"skip", "done"},
 	}
 
 	var n notifier.Notifier
@@ -34,8 +35,6 @@ func Notify(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(reply == "done")
 
 	if reply == "done" {
 		h.RemoveTask(t.ID)

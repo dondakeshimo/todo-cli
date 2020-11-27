@@ -7,4 +7,5 @@ type Notifier interface {
 type Request struct {
 	Title    string
 	Contents string
+	Answer   []string
 }
