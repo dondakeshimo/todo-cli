@@ -10,13 +10,13 @@ const (
 	layoutDay = "2006/01/02"
 )
 
-func Parse(str string) (string, error) {
+func Validate(str string) (string, error) {
 	if str == "" {
 		return "", nil
 	}
 
-	_, errM := time.Parse(layoutMin, str)
-	_, errD := time.Parse(layoutDay, str)
+	_, errM := time.ParseInLocation(layoutMin, str, time.Local)
+	_, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
 		return "", fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
@@ -27,4 +27,19 @@ func Parse(str string) (string, error) {
 	}
 
 	return "", fmt.Errorf("Parse failed for some reason")
+}
+
+func Parse(str string) (*time.Time, error) {
+	tM, errM := time.ParseInLocation(layoutMin, str, time.Local)
+	tD, errD := time.ParseInLocation(layoutDay, str, time.Local)
+
+	if errM != nil && errD != nil {
+		return nil, fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
+	} else if errM == nil && errD != nil {
+		return &tM, nil
+	} else if errM != nil && errD == nil {
+		return &tD, nil
+	}
+
+	return nil, fmt.Errorf("Parse failed for some reason")
 }

@@ -1,141 +1,53 @@
 package task
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"fmt"
 	"os"
-	"path/filepath"
-)
 
-const (
-	jsonFile = "todo/todo.json"
+	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
+	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
 type Task struct {
-	ID       int    `json:"id"`
-	Task     string `json:"task"`
-	Deadline string `json:"deadline"`
+	ID         int    `json:"id"`
+	Task       string `json:"task"`
+	RemindTime string `json:"remindtime"`
+	UUID       string `json:"uuid"`
+	Reminder   string `json:"reminder"`
 }
 
-type Handler struct {
-	JSONPath string
-	tasks    []*Task
-}
-
-func NewHandler() (*Handler, error) {
-	t := new(Handler)
-
-	if err := t.exploreJSONPath(); err != nil {
-		return nil, err
-	}
-
-	bytes, err := ioutil.ReadFile(t.JSONPath)
+func (t *Task) SetReminder(s scheduler.Scheduler) error {
+	ts, err := timestr.Parse(t.RemindTime)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal(bytes, &t.tasks); err != nil {
-		return nil, err
-	}
-
-	return t, nil
-}
-
-func (h *Handler) GetTask(id int) *Task {
-	if id >= len(h.tasks) {
-		return nil
-	}
-	return h.tasks[id-1]
-}
-
-func (h *Handler) GetTasks() []*Task {
-	return h.tasks
-}
-
-func (h *Handler) AppendTask(t *Task) {
-	h.tasks = append(h.tasks, t)
-	h.align()
-}
-
-func (h *Handler) exploreJSONPath() error {
-	dataHome := os.Getenv("XDG_DATA_HOME")
-	var jsonPath string
-	var homeDir, _ = os.UserHomeDir()
-	if dataHome != "" {
-		jsonPath = filepath.Join(dataHome, jsonFile)
-	} else {
-		jsonPath = filepath.Join(homeDir, ".local/share/", jsonFile)
-	}
-
-	if err := createJSONFile(jsonPath); err != nil {
 		return err
 	}
 
-	h.JSONPath = jsonPath
-	return nil
+	exe, err := os.Executable()
+	if err != nil {
+		return err
+	}
+
+	sr := &scheduler.Request{
+		ID:       t.UUID,
+		DateTime: *ts,
+		Command:  fmt.Sprintf("%s notify --uuid %s", exe, t.UUID),
+	}
+
+	if err := s.Register(sr); err != nil {
+		return err
+	}
+
+	return err
 }
 
-func createJSONFile(path string) error {
-	if _, err := os.Stat(filepath.Dir(path)); err != nil {
-		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
-			return err
+func IsValidReminder(r string) bool {
+	// TODO: add slack
+	allowReminders := []string{"macos"}
+	for _, a := range allowReminders {
+		if r == a {
+			return true
 		}
 	}
 
-	if _, err := os.Stat(path); err != nil {
-		if err := writeInitialSample(path); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func writeInitialSample(path string) error {
-	tasks := &[]*Task{
-		{
-			ID:       1,
-			Task:     "deleting or modifying this task is your first TODO",
-			Deadline: "2099/01/01 00:00",
-		},
-	}
-
-	bytes, err := json.Marshal(tasks)
-	if err != nil {
-		return err
-	}
-
-	if err := ioutil.WriteFile(path, bytes, 0644); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (h *Handler) Write() error {
-	bytes, err := json.Marshal(&h.tasks)
-	if err != nil {
-		return nil
-	}
-
-	if err := ioutil.WriteFile(h.JSONPath, bytes, 0644); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (h *Handler) Remove(id int) {
-	if id > len(h.tasks) {
-		return
-	}
-
-	h.tasks = append(h.tasks[:id], h.tasks[id+1:]...)
-	h.align()
-}
-
-func (h *Handler) align() {
-	for i, t := range h.tasks {
-		t.ID = i + 1
-	}
+	return false
 }
