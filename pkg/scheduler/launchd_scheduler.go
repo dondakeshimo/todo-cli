@@ -3,6 +3,7 @@ package scheduler
 import (
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -68,10 +69,16 @@ func (ls *LaunchdScheduler) Register(r *Request) error {
 		return err
 	}
 
+	if err := exec.Command("launchctl", "load", plistPath).Run(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (ls *LaunchdScheduler) buildPlist(r *Request) {
+	ls.templateVar = make(map[string]string)
+
 	ls.templateVar["{{label}}"] = strconv.FormatInt(r.DateTime.Unix(), 10)
 
 	ls.templateVar["{{command}}"] = buildCommand(r.Command)
