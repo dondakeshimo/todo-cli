@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -105,7 +106,7 @@ func buildCommand(str string) string {
 
 func (ls *LaunchdScheduler) ClearExpired() {
 	var homeDir, _ = os.UserHomeDir()
-	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix, "*", plistExt)
+	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix + "*" + plistExt)
 	files, _ := filepath.Glob(plistPaths)
 
 	for _, f := range files {
@@ -119,7 +120,7 @@ func (ls *LaunchdScheduler) ClearExpired() {
 
 func (ls *LaunchdScheduler) RemoveWithID(id string) {
 	var homeDir, _ = os.UserHomeDir()
-	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix, "*", plistExt)
+	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix + "*" + plistExt)
 	files, _ := filepath.Glob(plistPaths)
 
 	for _, f := range files {
@@ -142,6 +143,7 @@ func extractIDAndTime(path string) (string, time.Time) {
 }
 
 func isExpired(t time.Time) bool {
-	deadline := time.Now().Add(time.Duration(10) * time.Minute).Unix()
+	deadline := time.Now().Add(-time.Duration(1) * time.Minute).Unix()
+	fmt.Printf("%d vs %d\n", t.Unix(), deadline)
 	return t.Unix() < deadline
 }

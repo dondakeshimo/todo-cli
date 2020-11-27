@@ -15,8 +15,8 @@ func Validate(str string) (string, error) {
 		return "", nil
 	}
 
-	_, errM := time.Parse(layoutMin, str)
-	_, errD := time.Parse(layoutDay, str)
+	_, errM := time.ParseInLocation(layoutMin, str, time.Local)
+	_, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
 		return "", fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
@@ -30,8 +30,8 @@ func Validate(str string) (string, error) {
 }
 
 func Parse(str string) (*time.Time, error) {
-	tM, errM := time.Parse(layoutMin, str)
-	tD, errD := time.Parse(layoutDay, str)
+	tM, errM := time.ParseInLocation(layoutMin, str, time.Local)
+	tD, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
 		return nil, fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())

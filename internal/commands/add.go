@@ -62,5 +62,7 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
+	s.ClearExpired()
+
 	return nil
 }

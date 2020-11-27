@@ -39,7 +39,7 @@ func NewHandler() (*Handler, error) {
 }
 
 func (h *Handler) GetTask(id int) *Task {
-	if id >= len(h.tasks) {
+	if id > len(h.tasks) {
 		return nil
 	}
 	return h.tasks[id-1]
