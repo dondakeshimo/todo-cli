@@ -1,7 +1,7 @@
 package notifier
 
 type Notifier interface {
-	Push(*Request) error
+	Push(*Request) (string, error)
 }
 
 type Request struct {

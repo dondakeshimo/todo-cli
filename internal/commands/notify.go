@@ -30,11 +30,20 @@ func Notify(c *cli.Context) error {
 		n = &notifier.OsascriptNotifier{}
 	}
 
-	if err := n.Push(&r); err != nil {
+	reply, err := n.Push(&r)
+	if err != nil {
 		return err
 	}
 
-	// TODO: if react notification, should close task
+	fmt.Println(reply == "done")
+
+	if reply == "done" {
+		h.RemoveTask(t.ID)
+	}
+
+	if err := h.Write(); err != nil {
+		return err
+	}
 
 	return nil
 }

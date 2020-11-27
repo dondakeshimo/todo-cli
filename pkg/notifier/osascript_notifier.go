@@ -3,16 +3,23 @@ package notifier
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
 type OsascriptNotifier struct{}
 
-func (on *OsascriptNotifier) Push(r *Request) error {
-	c := fmt.Sprintf("display dialog \"%s\" buttons [\"done\"] with title \"%s\"", r.Contents, r.Title)
+func (on *OsascriptNotifier) Push(r *Request) (string, error) {
+	c := fmt.Sprintf("display dialog \"%s\" buttons [\"skip\",\"done\"] with title \"%s\"", r.Contents, r.Title)
 
-	if err := exec.Command("osascript", "-e", c).Run(); err != nil {
-		return err
+	out, err := exec.Command("osascript", "-e", c).Output()
+
+	if err != nil {
+		return "", err
 	}
 
-	return nil
+	o := strings.Replace(string(out), "button returned:", "", 1)
+	o = strings.Trim(o, " ")
+	o = strings.Trim(o, "\n")
+
+	return o, nil
 }
