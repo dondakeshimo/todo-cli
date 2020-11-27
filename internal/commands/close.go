@@ -11,7 +11,8 @@ func Close(c *cli.Context) error {
 		return err
 	}
 
-	h.Remove(c.Int("id"))
+	ids := c.IntSlice("ids")
+	h.RemoveTasks(ids)
 
 	if err := h.Write(); err != nil {
 		return err

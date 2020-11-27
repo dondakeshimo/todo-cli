@@ -138,12 +138,22 @@ func (h *Handler) Write() error {
 	return nil
 }
 
-func (h *Handler) Remove(id int) {
+func (h *Handler) RemoveTask(id int) {
 	if id > len(h.tasks) {
 		return
 	}
 
 	h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
+	h.align()
+}
+
+func (h *Handler) RemoveTasks(ids []int) {
+	for _, id := range ids {
+		if id > len(h.tasks) {
+			continue
+		}
+		h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
+	}
 	h.align()
 }
 

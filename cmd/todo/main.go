@@ -25,10 +25,16 @@ func main() {
 		Aliases: []string{"r"},
 		Usage:   "choose reminder from [macos, slack]",
 	}
-	flagID := &cli.StringFlag{
+	flagID := &cli.IntFlag{
 		Name:     "id",
 		Aliases:  []string{"i"},
 		Usage:    "task's ID",
+		Required: true,
+	}
+	flagIDs := &cli.IntSliceFlag{
+		Name:     "ids",
+		Aliases:  []string{"i"},
+		Usage:    "task's IDs  (ex. $ todo c -i 2 -i 3 -i 5 )",
 		Required: true,
 	}
 	flagUUID := &cli.StringFlag{
@@ -65,7 +71,7 @@ func main() {
 				Usage:   "Close a task",
 				Action:  commands.Close,
 				Flags: []cli.Flag{
-					flagID,
+					flagIDs,
 				},
 			},
 			{
