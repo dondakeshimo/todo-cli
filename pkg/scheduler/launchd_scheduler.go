@@ -1,7 +1,6 @@
 package scheduler
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -144,6 +143,5 @@ func extractIDAndTime(path string) (string, time.Time) {
 
 func isExpired(t time.Time) bool {
 	deadline := time.Now().Add(-time.Duration(1) * time.Minute).Unix()
-	fmt.Printf("%d vs %d\n", t.Unix(), deadline)
 	return t.Unix() < deadline
 }
