@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -119,12 +120,15 @@ func (ls *LaunchdScheduler) ClearExpired() {
 		if !isExpired(t) {
 			continue
 		}
-		os.Remove(f)
+
+		if err := os.Remove(f); err != nil {
+			continue
+		}
 	}
 }
 
 // RemoveWithID is a function that remove plist file with ID.
-func (ls *LaunchdScheduler) RemoveWithID(id string) {
+func (ls *LaunchdScheduler) RemoveWithID(id string) error {
 	var homeDir, _ = os.UserHomeDir()
 	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
 	files, _ := filepath.Glob(plistPaths)
@@ -132,10 +136,15 @@ func (ls *LaunchdScheduler) RemoveWithID(id string) {
 	for _, f := range files {
 		d, _ := extractIDAndTime(f)
 		if d == id {
-			os.Remove(f)
-			return
+			if err := os.Remove(f); err != nil {
+				return err
+			}
+
+			return nil
 		}
 	}
+
+	return fmt.Errorf("not found scheduler with id: %s", id)
 }
 
 // extractIDAndTime is a function that extract ID and time from plist file path.

@@ -10,7 +10,7 @@ import (
 type Scheduler interface {
 	Register(*Request) error
 	ClearExpired()
-	RemoveWithID(string)
+	RemoveWithID(string) error
 }
 
 // Request is a struct that is passed to Scheduler.

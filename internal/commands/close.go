@@ -27,7 +27,10 @@ func Close(c *cli.Context) error {
 			continue
 		}
 
-		s.RemoveWithID(t.UUID)
+		// NOTE: ignore err message
+		if err := s.RemoveWithID(t.UUID); err != nil {
+			continue
+		}
 	}
 
 	h.RemoveTasks(ids)

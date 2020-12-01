@@ -57,7 +57,9 @@ func Modify(c *cli.Context) error {
 	}
 
 	if preReminder != "" {
-		s.RemoveWithID(t.UUID)
+		if err := s.RemoveWithID(t.UUID); err != nil {
+			fmt.Println("reminder is removed for some reason.")
+		}
 	}
 
 	// when do not remind, do early return
