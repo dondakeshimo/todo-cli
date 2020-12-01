@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"runtime"
-
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 	"github.com/urfave/cli/v2"
@@ -16,16 +14,15 @@ func Close(c *cli.Context) error {
 
 	ids := c.IntSlice("ids")
 
-	for _, i := range ids {
-		t := h.GetTask(i)
+	for _, id := range ids {
+		t := h.GetTask(id)
 		if t.Reminder == "" {
 			continue
 		}
 
-		var s scheduler.Scheduler
-		if runtime.GOOS == "darwin" {
-			s = scheduler.NewLaunchdScheduler()
-		} else {
+		// NOTE: ignore err message
+		s, err := scheduler.NewScheduler()
+		if err != nil {
 			continue
 		}
 
