@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// List is a function that show task list.
 func List(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {
@@ -15,7 +16,6 @@ func List(c *cli.Context) error {
 	}
 
 	w := writer.NewTSVWriter()
-	defer w.Flush()
 
 	header := []string{"ID", "Task", "RemindTime", "reminder"}
 	if err := w.Write(header); err != nil {
@@ -26,6 +26,10 @@ func List(c *cli.Context) error {
 		if err := w.Write([]string{strconv.Itoa(t.ID), t.Task, t.RemindTime, t.Reminder}); err != nil {
 			return err
 		}
+	}
+
+	if err := w.Flush(); err != nil {
+		return err
 	}
 
 	return nil

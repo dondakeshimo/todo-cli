@@ -18,7 +18,7 @@ func main() {
 	flagRemindTime := &cli.StringFlag{
 		Name:    "remind_time",
 		Aliases: []string{"d"},
-		Usage:   "write remind_time format -> 2020/10/27 19:35",
+		Usage:   "write remind_time format -> \"2020/10/27 19:35\"",
 	}
 	flagReminder := &cli.StringFlag{
 		Name:    "reminder",

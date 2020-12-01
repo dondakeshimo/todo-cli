@@ -10,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Modify is a function that modify a task.
 func Modify(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {
@@ -56,7 +57,9 @@ func Modify(c *cli.Context) error {
 	}
 
 	if preReminder != "" {
-		s.RemoveWithID(t.UUID)
+		if err := s.RemoveWithID(t.UUID); err != nil {
+			fmt.Println("reminder is removed for some reason.")
+		}
 	}
 
 	// when do not remind, do early return

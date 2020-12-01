@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -16,11 +17,13 @@ const (
 	plistDir    = "Library/LaunchAgents/"
 )
 
+// LaunchdScheduler is a struct that is schedule command with launchd.
 type LaunchdScheduler struct {
 	templateVar map[string]string
 	plist       string
 }
 
+// NewLaunchdScheduler is a constructor that make new LaunchdScheduler.
 func NewLaunchdScheduler() *LaunchdScheduler {
 	ls := new(LaunchdScheduler)
 	ls.plist =
@@ -57,6 +60,7 @@ func NewLaunchdScheduler() *LaunchdScheduler {
 	return ls
 }
 
+// Register is a function that set schedule to launchd.
 func (ls *LaunchdScheduler) Register(r *Request) error {
 	// TODO: if datetime is over 1 year later, return error
 	ls.buildPlist(r)
@@ -76,6 +80,7 @@ func (ls *LaunchdScheduler) Register(r *Request) error {
 	return nil
 }
 
+// buildPlist is a function that fill plist template.
 func (ls *LaunchdScheduler) buildPlist(r *Request) {
 	ls.templateVar = make(map[string]string)
 
@@ -95,6 +100,7 @@ func (ls *LaunchdScheduler) buildPlist(r *Request) {
 	}
 }
 
+// buildCommand is a function that make command to set launchd.
 func buildCommand(str string) string {
 	command := ""
 	for _, s := range strings.Split(str, " ") {
@@ -103,6 +109,7 @@ func buildCommand(str string) string {
 	return command
 }
 
+// ClearExpired is a function that remove plist file enough old.
 func (ls *LaunchdScheduler) ClearExpired() {
 	var homeDir, _ = os.UserHomeDir()
 	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
@@ -113,11 +120,15 @@ func (ls *LaunchdScheduler) ClearExpired() {
 		if !isExpired(t) {
 			continue
 		}
-		os.Remove(f)
+
+		if err := os.Remove(f); err != nil {
+			continue
+		}
 	}
 }
 
-func (ls *LaunchdScheduler) RemoveWithID(id string) {
+// RemoveWithID is a function that remove plist file with ID.
+func (ls *LaunchdScheduler) RemoveWithID(id string) error {
 	var homeDir, _ = os.UserHomeDir()
 	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
 	files, _ := filepath.Glob(plistPaths)
@@ -125,12 +136,18 @@ func (ls *LaunchdScheduler) RemoveWithID(id string) {
 	for _, f := range files {
 		d, _ := extractIDAndTime(f)
 		if d == id {
-			os.Remove(f)
-			return
+			if err := os.Remove(f); err != nil {
+				return err
+			}
+
+			return nil
 		}
 	}
+
+	return fmt.Errorf("not found scheduler with id: %s", id)
 }
 
+// extractIDAndTime is a function that extract ID and time from plist file path.
 func extractIDAndTime(path string) (string, time.Time) {
 	f := filepath.Base(path)
 	f = strings.Replace(f, plistPrefix, "", -1)
@@ -141,6 +158,7 @@ func extractIDAndTime(path string) (string, time.Time) {
 	return s[0], time.Unix(t, 0)
 }
 
+// isExpired is a function that judge plist file is enough old.
 func isExpired(t time.Time) bool {
 	deadline := time.Now().Add(-time.Duration(1) * time.Minute).Unix()
 	return t.Unix() < deadline

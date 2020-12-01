@@ -5,4 +5,4 @@ linters:
     - gofmt
 
 issues:
-  exclude-use-default: true
+  exclude-use-default: false

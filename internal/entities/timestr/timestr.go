@@ -10,6 +10,7 @@ const (
 	layoutDay = "2006/01/02"
 )
 
+// Validate is a function that confirm time valid.
 func Validate(str string) (string, error) {
 	if str == "" {
 		return "", nil
@@ -29,6 +30,7 @@ func Validate(str string) (string, error) {
 	return "", fmt.Errorf("Parse failed for some reason")
 }
 
+// Parse is a function that parse time.
 func Parse(str string) (*time.Time, error) {
 	tM, errM := time.ParseInLocation(layoutMin, str, time.Local)
 	tD, errD := time.ParseInLocation(layoutDay, str, time.Local)

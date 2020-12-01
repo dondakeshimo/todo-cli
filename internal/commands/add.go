@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"runtime"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
@@ -11,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Add is a function that add a task (and reminder).
 func Add(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {
@@ -50,12 +50,9 @@ func Add(c *cli.Context) error {
 		return nil
 	}
 
-	var s scheduler.Scheduler
-	// TODO: when adjusting the other os, add condition
-	if runtime.GOOS == "darwin" {
-		s = scheduler.NewLaunchdScheduler()
-	} else {
-		return nil
+	s, err := scheduler.NewScheduler()
+	if err != nil {
+		return err
 	}
 
 	if err := t.SetReminder(s); err != nil {

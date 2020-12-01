@@ -8,6 +8,7 @@ import (
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
+// Task is a struct that describe task.
 type Task struct {
 	ID         int    `json:"id"`
 	Task       string `json:"task"`
@@ -16,6 +17,7 @@ type Task struct {
 	Reminder   string `json:"reminder"`
 }
 
+// SetReminder is a function that set a reminder of the task.
 func (t *Task) SetReminder(s scheduler.Scheduler) error {
 	ts, err := timestr.Parse(t.RemindTime)
 	if err != nil {
@@ -40,6 +42,7 @@ func (t *Task) SetReminder(s scheduler.Scheduler) error {
 	return err
 }
 
+// IsValidReminder is a function that judge a reminder valid.
 func IsValidReminder(r string) bool {
 	// TODO: add slack
 	allowReminders := []string{"macos"}
