@@ -10,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Modify is a function that modify a task.
 func Modify(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {

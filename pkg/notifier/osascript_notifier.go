@@ -6,8 +6,10 @@ import (
 	"strings"
 )
 
+// OsascriptNotifier is a struct that notify with osascript.
 type OsascriptNotifier struct{}
 
+// Push is a function that push notification.
 func (on *OsascriptNotifier) Push(r *Request) (string, error) {
 	out, err := exec.Command("osascript", "-e", buildScript(r)).Output()
 
@@ -22,6 +24,7 @@ func (on *OsascriptNotifier) Push(r *Request) (string, error) {
 	return o, nil
 }
 
+// buildScript is a function that make script for osascript.
 func buildScript(r *Request) string {
 	const baseScript = "display dialog \"%s\" buttons [%s] with title \"%s\""
 

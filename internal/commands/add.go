@@ -10,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Add is a function that add a task (and reminder).
 func Add(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {

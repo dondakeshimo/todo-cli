@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// List is a function that show task list.
 func List(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {

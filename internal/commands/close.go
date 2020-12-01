@@ -6,6 +6,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Close is a function that close a task or tasks.
 func Close(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {

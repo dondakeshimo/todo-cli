@@ -16,11 +16,13 @@ const (
 	plistDir    = "Library/LaunchAgents/"
 )
 
+// LaunchdScheduler is a struct that is schedule command with launchd.
 type LaunchdScheduler struct {
 	templateVar map[string]string
 	plist       string
 }
 
+// NewLaunchdScheduler is a constructor that make new LaunchdScheduler.
 func NewLaunchdScheduler() *LaunchdScheduler {
 	ls := new(LaunchdScheduler)
 	ls.plist =
@@ -57,6 +59,7 @@ func NewLaunchdScheduler() *LaunchdScheduler {
 	return ls
 }
 
+// Register is a function that set schedule to launchd.
 func (ls *LaunchdScheduler) Register(r *Request) error {
 	// TODO: if datetime is over 1 year later, return error
 	ls.buildPlist(r)
@@ -76,6 +79,7 @@ func (ls *LaunchdScheduler) Register(r *Request) error {
 	return nil
 }
 
+// buildPlist is a function that fill plist template.
 func (ls *LaunchdScheduler) buildPlist(r *Request) {
 	ls.templateVar = make(map[string]string)
 
@@ -95,6 +99,7 @@ func (ls *LaunchdScheduler) buildPlist(r *Request) {
 	}
 }
 
+// buildCommand is a function that make command to set launchd.
 func buildCommand(str string) string {
 	command := ""
 	for _, s := range strings.Split(str, " ") {
@@ -103,6 +108,7 @@ func buildCommand(str string) string {
 	return command
 }
 
+// ClearExpired is a function that remove plist file enough old.
 func (ls *LaunchdScheduler) ClearExpired() {
 	var homeDir, _ = os.UserHomeDir()
 	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
@@ -117,6 +123,7 @@ func (ls *LaunchdScheduler) ClearExpired() {
 	}
 }
 
+// RemoveWithID is a function that remove plist file with ID.
 func (ls *LaunchdScheduler) RemoveWithID(id string) {
 	var homeDir, _ = os.UserHomeDir()
 	plistPaths := filepath.Join(homeDir, plistDir, plistPrefix+"*"+plistExt)
@@ -131,6 +138,7 @@ func (ls *LaunchdScheduler) RemoveWithID(id string) {
 	}
 }
 
+// extractIDAndTime is a function that extract ID and time from plist file path.
 func extractIDAndTime(path string) (string, time.Time) {
 	f := filepath.Base(path)
 	f = strings.Replace(f, plistPrefix, "", -1)
@@ -141,6 +149,7 @@ func extractIDAndTime(path string) (string, time.Time) {
 	return s[0], time.Unix(t, 0)
 }
 
+// isExpired is a function that judge plist file is enough old.
 func isExpired(t time.Time) bool {
 	deadline := time.Now().Add(-time.Duration(1) * time.Minute).Unix()
 	return t.Unix() < deadline

@@ -8,6 +8,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Notify is a function that notify a task.
+// It should be called internal only.
 func Notify(c *cli.Context) error {
 	h, err := task.NewHandler()
 	if err != nil {
