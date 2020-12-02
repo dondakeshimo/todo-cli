@@ -1,10 +1,12 @@
 package task
 
 import (
+	"fmt"
 	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"github.com/google/uuid"
 )
@@ -161,6 +163,8 @@ func (h *Handler) RemoveTask(id int) {
 
 // RemoveTasks is a function that remove tasks matched the given uuids.
 func (h *Handler) RemoveTasks(ids []int) {
+	sort.Slice(ids, func(i, j int) bool { return i > j })
+
 	for i, id := range ids {
 		if id-i > len(h.tasks) {
 			continue
