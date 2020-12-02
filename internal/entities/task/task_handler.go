@@ -1,7 +1,6 @@
 package task
 
 import (
-	"fmt"
 	"encoding/json"
 	"io/ioutil"
 	"os"
