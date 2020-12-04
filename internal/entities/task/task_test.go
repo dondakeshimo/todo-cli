@@ -9,7 +9,7 @@ import (
 func TestSetReminder(t *testing.T) {
 	tests := []struct {
 		name string
-		in string
+		in   string
 		want bool
 	}{
 		{"TrueMacos", "macos", true},
@@ -22,7 +22,7 @@ func TestSetReminder(t *testing.T) {
 			got := task.IsValidReminder(tt.in)
 
 			if got != tt.want {
-				t.Fatalf("want %q, but %q", tt.want, got)
+				t.Fatalf("want %v, but %v", tt.want, got)
 			}
 		})
 	}

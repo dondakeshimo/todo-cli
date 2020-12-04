@@ -10,11 +10,11 @@ import (
 
 func TestValidate(t *testing.T) {
 	tests := []struct {
-		name string
-		in string
-		want string
+		name      string
+		in        string
+		want      string
 		wantError bool
-		err error
+		err       error
 	}{
 		{"SuccessMinutes", "2020/12/04 23:29", "2020/12/04 23:29", false, nil},
 		{"SuccessDay", "2020/12/04", "2020/12/04 00:00", false, nil},
@@ -43,11 +43,11 @@ func TestValidate(t *testing.T) {
 
 func TestParse(t *testing.T) {
 	tests := []struct {
-		name string
-		in string
-		want time.Time
+		name      string
+		in        string
+		want      time.Time
 		wantError bool
-		err error
+		err       error
 	}{
 		{"SuccessMinutes", "2020/12/04 23:29", time.Date(2020, 12, 4, 23, 29, 0, 0, time.Local), false, nil},
 		{"SuccessMinutes", "2020/12/04", time.Date(2020, 12, 4, 0, 0, 0, 0, time.Local), false, nil},
