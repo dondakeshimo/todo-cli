@@ -21,22 +21,22 @@ func TestGetTask(t *testing.T) {
 
 	tests := []struct {
 		name string
-		id int
+		id   int
 		want *task.Task
 	}{
 		{
 			name: "Success",
-			id: 2,
+			id:   2,
 			want: tasks[1],
 		},
 		{
 			name: "FailOverRange",
-			id: 4,
+			id:   4,
 			want: nil,
 		},
 		{
 			name: "FailMinus",
-			id: -1,
+			id:   -1,
 			want: nil,
 		},
 	}
