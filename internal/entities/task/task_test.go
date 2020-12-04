@@ -106,7 +106,7 @@ func TestSetReminder(t *testing.T) {
 
 }
 
-func IsValidReminder(t *testing.T) {
+func TestIsValidReminder(t *testing.T) {
 	tests := []struct {
 		name string
 		in   string
