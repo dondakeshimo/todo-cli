@@ -8,7 +8,7 @@ import (
 
 // Scheduler is a interface that schedule command.
 type Scheduler interface {
-	Register(*Request) error
+	Register(Request) error
 	ClearExpired()
 	RemoveWithID(string) error
 }

@@ -10,7 +10,7 @@ import (
 type OsascriptNotifier struct{}
 
 // Push is a function that push notification.
-func (on *OsascriptNotifier) Push(r *Request) (string, error) {
+func (on *OsascriptNotifier) Push(r Request) (string, error) {
 	out, err := exec.Command("osascript", "-e", buildScript(r)).Output()
 
 	if err != nil {
@@ -25,7 +25,7 @@ func (on *OsascriptNotifier) Push(r *Request) (string, error) {
 }
 
 // buildScript is a function that make script for osascript.
-func buildScript(r *Request) string {
+func buildScript(r Request) string {
 	const baseScript = "display dialog \"%s\" buttons [%s] with title \"%s\""
 
 	as := make([]string, len(r.Answer))

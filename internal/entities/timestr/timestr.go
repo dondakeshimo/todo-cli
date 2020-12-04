@@ -31,17 +31,17 @@ func Validate(str string) (string, error) {
 }
 
 // Parse is a function that parse time.
-func Parse(str string) (*time.Time, error) {
+func Parse(str string) (time.Time, error) {
 	tM, errM := time.ParseInLocation(layoutMin, str, time.Local)
 	tD, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
-		return nil, fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
+		return time.Time{}, fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
 	} else if errM == nil && errD != nil {
-		return &tM, nil
+		return tM, nil
 	} else if errM != nil && errD == nil {
-		return &tD, nil
+		return tD, nil
 	}
 
-	return nil, fmt.Errorf("Parse failed for some reason")
+	return time.Time{}, fmt.Errorf("Parse failed for some reason")
 }

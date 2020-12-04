@@ -61,7 +61,7 @@ func NewLaunchdScheduler() *LaunchdScheduler {
 }
 
 // Register is a function that set schedule to launchd.
-func (ls *LaunchdScheduler) Register(r *Request) error {
+func (ls *LaunchdScheduler) Register(r Request) error {
 	// TODO: if datetime is over 1 year later, return error
 	ls.buildPlist(r)
 
@@ -81,7 +81,7 @@ func (ls *LaunchdScheduler) Register(r *Request) error {
 }
 
 // buildPlist is a function that fill plist template.
-func (ls *LaunchdScheduler) buildPlist(r *Request) {
+func (ls *LaunchdScheduler) buildPlist(r Request) {
 	ls.templateVar = make(map[string]string)
 
 	ls.templateVar["{{label}}"] = strconv.FormatInt(r.DateTime.Unix(), 10)

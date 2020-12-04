@@ -33,7 +33,7 @@ func Notify(c *cli.Context) error {
 		n = &notifier.OsascriptNotifier{}
 	}
 
-	reply, err := n.Push(&r)
+	reply, err := n.Push(r)
 	if err != nil {
 		return err
 	}
