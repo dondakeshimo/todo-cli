@@ -7,6 +7,7 @@ import (
 )
 
 // Scheduler is a interface that schedule command.
+//go:generate mockgen -destination=./mock_scheduler.go -package=scheduler . Scheduler
 type Scheduler interface {
 	Register(Request) error
 	ClearExpired()

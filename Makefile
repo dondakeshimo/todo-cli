@@ -3,6 +3,7 @@ GOCLEAN=go clean
 GOTEST=go test
 GOGET=go get
 GOFMT=gofmt
+GOGEN=go generate
 GOINSTALL=go install
 GOIMPORTS=goimports
 GOLINT=golangci-lint
@@ -12,14 +13,25 @@ SMOKE_DIR=./test/smoke
 
 all: help
 
+.PHONY: init
+init: ## initilize developper environment
+	go install github.com/golang/mock/mockgen
+
+.PHONY: get
 get: ## go get dependencies
 	$(GOGET) -v -t ./...
 
+.PHONY: install
 install: ## go install
 	$(GOINSTALL) -v $(CMD_PKG)
 
+.PHONY: build
 build: ## build go binary
 	$(GOBUILD) -o $(BINARY_NAME) -v $(CMD_PKG)
+
+.PHONY: mockgen
+mockgen: ## generate mock
+	$(GOGEN) ./...
 
 .PHONY: test
 test: ## go test
@@ -34,6 +46,7 @@ clean: ## remove go binary
 	$(GOCLEAN)
 	rm -f $(BINARY_NAME)
 
+.PHONY: fmt
 fmt: ## format go files
 	$(GOFMT) -l -w -s .
 	$(GOIMPORTS) -w .
