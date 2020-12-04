@@ -22,8 +22,10 @@ func TestValidate(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt  // set local scope for parallel test
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			got, err := timestr.Validate(tt.in)
 
 			if !tt.wantError && err != nil {
@@ -55,8 +57,10 @@ func TestParse(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt  // set local scope for parallel test
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			got, err := timestr.Parse(tt.in)
 
 			if !tt.wantError && err != nil {
