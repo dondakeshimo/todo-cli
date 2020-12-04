@@ -10,6 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
@@ -18,6 +19,9 @@ func TestSetReminder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get executable: %#v", err)
 	}
+
+	const invalidTime = "2020/12/05 00:26 invalid"
+	_, parseErr := timestr.Parse(invalidTime)
 
 	tests := []struct {
 		name           string
@@ -51,7 +55,7 @@ func TestSetReminder(t *testing.T) {
 			name: "HasErrorTimeParse",
 			task: task.Task{
 				UUID:       "uuid",
-				RemindTime: "2020/12/05 00:26 invalid",
+				RemindTime: invalidTime,
 			},
 			request: scheduler.Request{},
 			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
@@ -61,7 +65,7 @@ func TestSetReminder(t *testing.T) {
 					Times(0)
 			},
 			wantError: true,
-			err:       errors.New("invalid layout: [parsing time \"2020/12/05 00:26 invalid\": extra text:  invalid, parsing time \"2020/12/05 00:26 invalid\": extra text:  00:26 invalid]"),
+			err:       parseErr,
 		},
 		{
 			name: "HasErrorRegister",
