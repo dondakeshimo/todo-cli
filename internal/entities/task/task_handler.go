@@ -43,7 +43,7 @@ func NewHandler() (*Handler, error) {
 
 // GetTask is a getter that get a task with id.
 func (h *Handler) GetTask(id int) *Task {
-	if id > len(h.tasks) {
+	if id > len(h.tasks) || id < 0 {
 		return nil
 	}
 	return h.tasks[id-1]
