@@ -25,6 +25,7 @@ func TestValidate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			got, err := timestr.Validate(tt.in)
+
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)
 			}
@@ -57,6 +58,7 @@ func TestParse(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			got, err := timestr.Parse(tt.in)
+
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)
 			}
