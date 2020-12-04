@@ -20,23 +20,23 @@ func TestSetReminder(t *testing.T) {
 	}
 
 	tests := []struct {
-		name string
-		task task.Task
-		request scheduler.Request
+		name           string
+		task           task.Task
+		request        scheduler.Request
 		buildScheduler func(m *scheduler.MockScheduler, r scheduler.Request)
-		wantError bool
-		err error
+		wantError      bool
+		err            error
 	}{
 		{
 			name: "Success",
 			task: task.Task{
-				UUID: "uuid",
+				UUID:       "uuid",
 				RemindTime: "2020/12/05 00:26",
 			},
 			request: scheduler.Request{
-				ID: "uuid",
+				ID:       "uuid",
 				DateTime: time.Date(2020, 12, 5, 00, 26, 00, 00, time.Local),
-				Command: fmt.Sprintf("%s notify --uuid uuid", exe),
+				Command:  fmt.Sprintf("%s notify --uuid uuid", exe),
 			},
 			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
 				m.
@@ -45,12 +45,12 @@ func TestSetReminder(t *testing.T) {
 					Return(nil)
 			},
 			wantError: false,
-			err: nil,
+			err:       nil,
 		},
 		{
 			name: "HasErrorTimeParse",
 			task: task.Task{
-				UUID: "uuid",
+				UUID:       "uuid",
 				RemindTime: "2020/12/05 00:26 invalid",
 			},
 			request: scheduler.Request{},
@@ -61,18 +61,18 @@ func TestSetReminder(t *testing.T) {
 					Times(0)
 			},
 			wantError: true,
-			err: errors.New("invalid layout: [parsing time \"2020/12/05 00:26 invalid\": extra text:  invalid, parsing time \"2020/12/05 00:26 invalid\": extra text:  00:26 invalid]"),
+			err:       errors.New("invalid layout: [parsing time \"2020/12/05 00:26 invalid\": extra text:  invalid, parsing time \"2020/12/05 00:26 invalid\": extra text:  00:26 invalid]"),
 		},
 		{
 			name: "HasErrorRegister",
 			task: task.Task{
-				UUID: "uuid",
+				UUID:       "uuid",
 				RemindTime: "2020/12/05 00:26",
 			},
 			request: scheduler.Request{
-				ID: "uuid",
+				ID:       "uuid",
 				DateTime: time.Date(2020, 12, 5, 00, 26, 00, 00, time.Local),
-				Command: fmt.Sprintf("%s notify --uuid uuid", exe),
+				Command:  fmt.Sprintf("%s notify --uuid uuid", exe),
 			},
 			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
 				m.
@@ -81,12 +81,12 @@ func TestSetReminder(t *testing.T) {
 					Return(errors.New("error test"))
 			},
 			wantError: true,
-			err: errors.New("error test"),
+			err:       errors.New("error test"),
 		},
 	}
 
 	for _, tt := range tests {
-		tt := tt  // set local scope for parallel test
+		tt := tt // set local scope for parallel test
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
@@ -117,7 +117,7 @@ func IsValidReminder(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt  // set local scope for parallel test
+		tt := tt // set local scope for parallel test
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
