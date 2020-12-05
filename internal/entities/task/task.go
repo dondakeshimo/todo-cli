@@ -29,9 +29,9 @@ func (t *Task) SetReminder(s scheduler.Scheduler) error {
 		return err
 	}
 
-	sr := &scheduler.Request{
+	sr := scheduler.Request{
 		ID:       t.UUID,
-		DateTime: *ts,
+		DateTime: ts,
 		Command:  fmt.Sprintf("%s notify --uuid %s", exe, t.UUID),
 	}
 

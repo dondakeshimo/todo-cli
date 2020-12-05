@@ -33,13 +33,15 @@ func Notify(c *cli.Context) error {
 		n = &notifier.OsascriptNotifier{}
 	}
 
-	reply, err := n.Push(&r)
+	reply, err := n.Push(r)
 	if err != nil {
 		return err
 	}
 
 	if reply == "done" {
-		h.RemoveTask(t.ID)
+		if err := h.RemoveTask(t.ID); err != nil {
+			return err
+		}
 	}
 
 	if err := h.Write(); err != nil {

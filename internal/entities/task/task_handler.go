@@ -2,6 +2,7 @@ package task
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -43,7 +44,7 @@ func NewHandler() (*Handler, error) {
 
 // GetTask is a getter that get a task with id.
 func (h *Handler) GetTask(id int) *Task {
-	if id > len(h.tasks) {
+	if id > len(h.tasks) || id < 0 {
 		return nil
 	}
 	return h.tasks[id-1]
@@ -151,26 +152,38 @@ func (h *Handler) Write() error {
 
 // RemoveTask is a function that remove a task matched the given uuid.
 // Do not use this func in loop. Use RemoveTasks instead.
-func (h *Handler) RemoveTask(id int) {
-	if id > len(h.tasks) {
-		return
+func (h *Handler) RemoveTask(id int) error {
+	if id > len(h.tasks) || id <= 1 {
+		return fmt.Errorf("invalid id [%d]", id)
 	}
 
 	h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
 	h.align()
+
+	return nil
 }
 
 // RemoveTasks is a function that remove tasks matched the given uuids.
-func (h *Handler) RemoveTasks(ids []int) {
-	sort.Slice(ids, func(i, j int) bool { return i > j })
+func (h *Handler) RemoveTasks(ids []int) error {
+	// below logic assume that ids is sorted ascending
+	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
+
+	// validate natural value
+	if ids[0] < 1 {
+		return fmt.Errorf("not natural value is invalid %v", ids)
+	}
+
+	// validate out of range, it's enough to check tail id
+	if ids[len(ids)-1] > len(h.tasks) {
+		return fmt.Errorf("no task with id %v", ids)
+	}
 
 	for i, id := range ids {
-		if id-i > len(h.tasks) {
-			continue
-		}
 		h.tasks = append(h.tasks[:id-i-1], h.tasks[id-i:]...)
 	}
 	h.align()
+
+	return nil
 }
 
 // align is a function that sort tasks.
