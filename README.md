@@ -9,3 +9,34 @@
 
 # todo-cli
 manage todo list at cli
+
+## Installation
+Use the `go get` or `make install` after cloning from GitHub
+
+```bash
+go get github.com/dondakeshimo/todo-cli/cmd/todo 
+```
+OR
+```bash
+make install
+```
+
+make sure that you have already added binary path to your PATH
+
+```bash
+export PATH=$PATH:$(go env GOPATH)/bin
+```
+
+## Usage
+
+```bash
+todo [global options] command [command options] [arguments...]
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
