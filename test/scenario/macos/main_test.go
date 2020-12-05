@@ -38,7 +38,6 @@ func setup() (func(), error) {
 		p := filepath.Join(dir, jsonDir, jsonFilename)
 		_, err = os.Stat(p)
 		if err == nil || os.IsExist(err) {
-			fmt.Printf("remove %s", p)
 			if err := os.Remove(p); err != nil {
 				fmt.Printf("could not remove [%s]: %s", p, err.Error())
 			}
