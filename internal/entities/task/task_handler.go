@@ -2,6 +2,7 @@ package task
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -151,9 +152,9 @@ func (h *Handler) Write() error {
 
 // RemoveTask is a function that remove a task matched the given uuid.
 // Do not use this func in loop. Use RemoveTasks instead.
-func (h *Handler) RemoveTask(id int) {
-	if id > len(h.tasks) {
-		return
+func (h *Handler) RemoveTask(id int) error {
+	if id > len(h.tasks) || id <= 1 {
+		return fmt.Errorf("invalid id [%d]", id)
 	}
 
 	h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
@@ -161,11 +162,17 @@ func (h *Handler) RemoveTask(id int) {
 }
 
 // RemoveTasks is a function that remove tasks matched the given uuids.
-func (h *Handler) RemoveTasks(ids []int) {
-	sort.Slice(ids, func(i, j int) bool { return i > j })
+func (h *Handler) RemoveTasks(ids []int) error {
+	// below logic assume that ids is sorted ascending
+	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
+
+	// validate natural value
+	if ids[0] < 1 {
+		return fmt.Errorf("not natural value is invalid %v", ids)
+	}
 
 	for i, id := range ids {
-		if id-i > len(h.tasks) {
+		if id-i > len(h.tasks) || id-i < 0 {
 			continue
 		}
 		h.tasks = append(h.tasks[:id-i-1], h.tasks[id-i:]...)

@@ -33,7 +33,9 @@ func Close(c *cli.Context) error {
 		}
 	}
 
-	h.RemoveTasks(ids)
+	if err := h.RemoveTasks(ids); err != nil {
+		return err
+	}
 
 	if err := h.Write(); err != nil {
 		return err

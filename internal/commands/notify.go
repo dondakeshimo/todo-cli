@@ -39,7 +39,9 @@ func Notify(c *cli.Context) error {
 	}
 
 	if reply == "done" {
-		h.RemoveTask(t.ID)
+		if err := h.RemoveTask(t.ID); err != nil {
+			return err
+		}
 	}
 
 	if err := h.Write(); err != nil {
