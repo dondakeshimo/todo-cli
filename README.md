@@ -11,7 +11,7 @@
 manage todo list at cli
 
 ## Installation
-Use the `go get` or `make install` after cloning from git hub 
+Use the `go get` or `make install` after cloning from GitHub
 
 ```bash
 go get github.com/dondakeshimo/todo-cli/cmd/todo 
