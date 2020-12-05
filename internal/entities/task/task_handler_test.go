@@ -96,9 +96,11 @@ func TestGetTasks(t *testing.T) {
 
 func TestRemoveTask(t *testing.T) {
 	tests := []struct {
-		name string
-		id   int
-		want []*task.Task
+		name      string
+		id        int
+		want      []*task.Task
+		wantError bool
+		err       error
 	}{
 		{
 			name: "Success",
@@ -107,6 +109,8 @@ func TestRemoveTask(t *testing.T) {
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid3"},
 			},
+			wantError: false,
+			err:       nil,
 		},
 		{
 			name: "FailOverRange",
@@ -116,6 +120,8 @@ func TestRemoveTask(t *testing.T) {
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
 			},
+			wantError: true,
+			err:       errors.New("invalid id [4]"),
 		},
 		{
 			name: "FailMinus",
@@ -125,6 +131,8 @@ func TestRemoveTask(t *testing.T) {
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
 			},
+			wantError: true,
+			err:       errors.New("invalid id [-1]"),
 		},
 	}
 
@@ -144,16 +152,26 @@ func TestRemoveTask(t *testing.T) {
 				handler.AppendTask(ts)
 			}
 
-			handler.RemoveTask(tt.id)
+			err := handler.RemoveTask(tt.id)
 			ts := handler.GetTasks()
 
 			if len(ts) != len(tt.want) {
 				t.Fatalf("want %#v, but %#v", tt.want, ts)
 			}
 
-			for i := 0; i < len(tt.want); i++ {
-				if ts[i].ID != tt.want[i].ID || ts[i].UUID != tt.want[i].UUID {
-					t.Fatalf("want %#v, but %#v", tt.want, ts)
+			if !tt.wantError && err != nil {
+				t.Fatalf("want no err, but has error %#v", err.Error())
+			}
+
+			if tt.wantError && err.Error() != tt.err.Error() {
+				t.Fatalf("want %#v, but %#v", tt.err.Error(), err.Error())
+			}
+
+			if !tt.wantError {
+				for i := 0; i < len(tt.want); i++ {
+					if ts[i].ID != tt.want[i].ID || ts[i].UUID != tt.want[i].UUID {
+						t.Fatalf("want %#v, but %#v", tt.want, ts)
+					}
 				}
 			}
 		})
