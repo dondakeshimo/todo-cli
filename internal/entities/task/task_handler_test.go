@@ -162,11 +162,11 @@ func TestRemoveTask(t *testing.T) {
 
 func TestRemoveTasks(t *testing.T) {
 	tests := []struct {
-		name string
-		ids  []int
-		want []*task.Task
+		name      string
+		ids       []int
+		want      []*task.Task
 		wantError bool
-		err error
+		err       error
 	}{
 		{
 			name: "Success",
@@ -175,7 +175,7 @@ func TestRemoveTasks(t *testing.T) {
 				{ID: 1, UUID: "uuid2"},
 			},
 			wantError: false,
-			err: nil,
+			err:       nil,
 		},
 		{
 			name: "SuccessDescending",
@@ -184,7 +184,7 @@ func TestRemoveTasks(t *testing.T) {
 				{ID: 1, UUID: "uuid3"},
 			},
 			wantError: false,
-			err: nil,
+			err:       nil,
 		},
 		{
 			name: "HasContinueOverRange",
@@ -195,7 +195,7 @@ func TestRemoveTasks(t *testing.T) {
 				{ID: 3, UUID: "uuid3"},
 			},
 			wantError: true,
-			err: errors.New("no task with id [1 2 4]"),
+			err:       errors.New("no task with id [1 2 4]"),
 		},
 		{
 			name: "HasContinueMinus",
@@ -206,7 +206,7 @@ func TestRemoveTasks(t *testing.T) {
 				{ID: 3, UUID: "uuid3"},
 			},
 			wantError: true,
-			err: errors.New("not natural value is invalid [-1 1]"),
+			err:       errors.New("not natural value is invalid [-1 1]"),
 		},
 	}
 
