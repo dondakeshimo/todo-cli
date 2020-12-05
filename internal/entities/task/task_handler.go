@@ -159,6 +159,8 @@ func (h *Handler) RemoveTask(id int) error {
 
 	h.tasks = append(h.tasks[:id-1], h.tasks[id:]...)
 	h.align()
+
+	return nil
 }
 
 // RemoveTasks is a function that remove tasks matched the given uuids.
@@ -171,13 +173,17 @@ func (h *Handler) RemoveTasks(ids []int) error {
 		return fmt.Errorf("not natural value is invalid %v", ids)
 	}
 
+	// validate out of range, it's enough to check tail id
+	if ids[len(ids)-1] > len(h.tasks) {
+		return fmt.Errorf("no task with id %v", ids)
+	}
+
 	for i, id := range ids {
-		if id-i > len(h.tasks) || id-i < 0 {
-			continue
-		}
 		h.tasks = append(h.tasks[:id-i-1], h.tasks[id-i:]...)
 	}
 	h.align()
+
+	return nil
 }
 
 // align is a function that sort tasks.
