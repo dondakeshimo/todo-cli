@@ -14,17 +14,14 @@ manage todo list at cli
 Use the `go get` or `make install` after cloning from git hub 
 
 ```bash
-go get 
+go get github.com/dondakeshimo/todo-cli/cmd/todo 
 ```
-
-or 
-
+OR
 ```bash
-git clone 
 make install
 ```
 
-make sure that you added binary path to your PATH
+make sure that you have already added binary path to your PATH
 
 ```bash
 export PATH=$PATH:$(go env GOPATH)/bin
