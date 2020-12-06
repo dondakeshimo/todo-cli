@@ -30,10 +30,10 @@ export PATH=$PATH:$(go env GOPATH)/bin
 ### Completion
 You can use completion with bash or zsh.
 
-{.warning} zsh completion
-:  ZSH completion would often shows inappropriate candidates
-   if you didn't configure below setting.  
-   We recommend you to set zsh-completion configuration.
+##### :warning: zsh completion
+ZSH completion would often shows inappropriate candidates
+if you didn't configure below setting.  
+We recommend you to set zsh-completion configuration.
 
 #### Bash
 Set `PROG=todo` and load `scripts/bash_autocomplete`.
