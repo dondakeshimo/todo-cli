@@ -27,6 +27,34 @@ make sure that you have already added binary path to your PATH
 export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
+### Completion
+You can use completion with bash or zsh.
+
+{.warning} zsh completion
+:  ZSH completion would often shows inappropriate candidates
+   if you didn't configure below setting.  
+   We recommend you to set zsh-completion configuration.
+
+#### Bash
+Set `PROG=todo` and load `scripts/bash_autocomplete`.
+Adding the following lines to your BASH configuration file (usually `.bash_profile` )
+will allow the auto-completion to persist across new shells.
+
+```bash
+PROG=todo source path/to/todo-cli/scripts/bash_autocomplete
+```
+
+#### Zsh
+Set `PROG=todo` and `_CLI_ZSH_AUTOCOMPLETE_HACK=1` , then load `scripts/zsh_autocomplete`.
+Adding the following lines to your BASH configuration file (usually `.zshrc` )
+will allow the auto-completion to persist across new shells.
+
+```bash
+PROG=todo
+_CLI_ZSH_AUTOCOMPLETE_HACK=1
+source path/to/todo-cli/scripts/zsh_autocomplete
+```
+
 ## Usage
 
 ```bash
