@@ -47,6 +47,7 @@ func main() {
 		Name:    "todo",
 		Usage:   "Manage Your TODO",
 		Version: "0.0.1",
+		EnableBashCompletion: true,
 		Commands: []*cli.Command{
 			{
 				Name:    "list",
