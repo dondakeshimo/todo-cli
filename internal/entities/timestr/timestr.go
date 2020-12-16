@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	layoutMin = "2006/01/02 15:04"
-	layoutDay = "2006/01/02"
+	layoutMin = "2006/1/2 15:4"
+	layoutDay = "2006/1/2"
 )
 
 // Validate is a function that confirm time valid.
@@ -20,7 +20,7 @@ func Validate(str string) (string, error) {
 	_, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
-		return "", fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
+		return "", fmt.Errorf("invalid time layout: [minutes layout]: %s, [day layout]: %s", errM.Error(), errD.Error())
 	} else if errM == nil && errD != nil {
 		return str, nil
 	} else if errM != nil && errD == nil {
@@ -36,7 +36,7 @@ func Parse(str string) (time.Time, error) {
 	tD, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
-		return time.Time{}, fmt.Errorf("invalid layout: [%s, %s]", errM.Error(), errD.Error())
+		return time.Time{}, fmt.Errorf("invalid time layout: [minutes layout]: %s, [day layout]: %s", errM.Error(), errD.Error())
 	} else if errM == nil && errD != nil {
 		return tM, nil
 	} else if errM != nil && errD == nil {
