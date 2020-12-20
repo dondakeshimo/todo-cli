@@ -42,6 +42,10 @@ func main() {
 		Usage:    "task's UUID",
 		Required: true,
 	}
+	flagRelativeTime := &cli.BoolFlag{
+		Name:  "relative",
+		Usage: "choose relative/absolute time",
+	}
 
 	app := &cli.App{
 		Name:                 "todo",
@@ -64,6 +68,7 @@ func main() {
 					flagTask,
 					flagRemindTime,
 					flagReminder,
+					flagRelativeTime,
 				},
 			},
 			{
@@ -85,6 +90,7 @@ func main() {
 					flagTask,
 					flagRemindTime,
 					flagReminder,
+					flagRelativeTime,
 				},
 			},
 			{

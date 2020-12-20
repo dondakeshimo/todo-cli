@@ -22,7 +22,7 @@ func Modify(c *cli.Context) error {
 		return fmt.Errorf("invalid id: %d", id)
 	}
 
-	d, err := timestr.Validate(c.String("remind_time"))
+	d, err := timestr.UnifyLayout(c.String("remind_time"))
 	if err != nil {
 		return err
 	}

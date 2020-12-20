@@ -17,7 +17,7 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
-	d, err := timestr.Validate(c.String("remind_time"))
+	d, err := timestr.UnifyLayout(c.String("remind_time"))
 	if err != nil {
 		return err
 	}

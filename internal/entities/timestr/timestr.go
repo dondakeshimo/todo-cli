@@ -10,8 +10,8 @@ const (
 	layoutDay = "2006/1/2"
 )
 
-// Validate is a function that confirm time valid.
-func Validate(str string) (string, error) {
+// UnifyLayout is a function that validates input and returns layoutMin type object.
+func UnifyLayout(str string) (string, error) {
 	if str == "" {
 		return "", nil
 	}
@@ -28,6 +28,19 @@ func Validate(str string) (string, error) {
 	}
 
 	return "", fmt.Errorf("Parse failed for some reason")
+}
+
+// TransformTime is a function that transforms relative time into absolute time.
+func TransformTime(ts string) (string, error) {
+	rt, err := time.ParseDuration(ts)
+
+	if err != nil {
+		return "", err
+	}
+
+	tn := time.Now()
+	t := tn.Add(rt)
+	return t
 }
 
 // Parse is a function that parse time.

@@ -8,7 +8,7 @@ import (
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 )
 
-func TestValidate(t *testing.T) {
+func TestUnifyLayout(t *testing.T) {
 	tests := []struct {
 		name      string
 		in        string
@@ -28,7 +28,7 @@ func TestValidate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := timestr.Validate(tt.in)
+			got, err := timestr.UnifyLayout(tt.in)
 
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)
