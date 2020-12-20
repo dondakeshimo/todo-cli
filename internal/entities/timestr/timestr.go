@@ -31,16 +31,14 @@ func UnifyLayout(str string) (string, error) {
 }
 
 // TransformFromRelative is a function that transforms relative time into absolute time.
-func TransformFromRelative(ts string) (string, error) {
-	rt, err := time.ParseDuration(ts)
+func TransformFromRelative(duration string, base time.Time) (string, error) {
+	rt, err := time.ParseDuration(duration)
 
 	if err != nil {
 		return "", err
 	}
 
-	t := time.Now()
-	t = t.Add(rt)
-	return t.Format(layoutMin), nil
+	return base.Add(rt).Format(layoutMin), nil
 }
 
 // Parse is a function that parse time.

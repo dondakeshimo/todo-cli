@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
@@ -20,7 +21,7 @@ func Add(c *cli.Context) error {
 	rt := c.String("remind_time")
 
 	if c.Bool("relative") {
-		rt, err = timestr.TransformFromRelative(rt)
+		rt, err = timestr.TransformFromRelative(rt, time.Now())
 		if err != nil {
 			return err
 		}
