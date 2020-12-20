@@ -17,7 +17,16 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
-	d, err := timestr.UnifyLayout(c.String("remind_time"))
+	rt := c.String("remind_time")
+
+	if c.Bool("relative") {
+		rt, err = timestr.TransformFromRelative(rt)
+		if err != nil {
+			return err
+		}
+	}
+
+	d, err := timestr.UnifyLayout(rt)
 	if err != nil {
 		return err
 	}
