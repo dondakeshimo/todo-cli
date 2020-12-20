@@ -30,17 +30,17 @@ func UnifyLayout(str string) (string, error) {
 	return "", fmt.Errorf("Parse failed for some reason")
 }
 
-// TransformTime is a function that transforms relative time into absolute time.
-func TransformTime(ts string) (string, error) {
+// Transform is a function that transforms relative time into absolute time.
+func Transform(ts string) (string, error) {
 	rt, err := time.ParseDuration(ts)
 
 	if err != nil {
 		return "", err
 	}
 
-	tn := time.Now()
-	t := tn.Add(rt)
-	return t
+	t := time.Now()
+	t = t.Add(rt)
+	return t.Format(layoutMin), nil
 }
 
 // Parse is a function that parse time.
