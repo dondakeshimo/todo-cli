@@ -65,7 +65,7 @@ func TestTransformFromRelative(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := timestr.UnifyLayout(tt.in)
+			got, err := timestr.TransformFromRelative(tt.in)
 
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)
