@@ -2,6 +2,8 @@ package commands
 
 import (
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
@@ -22,7 +24,25 @@ func Modify(c *cli.Context) error {
 		return fmt.Errorf("invalid id: %d", id)
 	}
 
-	d, err := timestr.Validate(c.String("remind_time"))
+	rt := c.String("remind_time")
+
+	if strings.HasPrefix(rt, "task") {
+		rt = strings.Replace(rt, "task", "", 1)
+		rt, err = timestr.ModifyTime(rt, t.RemindTime)
+		if err != nil {
+			return err
+		}
+	}
+
+	if strings.HasPrefix(rt, "+") || strings.HasPrefix(rt, "now+") {
+		rt = strings.Replace(rt, "now", "", 1)
+		rt, err = timestr.ModifyTime(rt, timestr.FormatTime(time.Now()))
+		if err != nil {
+			return err
+		}
+	}
+
+	d, err := timestr.UnifyLayout(rt)
 	if err != nil {
 		return err
 	}
