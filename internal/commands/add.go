@@ -21,11 +21,8 @@ func Add(c *cli.Context) error {
 
 	rt := c.String("remind_time")
 
-	if strings.HasPrefix(rt, "now+") {
+	if strings.HasPrefix(rt, "+") || strings.HasPrefix(rt, "now+") {
 		rt = strings.Replace(rt, "now", "", 1)
-	}
-
-	if strings.HasPrefix(rt, "+") {
 		rt, err = timestr.ModifyTime(rt, timestr.FormatTime(time.Now()))
 		if err != nil {
 			return err
