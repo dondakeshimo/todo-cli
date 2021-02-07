@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	layoutMin = "2006/1/2 15:4"
+	layoutMin = "2006/1/2 15:04"
 	layoutDay = "2006/1/2"
 )
 
@@ -30,15 +30,26 @@ func UnifyLayout(str string) (string, error) {
 	return "", fmt.Errorf("Parse failed for some reason")
 }
 
-// TransformFromRelative is a function that transforms relative time into absolute time.
-func TransformFromRelative(duration string, base time.Time) (string, error) {
+// FormatTime is a function that formats time.
+func FormatTime(t time.Time) string {
+	return t.Format(layoutMin)
+}
+
+// ModifyTime is a function that modifies time.
+func ModifyTime(duration string, base string) (string, error) {
 	rt, err := time.ParseDuration(duration)
 
 	if err != nil {
 		return "", err
 	}
 
-	return base.Add(rt).Format(layoutMin), nil
+	bt, err := time.ParseInLocation(layoutMin, base, time.Local)
+
+	if err != nil {
+		return "", err
+	}
+
+	return bt.Add(rt).Format(layoutMin), nil
 }
 
 // Parse is a function that parse time.

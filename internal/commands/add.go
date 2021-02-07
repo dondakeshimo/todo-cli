@@ -23,7 +23,6 @@ func Add(c *cli.Context) error {
 
 	if strings.HasPrefix(rt, "now+") {
 		rt = strings.Replace(rt, "now", "", 1)
-		fmt.Println(rt)
 	}
 
 	if strings.HasPrefix(rt, "+") {
