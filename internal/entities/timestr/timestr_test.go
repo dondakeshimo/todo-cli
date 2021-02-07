@@ -16,11 +16,10 @@ func TestUnifyLayout(t *testing.T) {
 		wantError bool
 		err       error
 	}{
-		{"SuccessMinutes", "2020/1/4 2:9", "2020/1/4 2:9", false, nil},
 		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", "2020/12/04 23:29", false, nil},
 		{"SuccessDay", "2020/1/4", "2020/1/4 00:00", false, nil},
 		{"SuccessDayZeroPadding", "2020/12/04", "2020/12/04 00:00", false, nil},
-		{"HasErrorInvalidLayout", "invalid layout", "", true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:4\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
+		{"HasErrorInvalidLayout", "invalid layout", "", true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:04\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
 	}
 
 	for _, tt := range tests {
@@ -45,19 +44,18 @@ func TestUnifyLayout(t *testing.T) {
 	}
 }
 
-func TestTransformFromRelative(t *testing.T) {
+func TestModifyTime(t *testing.T) {
 	tests := []struct {
 		name      string
-		in        string
+		duration  string
+		base      string
 		want      string
 		wantError bool
 		err       error
 	}{
-		{"SuccessMinutes", "2020/1/4 2:9", "2020/1/4 2:9", false, nil},
-		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", "2020/12/04 23:29", false, nil},
-		{"SuccessDay", "2020/1/4", "2020/1/4 00:00", false, nil},
-		{"SuccessDayZeroPadding", "2020/12/04", "2020/12/04 00:00", false, nil},
-		{"HasErrorInvalidLayout", "invalid layout", "", true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:4\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
+		{"Success", "1h1m", "2020/1/4 02:09", "2020/1/4 03:10", false, nil},
+		{"HasErrorInvalidDuration", "+1D1h1m", "2020/1/4 02:09", "", true, errors.New("time: unknown unit \"D\" in duration \"+1D1h1m\"")},
+		{"HasErrorInvalidBasetime", "1h", "invalid layout", "", true, errors.New("parsing time \"invalid layout\" as \"2006/1/2 15:04\": cannot parse \"invalid layout\" as \"2006\"")},
 	}
 
 	for _, tt := range tests {
@@ -65,7 +63,7 @@ func TestTransformFromRelative(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := timestr.TransformFromRelative(tt.in)
+			got, err := timestr.ModifyTime(tt.duration, tt.base)
 
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)
@@ -90,11 +88,10 @@ func TestParse(t *testing.T) {
 		wantError bool
 		err       error
 	}{
-		{"SuccessMinutes", "2020/1/4 2:9", time.Date(2020, 1, 4, 2, 9, 0, 0, time.Local), false, nil},
 		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", time.Date(2020, 12, 4, 23, 29, 0, 0, time.Local), false, nil},
 		{"SuccessDay", "2020/1/4", time.Date(2020, 1, 4, 0, 0, 0, 0, time.Local), false, nil},
 		{"SuccessDayZeroPadding", "2020/12/04", time.Date(2020, 12, 4, 0, 0, 0, 0, time.Local), false, nil},
-		{"HasErrorInvalidLayout", "invalid layout", time.Time{}, true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:4\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
+		{"HasErrorInvalidLayout", "invalid layout", time.Time{}, true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:04\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
 	}
 
 	for _, tt := range tests {
