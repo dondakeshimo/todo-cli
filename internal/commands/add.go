@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
@@ -20,8 +21,13 @@ func Add(c *cli.Context) error {
 
 	rt := c.String("remind_time")
 
-	if c.Bool("relative") {
-		rt, err = timestr.TransformFromRelative(rt, time.Now())
+	if strings.HasPrefix(rt, "now+") {
+		rt = strings.Replace(rt, "now", "", 1)
+		fmt.Println(rt)
+	}
+
+	if strings.HasPrefix(rt, "+") {
+		rt, err = timestr.ModifyTime(rt, timestr.FormatTime(time.Now()))
 		if err != nil {
 			return err
 		}
