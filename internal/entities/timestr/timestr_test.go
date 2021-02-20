@@ -48,14 +48,13 @@ func TestModifyTime(t *testing.T) {
 	tests := []struct {
 		name      string
 		duration  string
-		base      string
+		base      time.Time
 		want      string
 		wantError bool
 		err       error
 	}{
-		{"Success", "1h1m", "2020/1/4 02:09", "2020/1/4 03:10", false, nil},
-		{"HasErrorInvalidDuration", "+1D1h1m", "2020/1/4 02:09", "", true, errors.New("time: unknown unit \"D\" in duration \"+1D1h1m\"")},
-		{"HasErrorInvalidBasetime", "1h", "invalid layout", "", true, errors.New("parsing time \"invalid layout\" as \"2006/1/2 15:04\": cannot parse \"invalid layout\" as \"2006\"")},
+		{"Success", "1h1m", time.Date(2020, 1, 4, 2, 9, 0, 0, time.Local), "2020/1/4 03:10", false, nil},
+		{"HasErrorInvalidDuration", "+1D1h1m", time.Date(2020, 1, 4, 3, 10, 0, 0, time.Local), "", true, errors.New("time: unknown unit \"D\" in duration \"+1D1h1m\"")},
 	}
 
 	for _, tt := range tests {
