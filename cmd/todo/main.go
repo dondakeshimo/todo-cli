@@ -13,7 +13,6 @@ func main() {
 		Name:     "task",
 		Aliases:  []string{"t"},
 		Usage:    "write task contents",
-		Required: true,
 	}
 	flagRemindTime := &cli.StringFlag{
 		Name:    "remind_time",
