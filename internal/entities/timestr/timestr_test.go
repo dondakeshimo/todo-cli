@@ -16,9 +16,9 @@ func TestUnifyLayout(t *testing.T) {
 		wantError bool
 		err       error
 	}{
-		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", "2020/12/04 23:29", false, nil},
+		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", "2020/12/4 23:29", false, nil},
 		{"SuccessDay", "2020/1/4", "2020/1/4 00:00", false, nil},
-		{"SuccessDayZeroPadding", "2020/12/04", "2020/12/04 00:00", false, nil},
+		{"SuccessDayZeroPadding", "2020/12/04", "2020/12/4 00:00", false, nil},
 		{"HasErrorInvalidLayout", "invalid layout", "", true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:04\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
 	}
 

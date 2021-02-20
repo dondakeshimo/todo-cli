@@ -12,19 +12,15 @@ const (
 
 // UnifyLayout is a function that validates input and returns layoutMin type object.
 func UnifyLayout(str string) (string, error) {
-	if str == "" {
-		return "", nil
-	}
-
-	_, errM := time.ParseInLocation(layoutMin, str, time.Local)
-	_, errD := time.ParseInLocation(layoutDay, str, time.Local)
+	tm, errM := time.ParseInLocation(layoutMin, str, time.Local)
+	td, errD := time.ParseInLocation(layoutDay, str, time.Local)
 
 	if errM != nil && errD != nil {
 		return "", fmt.Errorf("invalid time layout: [minutes layout]: %s, [day layout]: %s", errM.Error(), errD.Error())
 	} else if errM == nil && errD != nil {
-		return str, nil
+		return tm.Format(layoutMin), nil
 	} else if errM != nil && errD == nil {
-		return str + " 00:00", nil
+		return td.Format(layoutMin), nil
 	}
 
 	return "", fmt.Errorf("Parse failed for some reason")
