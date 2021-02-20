@@ -2,11 +2,8 @@ package commands
 
 import (
 	"fmt"
-	"strings"
-	"time"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 	"github.com/google/uuid"
 	"github.com/urfave/cli/v2"
@@ -19,17 +16,7 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
-	rt := c.String("remind_time")
-
-	if strings.HasPrefix(rt, "+") || strings.HasPrefix(rt, "now+") {
-		rt = strings.Replace(rt, "now", "", 1)
-		rt, err = timestr.ModifyTime(rt, time.Now())
-		if err != nil {
-			return err
-		}
-	}
-
-	d, err := timestr.UnifyLayout(rt)
+	rt, err := arrangeRemindTime(c.String("remind_time"), "")
 	if err != nil {
 		return err
 	}
@@ -46,7 +33,7 @@ func Add(c *cli.Context) error {
 
 	t := &task.Task{
 		Task:       c.String("task"),
-		RemindTime: d,
+		RemindTime: rt,
 		UUID:       uu.String(),
 		Reminder:   r,
 	}

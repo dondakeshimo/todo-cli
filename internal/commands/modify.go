@@ -2,11 +2,8 @@ package commands
 
 import (
 	"fmt"
-	"strings"
-	"time"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 	"github.com/urfave/cli/v2"
 )
@@ -24,80 +21,60 @@ func Modify(c *cli.Context) error {
 		return fmt.Errorf("invalid id: %d", id)
 	}
 
-	rt := c.String("remind_time")
-
-	if strings.HasPrefix(rt, "task") {
-		rt = strings.Replace(rt, "task", "", 1)
-		rt, err = timestr.ModifyTime(rt, t.RemindTime)
-		if err != nil {
-			return err
-		}
-	}
-
-	if strings.HasPrefix(rt, "+") || strings.HasPrefix(rt, "now+") {
-		rt = strings.Replace(rt, "now", "", 1)
-		rt, err = timestr.ModifyTime(rt, timestr.FormatTime(time.Now()))
-		if err != nil {
-			return err
-		}
-	}
-
-	d, err := timestr.UnifyLayout(rt)
-	if err != nil {
-		return err
-	}
-
-	r := c.String("reminder")
-	if r != "" && !task.IsValidReminder(r) {
-		return fmt.Errorf("invalid reminder: %s", r)
-	}
-
-	// hold preReminder to remove the previous reminder setting
-	preReminder := t.Reminder
-
-	// overwrite if user set option values
 	if st := c.String("task"); st != "" {
 		t.Task = st
 	}
 
-	if d != "" {
-		t.RemindTime = d
+	rt, err := arrangeRemindTime(c.String("remind_time"), t.RemindTime)
+	if err != nil {
+		return err
+	}
+	t.RemindTime = rt
+
+	if c.Bool("remove-reminder") && t.Reminder != "" {
+		s, err := scheduler.NewScheduler()
+		if err != nil {
+			return err
+		}
+
+		if err := s.RemoveWithID(t.UUID); err != nil {
+			fmt.Println("reminder had been removed for some reason.")
+		}
+
+		t.Reminder = ""
+		s.ClearExpired()
 	}
 
-	if r != "" {
-		t.Reminder = r
+	if !c.Bool("remove-reminder") && c.String("reminder") != "" {
+		rm := c.String("reminder")
+
+		if !task.IsValidReminder(rm) {
+			return fmt.Errorf("invalid reminder: %s", rm)
+		}
+
+		s, err := scheduler.NewScheduler()
+		if err != nil {
+			return err
+		}
+
+		if t.Reminder != "" {
+			if err := s.RemoveWithID(t.UUID); err != nil {
+				fmt.Println("previous reminder had been removed for some reason.")
+			}
+		}
+
+		t.Reminder = rm
+
+		if err := t.SetReminder(s); err != nil {
+			return err
+		}
+
+		s.ClearExpired()
 	}
 
 	if err := h.Write(); err != nil {
 		return err
 	}
-
-	// when do not remind, do early return
-	if preReminder == "" && r == "" {
-		return nil
-	}
-
-	s, err := scheduler.NewScheduler()
-	if err != nil {
-		return err
-	}
-
-	if preReminder != "" {
-		if err := s.RemoveWithID(t.UUID); err != nil {
-			fmt.Println("reminder is removed for some reason.")
-		}
-	}
-
-	// when do not remind, do early return
-	if r == "" {
-		return nil
-	}
-
-	if err := t.SetReminder(s); err != nil {
-		return err
-	}
-
-	s.ClearExpired()
 
 	return nil
 }
