@@ -30,11 +30,6 @@ func UnifyLayout(str string) (string, error) {
 	return "", fmt.Errorf("Parse failed for some reason")
 }
 
-// FormatTime is a function that formats time.
-func FormatTime(t time.Time) string {
-	return t.Format(layoutMin)
-}
-
 // ModifyTime is a function that add duration to base time.
 func ModifyTime(duration string, base time.Time) (string, error) {
 	rt, err := time.ParseDuration(duration)
