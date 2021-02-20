@@ -23,7 +23,7 @@ func Add(c *cli.Context) error {
 
 	if strings.HasPrefix(rt, "+") || strings.HasPrefix(rt, "now+") {
 		rt = strings.Replace(rt, "now", "", 1)
-		rt, err = timestr.ModifyTime(rt, timestr.FormatTime(time.Now()))
+		rt, err = timestr.ModifyTime(rt, time.Now())
 		if err != nil {
 			return err
 		}
