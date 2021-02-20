@@ -42,8 +42,8 @@ func main() {
 		Required: true,
 	}
 	flagRemoveReminder := &cli.BoolFlag{
-		Name:     "remove-reminder",
-		Usage:    "remove reminder. this option overrides reminder option",
+		Name:  "remove-reminder",
+		Usage: "remove reminder. this option overrides reminder option",
 	}
 
 	app := &cli.App{
