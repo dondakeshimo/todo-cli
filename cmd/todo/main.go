@@ -64,7 +64,6 @@ func main() {
 				Usage:   "Add a task",
 				Action:  commands.Add,
 				Flags: []cli.Flag{
-					flagTask,
 					flagRemindTime,
 					flagReminder,
 				},

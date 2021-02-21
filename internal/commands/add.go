@@ -16,6 +16,11 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
+	at := c.Args().First()
+	if at == "" {
+		return fmt.Errorf("`$ todo add` need an argument what represents a task")
+	}
+
 	rt, err := arrangeRemindTime(c.String("remind_time"), "")
 	if err != nil {
 		return err
@@ -32,7 +37,7 @@ func Add(c *cli.Context) error {
 	}
 
 	t := &task.Task{
-		Task:       c.String("task"),
+		Task:       at,
 		RemindTime: rt,
 		UUID:       uu.String(),
 		Reminder:   r,
