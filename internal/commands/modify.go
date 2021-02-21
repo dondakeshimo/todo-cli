@@ -52,11 +52,21 @@ func Modify(c *cli.Context) error {
 		return fmt.Errorf("invalid reminder: %s", r)
 	}
 
+	// hold preReminder to remove the previous reminder setting
 	preReminder := t.Reminder
 
-	t.Task = c.String("task")
-	t.RemindTime = d
-	t.Reminder = r
+	// overwrite if user set option values
+	if st := c.String("task"); st != "" {
+		t.Task = st
+	}
+
+	if d != "" {
+		t.RemindTime = d
+	}
+
+	if r != "" {
+		t.Reminder = r
+	}
 
 	if err := h.Write(); err != nil {
 		return err

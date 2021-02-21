@@ -10,10 +10,9 @@ import (
 
 func main() {
 	flagTask := &cli.StringFlag{
-		Name:     "task",
-		Aliases:  []string{"t"},
-		Usage:    "write task contents",
-		Required: true,
+		Name:    "task",
+		Aliases: []string{"t"},
+		Usage:   "write task contents",
 	}
 	flagRemindTime := &cli.StringFlag{
 		Name:    "remind_time",
