@@ -17,7 +17,7 @@ func NewTimeDuration(str string) (TimeDuration, error) {
 		return TimeDuration(td), nil
 	}
 
-	if isRelativeToTask(str) {
+	if isRelativeToNow(str) {
 		td, err := NewTimeDurationRelativeToNow(str)
 		if err != nil {
 			return TimeDuration(0), err
