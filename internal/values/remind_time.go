@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+/*
+RemindTime is a string than can be parsed time.Time in some layouts.
+Allowed layouts are
+    "2006/1/2 15:04"
+    "2006/1/2"
+*/
 type RemindTime string
 
 const (
@@ -12,6 +18,7 @@ const (
 	layoutDay = "2006/1/2"
 )
 
+// NewRemindTime is a function that construct RemindTime.
 func NewRemindTime(str string) (RemindTime, error) {
 	tt, err := parseStringToTime(str)
 	if err != nil {
@@ -21,6 +28,7 @@ func NewRemindTime(str string) (RemindTime, error) {
 	return RemindTime(tt.Format(layoutMin)), nil
 }
 
+// AddTime is a function that add (or substract) duration to RemindTime.
 func (rt RemindTime) AddTime(duration TimeDuration) (RemindTime, error) {
 	tt, err := parseStringToTime(string(rt))
 	if err != nil {
@@ -30,6 +38,7 @@ func (rt RemindTime) AddTime(duration TimeDuration) (RemindTime, error) {
 	return RemindTime(tt.Add(time.Duration(duration)).Format(layoutMin)), nil
 }
 
+// parseStringToTime parse allowed layouts string to time.Time.
 func parseStringToTime(str string) (time.Time, error) {
 	tM, errM := time.ParseInLocation(layoutMin, str, time.Local)
 	tD, errD := time.ParseInLocation(layoutDay, str, time.Local)
@@ -44,4 +53,3 @@ func parseStringToTime(str string) (time.Time, error) {
 
 	return time.Time{}, fmt.Errorf("Parse failed for some reason")
 }
-
