@@ -19,6 +19,11 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
+	at := c.Args().First()
+	if at == "" {
+		return fmt.Errorf("`$ todo add` need an argument what represents a task")
+	}
+
 	rt := c.String("remind_time")
 
 	if strings.HasPrefix(rt, "+") || strings.HasPrefix(rt, "now+") {
@@ -45,7 +50,7 @@ func Add(c *cli.Context) error {
 	}
 
 	t := &task.Task{
-		Task:       c.String("task"),
+		Task:       at,
 		RemindTime: d,
 		UUID:       uu.String(),
 		Reminder:   r,
