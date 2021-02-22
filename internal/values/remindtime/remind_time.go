@@ -1,4 +1,4 @@
-package values
+package remindtime
 
 import (
 	"fmt"
@@ -29,13 +29,17 @@ func NewRemindTime(str string) (RemindTime, error) {
 }
 
 // AddTime is a function that add (or substract) duration to RemindTime.
-func (rt RemindTime) AddTime(duration TimeDuration) (RemindTime, error) {
+func (rt RemindTime) AddTime(rlt RelativeTime) (RemindTime, error) {
+	if !rlt.IsTaskBase {
+		return RemindTime(time.Now().Add(rlt.RelativeTime).Format(layoutMin)), nil
+	}
+
 	tt, err := parseStringToTime(string(rt))
 	if err != nil {
 		return "", err
 	}
 
-	return RemindTime(tt.Add(time.Duration(duration)).Format(layoutMin)), nil
+	return RemindTime(tt.Add(rlt.RelativeTime).Format(layoutMin)), nil
 }
 
 // parseStringToTime parse allowed layouts string to time.Time.
