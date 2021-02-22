@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetTask(t *testing.T) {
-	tasks := []*task.Task{
+	tasks := []task.Task{
 		{ID: 1, UUID: "uuid1"},
 		{ID: 2, UUID: "uuid2"},
 		{ID: 3, UUID: "uuid3"},
@@ -22,24 +22,32 @@ func TestGetTask(t *testing.T) {
 	}
 
 	tests := []struct {
-		name string
-		id   int
-		want *task.Task
+		name      string
+		id        int
+		want      task.Task
+		wantError bool
+		err       error
 	}{
 		{
-			name: "Success",
-			id:   2,
-			want: tasks[1],
+			name:      "Success",
+			id:        2,
+			want:      tasks[1],
+			wantError: false,
+			err:       nil,
 		},
 		{
-			name: "FailOverRange",
-			id:   4,
-			want: nil,
+			name:      "HasErrorOverRange",
+			id:        4,
+			want:      task.Task{},
+			wantError: true,
+			err:       errors.New("no exist id: 4"),
 		},
 		{
-			name: "FailMinus",
-			id:   -1,
-			want: nil,
+			name:      "FailMinus",
+			id:        -1,
+			want:      task.Task{},
+			wantError: true,
+			err:       errors.New("no exist id: -1"),
 		},
 	}
 
@@ -48,9 +56,17 @@ func TestGetTask(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := handler.GetTask(tt.id)
+			got, err := handler.GetTask(tt.id)
 
-			if got != tt.want {
+			if !tt.wantError && err != nil {
+				t.Fatalf("want no err, but has error %#v", err)
+			}
+
+			if tt.wantError && err.Error() != tt.err.Error() {
+				t.Fatalf("want %#v, but %#v", tt.err.Error(), err.Error())
+			}
+
+			if !tt.wantError && got != tt.want {
 				t.Fatalf("want %#v, but %#v", tt.want, got)
 			}
 		})
@@ -58,7 +74,7 @@ func TestGetTask(t *testing.T) {
 }
 
 func TestGetTasks(t *testing.T) {
-	tasks := []*task.Task{
+	tasks := []task.Task{
 		{ID: 1, UUID: "uuid1"},
 		{ID: 2, UUID: "uuid2"},
 		{ID: 3, UUID: "uuid3"},
@@ -72,7 +88,7 @@ func TestGetTasks(t *testing.T) {
 
 	tests := []struct {
 		name string
-		want []*task.Task
+		want []task.Task
 	}{
 		{
 			name: "Success",
@@ -98,14 +114,14 @@ func TestRemoveTask(t *testing.T) {
 	tests := []struct {
 		name      string
 		id        int
-		want      []*task.Task
+		want      []task.Task
 		wantError bool
 		err       error
 	}{
 		{
 			name: "Success",
 			id:   2,
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid3"},
 			},
@@ -115,7 +131,7 @@ func TestRemoveTask(t *testing.T) {
 		{
 			name: "FailOverRange",
 			id:   4,
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
@@ -126,7 +142,7 @@ func TestRemoveTask(t *testing.T) {
 		{
 			name: "FailMinus",
 			id:   -1,
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
@@ -141,7 +157,7 @@ func TestRemoveTask(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			tasks := []*task.Task{
+			tasks := []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
@@ -182,14 +198,14 @@ func TestRemoveTasks(t *testing.T) {
 	tests := []struct {
 		name      string
 		ids       []int
-		want      []*task.Task
+		want      []task.Task
 		wantError bool
 		err       error
 	}{
 		{
 			name: "Success",
 			ids:  []int{1, 3},
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid2"},
 			},
 			wantError: false,
@@ -198,7 +214,7 @@ func TestRemoveTasks(t *testing.T) {
 		{
 			name: "SuccessDescending",
 			ids:  []int{2, 1},
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid3"},
 			},
 			wantError: false,
@@ -207,7 +223,7 @@ func TestRemoveTasks(t *testing.T) {
 		{
 			name: "HasContinueOverRange",
 			ids:  []int{1, 2, 4},
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
@@ -218,7 +234,7 @@ func TestRemoveTasks(t *testing.T) {
 		{
 			name: "HasContinueMinus",
 			ids:  []int{1, -1},
-			want: []*task.Task{
+			want: []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},
@@ -233,7 +249,7 @@ func TestRemoveTasks(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			tasks := []*task.Task{
+			tasks := []task.Task{
 				{ID: 1, UUID: "uuid1"},
 				{ID: 2, UUID: "uuid2"},
 				{ID: 3, UUID: "uuid3"},

@@ -1,6 +1,7 @@
 package remindtime
 
 import (
+	"errors"
 	"fmt"
 	"time"
 )
@@ -40,6 +41,11 @@ func (rt RemindTime) AddTime(rlt RelativeTime) (RemindTime, error) {
 	}
 
 	return RemindTime(tt.Add(rlt.RelativeTime).Format(layoutMin)), nil
+}
+
+func (rt RemindTime) ToTime() time.Time {
+	t, _ := time.ParseInLocation(layoutMin, string(rt), time.Local)
+	return t
 }
 
 // parseStringToTime parse allowed layouts string to time.Time.

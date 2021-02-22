@@ -19,7 +19,7 @@ const (
 // Handler is a struct that manage tasks.
 type Handler struct {
 	JSONPath string
-	tasks    []*Task
+	tasks    []Task
 }
 
 // NewHandler is a constructor that make Handler.
@@ -35,39 +35,44 @@ func NewHandler() (*Handler, error) {
 		return nil, err
 	}
 
-	if err := json.Unmarshal(bytes, &t.tasks); err != nil {
+	var tjs []*TaskJSON
+	if err := json.Unmarshal(bytes, &tjs); err != nil {
 		return nil, err
+	}
+
+	for _, tj := range tjs {
+		t.tasks = append(t.tasks, tj.ToTask())
 	}
 
 	return t, nil
 }
 
 // GetTask is a getter that get a task with id.
-func (h *Handler) GetTask(id int) *Task {
+func (h *Handler) GetTask(id int) (Task, error) {
 	if id > len(h.tasks) || id < 0 {
-		return nil
+		return Task{}, fmt.Errorf("no exist id: %d", id)
 	}
-	return h.tasks[id-1]
+	return h.tasks[id-1], nil
 }
 
 // GetTasks is a getter that get all tasks.
-func (h *Handler) GetTasks() []*Task {
+func (h *Handler) GetTasks() []Task {
 	return h.tasks
 }
 
 // FindTaskWithUUID is a getter that get a task matched the given uuid.
-func (h *Handler) FindTaskWithUUID(uuid string) *Task {
+func (h *Handler) FindTaskWithUUID(uuid string) Task {
 	for _, t := range h.tasks {
 		if uuid == t.UUID {
 			return t
 		}
 	}
 
-	return nil
+	return Task{}
 }
 
 // AppendTask is a function that append task.
-func (h *Handler) AppendTask(t *Task) {
+func (h *Handler) AppendTask(t Task) {
 	h.tasks = append(h.tasks, t)
 	h.align()
 }
@@ -136,9 +141,15 @@ func writeInitialSample(path string) error {
 	return nil
 }
 
-// Write is a function that write Handler tasks to JSON file.
-func (h *Handler) Write() error {
-	bytes, err := json.Marshal(&h.tasks)
+// Commit is a function that write Handler tasks to JSON file.
+func (h *Handler) Commit() error {
+	var tjs []*TaskJSON
+	for _, t := range h.tasks {
+		tj := t.ToTaskJSON()
+		tjs = append(tjs, &tj)
+	}
+
+	bytes, err := json.Marshal(&tjs)
 	if err != nil {
 		return nil
 	}
@@ -186,9 +197,11 @@ func (h *Handler) RemoveTasks(ids []int) error {
 	return nil
 }
 
-// align is a function that sort tasks.
+// align is a function that redefine ids according to order.
 func (h *Handler) align() {
+	var ts []Task
 	for i, t := range h.tasks {
-		t.ID = i + 1
+		ts = append(ts, t.AlterID(i+1))
 	}
+	h.tasks = ts
 }

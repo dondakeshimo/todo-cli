@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
+	"github.com/dondakeshimo/todo-cli/internal/values/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
@@ -19,9 +19,6 @@ func TestSetReminder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get executable: %#v", err)
 	}
-
-	const invalidTime = "2020/12/05 00:26 invalid"
-	_, parseErr := timestr.Parse(invalidTime)
 
 	tests := []struct {
 		name           string
@@ -35,7 +32,7 @@ func TestSetReminder(t *testing.T) {
 			name: "Success",
 			task: task.Task{
 				UUID:       "uuid",
-				RemindTime: "2020/12/05 00:26",
+				RemindTime: remindtime.RemindTime("2020/12/05 00:26"),
 			},
 			request: scheduler.Request{
 				ID:       "uuid",
@@ -52,26 +49,10 @@ func TestSetReminder(t *testing.T) {
 			err:       nil,
 		},
 		{
-			name: "HasErrorTimeParse",
-			task: task.Task{
-				UUID:       "uuid",
-				RemindTime: invalidTime,
-			},
-			request: scheduler.Request{},
-			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
-				m.
-					EXPECT().
-					Register(gomock.Any()).
-					Times(0)
-			},
-			wantError: true,
-			err:       parseErr,
-		},
-		{
 			name: "HasErrorRegister",
 			task: task.Task{
 				UUID:       "uuid",
-				RemindTime: "2020/12/05 00:26",
+				RemindTime: remindtime.RemindTime("2020/12/05 00:26"),
 			},
 			request: scheduler.Request{
 				ID:       "uuid",
@@ -108,28 +89,4 @@ func TestSetReminder(t *testing.T) {
 		})
 	}
 
-}
-
-func TestIsValidReminder(t *testing.T) {
-	tests := []struct {
-		name string
-		in   string
-		want bool
-	}{
-		{"TrueMacos", "macos", true},
-		{"Fail", "invalid", false},
-	}
-
-	for _, tt := range tests {
-		tt := tt // set local scope for parallel test
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-
-			got := task.IsValidReminder(tt.in)
-
-			if got != tt.want {
-				t.Fatalf("want %v, but %v", tt.want, got)
-			}
-		})
-	}
 }
