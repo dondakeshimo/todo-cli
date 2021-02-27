@@ -16,7 +16,7 @@ func TestIsValidReminder(t *testing.T) {
 		err       error
 	}{
 		{"TrueMacos", "macos", reminder.Reminder("macos"), false, nil},
-		{"HasErrorInvalid", "invalid", "", true, errors.New("ivalid reminder: invalid")},
+		{"HasErrorInvalid", "invalid", "", true, errors.New("invalid reminder: invalid")},
 	}
 
 	for _, tt := range tests {
