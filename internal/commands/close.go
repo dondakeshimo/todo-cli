@@ -2,13 +2,19 @@ package commands
 
 import (
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 	"github.com/urfave/cli/v2"
 )
 
 // Close is a function that close a task or tasks.
 func Close(c *cli.Context) error {
-	h, err := task.NewHandler()
+	jc, err := json.NewClient()
+	if err != nil {
+		return err
+	}
+
+	h, err := task.NewHandler(jc)
 	if err != nil {
 		return err
 	}
@@ -16,8 +22,12 @@ func Close(c *cli.Context) error {
 	ids := c.IntSlice("ids")
 
 	for _, id := range ids {
-		t := h.GetTask(id)
-		if t.Reminder == "" {
+		t, err := h.GetTask(id)
+		if err != nil {
+			return err
+		}
+
+		if t.Reminder() == "" {
 			continue
 		}
 
@@ -28,7 +38,7 @@ func Close(c *cli.Context) error {
 		}
 
 		// NOTE: ignore err message
-		if err := s.RemoveWithID(t.UUID); err != nil {
+		if err := s.RemoveWithID(t.UUID()); err != nil {
 			continue
 		}
 	}
@@ -37,7 +47,7 @@ func Close(c *cli.Context) error {
 		return err
 	}
 
-	if err := h.Write(); err != nil {
+	if err := h.Commit(); err != nil {
 		return err
 	}
 
