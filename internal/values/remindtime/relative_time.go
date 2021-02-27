@@ -14,7 +14,7 @@ type RelativeTime struct {
 
 // NewRelativeTime is a constructor for RelativeTime.
 func NewRelativeTime(str string) (RelativeTime, error) {
-	if isRelativeToTask(str) {
+	if IsRelativeToTask(str) {
 		rt, err := newRelativeTimeRelativeToTask(str)
 		if err != nil {
 			return rt, err
@@ -22,7 +22,7 @@ func NewRelativeTime(str string) (RelativeTime, error) {
 		return rt, nil
 	}
 
-	if isRelativeToNow(str) {
+	if IsRelativeToNow(str) {
 		rt, err := newRelativeTimeRelativeToNow(str)
 		if err != nil {
 			return rt, err
@@ -35,14 +35,14 @@ func NewRelativeTime(str string) (RelativeTime, error) {
 
 // IsValidRelativeTime is a logical function that confirm RelativeTime is constructed from str.
 func IsValidRelativeTime(str string) bool {
-	return isRelativeToTask(str) || isRelativeToNow(str)
+	return IsRelativeToTask(str) || IsRelativeToNow(str)
 }
 
-func isRelativeToTask(str string) bool {
+func IsRelativeToTask(str string) bool {
 	return strings.HasPrefix(str, "task")
 }
 
-func isRelativeToNow(str string) bool {
+func IsRelativeToNow(str string) bool {
 	return strings.HasPrefix(str, "+") || strings.HasPrefix(str, "now")
 }
 
