@@ -6,10 +6,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/google/uuid"
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/values/remindtime"
 	"github.com/dondakeshimo/todo-cli/internal/values/reminder"
+	"github.com/dondakeshimo/todo-cli/internal/values/remindtime"
+	"github.com/google/uuid"
 )
 
 // Task is a struct to write/read JSON.
@@ -22,7 +22,7 @@ type Task struct {
 }
 
 type Client struct {
-	path string
+	path  string
 	tasks []Task
 }
 
@@ -48,7 +48,7 @@ func (c *Client) Read() ([]task.Task, error) {
 	}
 
 	var tjs []*Task
-	if err:= ejson.Unmarshal(bytes, &tjs); err != nil {
+	if err := ejson.Unmarshal(bytes, &tjs); err != nil {
 		return nil, err
 	}
 

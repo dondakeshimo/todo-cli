@@ -12,7 +12,7 @@ type Repository interface {
 
 // Handler is a struct that manage tasks.
 type Handler struct {
-	tasks    []Task
+	tasks      []Task
 	repository Repository
 }
 

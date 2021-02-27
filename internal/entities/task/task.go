@@ -21,11 +21,11 @@ type Task struct {
 
 func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder) Task {
 	return Task{
-		id: i,
-		task: t,
+		id:         i,
+		task:       t,
 		remindTime: rt,
-		uuid: uuid,
-		reminder: rm,
+		uuid:       uuid,
+		reminder:   rm,
 	}
 }
 
