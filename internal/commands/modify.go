@@ -122,12 +122,18 @@ func Modify(c *cli.Context) error {
 	}
 
 	newReminder := t.Reminder()
-	if p.isRemoveReminder && t.Reminder() != "" {
-		s, err := scheduler.NewScheduler()
+
+	// construct scheduler when remove previous reminder or update reminder
+	var s scheduler.Scheduler
+	if (p.isRemoveReminder && t.Reminder() != "") || (!p.isRemoveReminder && p.isReminder) {
+		var err error
+		s, err = scheduler.NewScheduler()
 		if err != nil {
 			return err
 		}
+	}
 
+	if p.isRemoveReminder && t.Reminder() != "" {
 		if err := t.RemoveReminder(s); err != nil {
 			fmt.Println("reminder had been removed for some reason.")
 		}
@@ -135,11 +141,6 @@ func Modify(c *cli.Context) error {
 	}
 
 	if !p.isRemoveReminder && p.isReminder {
-		s, err := scheduler.NewScheduler()
-		if err != nil {
-			return err
-		}
-
 		if t.Reminder() != "" {
 			if err := t.RemoveReminder(s); err != nil {
 				fmt.Println("previous reminder had been removed for some reason.")
@@ -147,17 +148,15 @@ func Modify(c *cli.Context) error {
 		}
 
 		newReminder = p.reminder
-
-		if err := t.SetReminder(s); err != nil {
-			return err
-		}
-	}
-
-	if err := h.Commit(); err != nil {
-		return err
 	}
 
 	nt := task.NewTask(t.ID(), newTask, newRemindTime, t.UUID(), newReminder)
+
+	if !p.isRemoveReminder && p.isReminder {
+		if err := nt.SetReminder(s); err != nil {
+			return err
+		}
+	}
 
 	if err := h.UpdateTask(t.ID(), nt); err != nil {
 		return err
