@@ -42,6 +42,7 @@ func (rt RemindTime) AddTime(rlt RelativeTime) (RemindTime, error) {
 	return RemindTime(tt.Add(rlt.RelativeTime).Format(layoutMin)), nil
 }
 
+// ToTime is a function that convert to time.Time struct.
 func (rt RemindTime) ToTime() time.Time {
 	t, _ := time.ParseInLocation(layoutMin, string(rt), time.Local)
 	return t

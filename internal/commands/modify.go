@@ -163,7 +163,9 @@ func Modify(c *cli.Context) error {
 		return err
 	}
 
-	h.Commit()
+	if err := h.Commit(); err != nil {
+		return err
+	}
 
 	return nil
 }

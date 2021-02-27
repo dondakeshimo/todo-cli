@@ -4,8 +4,10 @@ import (
 	"fmt"
 )
 
+// Reminder is a Value Object.
 type Reminder string
 
+// NewReminder is a constructor for Rminder.
 func NewReminder(str string) (Reminder, error) {
 	if !isValidReminder(str) {
 		return "", fmt.Errorf("invalid reminder: %s", str)

@@ -5,6 +5,7 @@ import (
 	"sort"
 )
 
+// Repository is a interface to save tasks.
 type Repository interface {
 	Read() ([]Task, error)
 	Write([]Task) error

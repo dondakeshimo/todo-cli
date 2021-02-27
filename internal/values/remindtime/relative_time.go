@@ -38,10 +38,12 @@ func IsValidRelativeTime(str string) bool {
 	return IsRelativeToTask(str) || IsRelativeToNow(str)
 }
 
+// IsRelativeToTask is a logical function that confirm valid relativetime to task.
 func IsRelativeToTask(str string) bool {
 	return strings.HasPrefix(str, "task")
 }
 
+// IsRelativeToNow is a logical function that confirm valid relativetime to now.
 func IsRelativeToNow(str string) bool {
 	return strings.HasPrefix(str, "+") || strings.HasPrefix(str, "now")
 }

@@ -21,9 +21,9 @@ type Task struct {
 	Reminder   string `json:"reminder"`
 }
 
+// Client is a struct to manage JSON I/O.
 type Client struct {
-	path  string
-	tasks []Task
+	path string
 }
 
 const (
@@ -31,6 +31,7 @@ const (
 	defaultDataHome = ".local/share/"
 )
 
+// NewClient is a constructor for Client.
 func NewClient() (*Client, error) {
 	c := new(Client)
 
@@ -41,6 +42,7 @@ func NewClient() (*Client, error) {
 	return c, nil
 }
 
+// Read is a function that read tasks from JSON file.
 func (c *Client) Read() ([]task.Task, error) {
 	bytes, err := ioutil.ReadFile(c.path)
 	if err != nil {
@@ -61,7 +63,7 @@ func (c *Client) Read() ([]task.Task, error) {
 	return ts, nil
 }
 
-// Write is a function that write Handler tasks to JSON file.
+// Write is a function that write tasks to JSON file.
 func (c *Client) Write(ts []task.Task) error {
 	var tjs []*Task
 	for _, t := range ts {

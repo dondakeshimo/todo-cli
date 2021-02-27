@@ -19,6 +19,7 @@ type Task struct {
 	reminder   reminder.Reminder
 }
 
+// NewTask is a constructor for Task.
 func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder) Task {
 	return Task{
 		id:         i,
@@ -29,22 +30,27 @@ func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder
 	}
 }
 
+// ID is a getter for id.
 func (t Task) ID() int {
 	return t.id
 }
 
+// Task is a getter for task.
 func (t Task) Task() string {
 	return t.task
 }
 
+// RemindTime is a getter for remindTime.
 func (t Task) RemindTime() remindtime.RemindTime {
 	return t.remindTime
 }
 
+// UUID is a getter for uuid.
 func (t Task) UUID() string {
 	return t.uuid
 }
 
+// Reminder is a getter for reminder.
 func (t Task) Reminder() reminder.Reminder {
 	return t.reminder
 }
