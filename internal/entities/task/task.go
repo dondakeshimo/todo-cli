@@ -12,49 +12,50 @@ import (
 // Task is a struct that describe task.
 // This struct is a value object.
 type Task struct {
-	ID         int
-	Task       string
-	RemindTime remindtime.RemindTime
-	UUID       string
-	Reminder   reminder.Reminder
+	id         int
+	task       string
+	remindTime remindtime.RemindTime
+	uuid       string
+	reminder   reminder.Reminder
 }
 
-// TaskJSON is a struct to write/read JSON.
-type TaskJSON struct {
-	ID         int    `json:"id"`
-	Task       string `json:"task"`
-	RemindTime string `json:"remindtime"`
-	UUID       string `json:"uuid"`
-	Reminder   string `json:"reminder"`
-}
-
-func (t Task) ToTaskJSON() TaskJSON {
-	return TaskJSON{
-		ID:         t.ID,
-		Task:       t.Task,
-		RemindTime: string(t.RemindTime),
-		UUID:       t.UUID,
-		Reminder:   string(t.Reminder),
+func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder) Task {
+	return Task{
+		id: i,
+		task: t,
+		remindTime: rt,
+		uuid: uuid,
+		reminder: rm,
 	}
 }
 
-func (t Task) AlterID(id int) Task {
-	return Task{
-		ID:         id,
-		Task:       t.Task,
-		RemindTime: t.RemindTime,
-		UUID:       t.UUID,
-		Reminder:   t.Reminder,
-	}
+func (t Task) ID() int {
+	return t.id
 }
 
-func (tj TaskJSON) ToTask() Task {
+func (t Task) Task() string {
+	return t.task
+}
+
+func (t Task) RemindTime() remindtime.RemindTime {
+	return t.remindTime
+}
+
+func (t Task) UUID() string {
+	return t.uuid
+}
+
+func (t Task) Reminder() reminder.Reminder {
+	return t.reminder
+}
+
+func (t Task) alterID(id int) Task {
 	return Task{
-		ID:         tj.ID,
-		Task:       tj.Task,
-		RemindTime: remindtime.RemindTime(tj.RemindTime),
-		UUID:       tj.UUID,
-		Reminder:   reminder.Reminder(tj.Reminder),
+		id:         id,
+		task:       t.task,
+		remindTime: t.remindTime,
+		uuid:       t.uuid,
+		reminder:   t.reminder,
 	}
 }
 
@@ -66,14 +67,25 @@ func (t Task) SetReminder(s scheduler.Scheduler) error {
 	}
 
 	sr := scheduler.Request{
-		ID:       t.UUID,
-		DateTime: t.RemindTime.ToTime(),
-		Command:  fmt.Sprintf("%s notify --uuid %s", exe, t.UUID),
+		ID:       t.uuid,
+		DateTime: t.remindTime.ToTime(),
+		Command:  fmt.Sprintf("%s notify --uuid %s", exe, t.uuid),
 	}
 
 	if err := s.Register(sr); err != nil {
 		return err
 	}
 
-	return err
+	s.ClearExpired()
+	return nil
+}
+
+// RemoveReminder is a function that remove a reminder of the task.
+func (t Task) RemoveReminder(s scheduler.Scheduler) error {
+	if err := s.RemoveWithID(t.uuid); err != nil {
+		return err
+	}
+
+	s.ClearExpired()
+	return nil
 }

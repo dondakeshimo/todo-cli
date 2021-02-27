@@ -1,7 +1,6 @@
 package remindtime
 
 import (
-	"errors"
 	"fmt"
 	"time"
 )

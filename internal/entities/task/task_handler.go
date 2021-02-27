@@ -1,48 +1,33 @@
 package task
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"path/filepath"
 	"sort"
-
-	"github.com/google/uuid"
 )
 
-const (
-	jsonFile        = "todo/todo.json"
-	defaultDataHome = ".local/share/"
-)
+type Repository interface {
+	Read() ([]Task, error)
+	Write([]Task) error
+}
 
 // Handler is a struct that manage tasks.
 type Handler struct {
-	JSONPath string
 	tasks    []Task
+	repository Repository
 }
 
 // NewHandler is a constructor that make Handler.
-func NewHandler() (*Handler, error) {
+func NewHandler(rep Repository) (*Handler, error) {
 	t := new(Handler)
 
-	if err := t.exploreJSONPath(); err != nil {
-		return nil, err
-	}
+	t.repository = rep
 
-	bytes, err := ioutil.ReadFile(t.JSONPath)
+	ts, err := t.repository.Read()
 	if err != nil {
 		return nil, err
 	}
 
-	var tjs []*TaskJSON
-	if err := json.Unmarshal(bytes, &tjs); err != nil {
-		return nil, err
-	}
-
-	for _, tj := range tjs {
-		t.tasks = append(t.tasks, tj.ToTask())
-	}
+	t.tasks = ts
 
 	return t, nil
 }
@@ -60,105 +45,31 @@ func (h *Handler) GetTasks() []Task {
 	return h.tasks
 }
 
+// UpdateTask is a function that overwrite task with id.
+func (h *Handler) UpdateTask(id int, t Task) error {
+	if id > len(h.tasks) || id < 0 {
+		return fmt.Errorf("no exist id: %d", id)
+	}
+
+	h.tasks[id-1] = t
+	return nil
+}
+
 // FindTaskWithUUID is a getter that get a task matched the given uuid.
-func (h *Handler) FindTaskWithUUID(uuid string) Task {
+func (h *Handler) FindTaskWithUUID(uuid string) (Task, error) {
 	for _, t := range h.tasks {
-		if uuid == t.UUID {
-			return t
+		if uuid == t.uuid {
+			return t, nil
 		}
 	}
 
-	return Task{}
+	return Task{}, fmt.Errorf("no exist uuid: %s", uuid)
 }
 
 // AppendTask is a function that append task.
 func (h *Handler) AppendTask(t Task) {
 	h.tasks = append(h.tasks, t)
 	h.align()
-}
-
-// exploreJSONPath is a function that set JSONPath.
-func (h *Handler) exploreJSONPath() error {
-	dataHome := os.Getenv("XDG_DATA_HOME")
-	var jsonPath string
-	var homeDir, _ = os.UserHomeDir()
-	if dataHome != "" {
-		jsonPath = filepath.Join(dataHome, jsonFile)
-	} else {
-		jsonPath = filepath.Join(homeDir, defaultDataHome, jsonFile)
-	}
-
-	if err := createJSONFile(jsonPath); err != nil {
-		return err
-	}
-
-	h.JSONPath = jsonPath
-	return nil
-}
-
-// createJSONFile is a function that make new JSON file.
-func createJSONFile(path string) error {
-	if _, err := os.Stat(filepath.Dir(path)); err != nil {
-		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
-			return err
-		}
-	}
-
-	if _, err := os.Stat(path); err != nil {
-		if err := writeInitialSample(path); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-// writeInitialSample is a function that make initial data to write JSON file.
-func writeInitialSample(path string) error {
-	uu, err := uuid.NewRandom()
-	if err != nil {
-		return err
-	}
-
-	tasks := &[]*Task{
-		{
-			ID:         1,
-			Task:       "deleting or modifying this task is your first TODO",
-			RemindTime: "2099/01/01 00:00",
-			UUID:       uu.String(),
-		},
-	}
-
-	bytes, err := json.Marshal(tasks)
-	if err != nil {
-		return err
-	}
-
-	if err := ioutil.WriteFile(path, bytes, 0644); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// Commit is a function that write Handler tasks to JSON file.
-func (h *Handler) Commit() error {
-	var tjs []*TaskJSON
-	for _, t := range h.tasks {
-		tj := t.ToTaskJSON()
-		tjs = append(tjs, &tj)
-	}
-
-	bytes, err := json.Marshal(&tjs)
-	if err != nil {
-		return nil
-	}
-
-	if err := ioutil.WriteFile(h.JSONPath, bytes, 0644); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // RemoveTask is a function that remove a task matched the given uuid.
@@ -197,11 +108,21 @@ func (h *Handler) RemoveTasks(ids []int) error {
 	return nil
 }
 
+// Commit is a function that invoke repository.Write.
+func (h *Handler) Commit() error {
+	h.align()
+	if err := h.repository.Write(h.tasks); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // align is a function that redefine ids according to order.
 func (h *Handler) align() {
 	var ts []Task
 	for i, t := range h.tasks {
-		ts = append(ts, t.AlterID(i+1))
+		ts = append(ts, t.alterID(i+1))
 	}
 	h.tasks = ts
 }

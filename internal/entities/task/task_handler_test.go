@@ -8,12 +8,13 @@ import (
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 )
 
+// TODO: UpdateTask, FindTaskWithUUID, AppendTask
+
 func TestGetTask(t *testing.T) {
-	tasks := []task.Task{
-		{ID: 1, UUID: "uuid1"},
-		{ID: 2, UUID: "uuid2"},
-		{ID: 3, UUID: "uuid3"},
-	}
+	tasks := []task.Task{}
+	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", ""))
+	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
+	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
 
 	handler := task.Handler{}
 
@@ -74,11 +75,10 @@ func TestGetTask(t *testing.T) {
 }
 
 func TestGetTasks(t *testing.T) {
-	tasks := []task.Task{
-		{ID: 1, UUID: "uuid1"},
-		{ID: 2, UUID: "uuid2"},
-		{ID: 3, UUID: "uuid3"},
-	}
+	tasks := []task.Task{}
+	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", ""))
+	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
+	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
 
 	handler := task.Handler{}
 
@@ -111,6 +111,15 @@ func TestGetTasks(t *testing.T) {
 }
 
 func TestRemoveTask(t *testing.T) {
+	tasks := []task.Task{}
+	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", ""))
+	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
+	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
+
+	tasksSuccess := []task.Task{}
+	tasksSuccess = append(tasksSuccess, task.NewTask(1, "", "", "uuid1", ""))
+	tasksSuccess = append(tasksSuccess, task.NewTask(2, "", "", "uuid3", ""))
+
 	tests := []struct {
 		name      string
 		id        int
@@ -121,32 +130,21 @@ func TestRemoveTask(t *testing.T) {
 		{
 			name: "Success",
 			id:   2,
-			want: []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid3"},
-			},
+			want: tasksSuccess,
 			wantError: false,
 			err:       nil,
 		},
 		{
 			name: "FailOverRange",
 			id:   4,
-			want: []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid2"},
-				{ID: 3, UUID: "uuid3"},
-			},
+			want: tasks,
 			wantError: true,
 			err:       errors.New("invalid id [4]"),
 		},
 		{
 			name: "FailMinus",
 			id:   -1,
-			want: []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid2"},
-				{ID: 3, UUID: "uuid3"},
-			},
+			want: tasks,
 			wantError: true,
 			err:       errors.New("invalid id [-1]"),
 		},
@@ -157,11 +155,10 @@ func TestRemoveTask(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			tasks := []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid2"},
-				{ID: 3, UUID: "uuid3"},
-			}
+			tasks := []task.Task{}
+			tasks = append(tasks, task.NewTask(1, "", "", "uuid1", ""))
+			tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
+			tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
 
 			handler := task.Handler{}
 			for _, ts := range tasks {
@@ -185,7 +182,7 @@ func TestRemoveTask(t *testing.T) {
 
 			if !tt.wantError {
 				for i := 0; i < len(tt.want); i++ {
-					if ts[i].ID != tt.want[i].ID || ts[i].UUID != tt.want[i].UUID {
+					if ts[i].ID() != tt.want[i].ID() || ts[i].UUID() != tt.want[i].UUID() {
 						t.Fatalf("want %#v, but %#v", tt.want, ts)
 					}
 				}
@@ -195,6 +192,17 @@ func TestRemoveTask(t *testing.T) {
 }
 
 func TestRemoveTasks(t *testing.T) {
+	tasks := []task.Task{}
+	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", ""))
+	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
+	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
+
+	tasksSuccess1 := []task.Task{}
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "", "uuid2", ""))
+
+	tasksSuccess2 := []task.Task{}
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(1, "", "", "uuid3", ""))
+
 	tests := []struct {
 		name      string
 		ids       []int
@@ -205,40 +213,28 @@ func TestRemoveTasks(t *testing.T) {
 		{
 			name: "Success",
 			ids:  []int{1, 3},
-			want: []task.Task{
-				{ID: 1, UUID: "uuid2"},
-			},
+			want: tasksSuccess1,
 			wantError: false,
 			err:       nil,
 		},
 		{
 			name: "SuccessDescending",
 			ids:  []int{2, 1},
-			want: []task.Task{
-				{ID: 1, UUID: "uuid3"},
-			},
+			want: tasksSuccess2,
 			wantError: false,
 			err:       nil,
 		},
 		{
 			name: "HasContinueOverRange",
 			ids:  []int{1, 2, 4},
-			want: []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid2"},
-				{ID: 3, UUID: "uuid3"},
-			},
+			want: tasks,
 			wantError: true,
 			err:       errors.New("no task with id [1 2 4]"),
 		},
 		{
 			name: "HasContinueMinus",
 			ids:  []int{1, -1},
-			want: []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid2"},
-				{ID: 3, UUID: "uuid3"},
-			},
+			want: tasks,
 			wantError: true,
 			err:       errors.New("not natural value is invalid [-1 1]"),
 		},
@@ -249,11 +245,10 @@ func TestRemoveTasks(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			tasks := []task.Task{
-				{ID: 1, UUID: "uuid1"},
-				{ID: 2, UUID: "uuid2"},
-				{ID: 3, UUID: "uuid3"},
-			}
+			tasks := []task.Task{}
+			tasks = append(tasks, task.NewTask(1, "", "", "uuid1", ""))
+			tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
+			tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
 
 			handler := task.Handler{}
 			for _, ts := range tasks {
@@ -277,7 +272,7 @@ func TestRemoveTasks(t *testing.T) {
 
 			if !tt.wantError {
 				for i := 0; i < len(tt.want); i++ {
-					if ts[i].ID != tt.want[i].ID || ts[i].UUID != tt.want[i].UUID {
+					if ts[i].ID() != tt.want[i].ID() || ts[i].UUID() != tt.want[i].UUID() {
 						t.Fatalf("want %#v, but %#v", tt.want, ts)
 					}
 				}
