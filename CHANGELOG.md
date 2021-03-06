@@ -1,2 +1,5 @@
+## Version 0.0.2
+* fix release flow
+
 ## Version 0.0.1
 * initial application version
