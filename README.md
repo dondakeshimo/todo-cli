@@ -12,7 +12,7 @@ Manage TODO List At CLI
 
 :warning: only support MacOS now...
 
-![result](https://user-images.githubusercontent.com/23194960/110209546-884d5980-7ed0-11eb-92f2-6c40cfef2d5e.gif)
+![result](https://user-images.githubusercontent.com/23194960/110210135-a49ec580-7ed3-11eb-8edb-7c7509847d8d.gif)
 
 ## Installation
 Use the `go get` or `make install` after cloning from GitHub
