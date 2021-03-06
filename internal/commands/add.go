@@ -3,9 +3,9 @@ package commands
 import (
 	"fmt"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
 	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
+	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 	"github.com/google/uuid"
