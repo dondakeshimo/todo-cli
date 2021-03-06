@@ -1,9 +1,9 @@
-// +build scenario,macos
+// +build scenario
 
 package scenario_test
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"testing"
@@ -12,7 +12,7 @@ import (
 func TestMain(m *testing.M) {
 	cleanup, err := setup()
 	if err != nil {
-		fmt.Printf("could not set xdg for test: %s", err.Error())
+		log.Fatalf("could not set xdg for test: %s", err.Error())
 	}
 	defer cleanup()
 
@@ -21,19 +21,35 @@ func TestMain(m *testing.M) {
 }
 
 func setup() (func(), error) {
+	const binaryName = "todo"
+	const binaryDir = "../../"
 	const varName = "XDG_DATA_HOME"
 	const jsonFilename = "todo.json"
 	const jsonDir = "todo"
-
-	xdg := os.Getenv(varName)
 
 	dir, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 
+	p := filepath.Join(dir, binaryDir, binaryName)
+	_, err = os.Stat(p)
+	if err != nil {
+		log.Fatalf("could not find target binary [%s]: %s", p, err.Error())
+	}
+
+	xdg := os.Getenv(varName)
+
 	if err := os.Setenv(varName, dir); err != nil {
 		return nil, err
+	}
+
+	p = filepath.Join(dir, jsonDir, jsonFilename)
+	_, err = os.Stat(p)
+	if err == nil || os.IsExist(err) {
+		if err := os.Remove(p); err != nil {
+			log.Fatalf("could not remove [%s]: %s", p, err.Error())
+		}
 	}
 
 	return func() {
@@ -41,12 +57,12 @@ func setup() (func(), error) {
 		_, err = os.Stat(p)
 		if err == nil || os.IsExist(err) {
 			if err := os.Remove(p); err != nil {
-				fmt.Printf("could not remove [%s]: %s", p, err.Error())
+				log.Printf("could not remove [%s]: %s", p, err.Error())
 			}
 		}
 
 		if err := os.Setenv(varName, xdg); err != nil {
-			fmt.Printf("could not set original xdg, please check your xdg home.: %s", err.Error())
+			log.Printf("could not set original xdg, please check your xdg home.: %s", err.Error())
 		}
 	}, nil
 }
