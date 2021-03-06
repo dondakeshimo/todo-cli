@@ -9,7 +9,7 @@ GOIMPORTS=goimports
 GOLINT=golangci-lint
 BINARY_NAME=todo
 CMD_PKG=./cmd/todo
-SMOKE_DIR=./test/smoke
+SCENARIO_DIR=./test/scenario
 
 all: help
 
@@ -37,9 +37,9 @@ mockgen: ## generate mock
 test: ## go test
 	$(GOTEST) -v ./...
 
-.PHONY: smoke
-smoke: ## run smoke test
-	$(GOTEST) -v $(SMOKE_DIR) -tags smoke
+.PHONY: scenario-test
+scenario-test: ## run scenario test
+	$(GOTEST) -v $(SCENARIO_DIR) -tags scenario
 
 .PHONY: clean
 clean: ## remove go binary
