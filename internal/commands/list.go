@@ -4,13 +4,19 @@ import (
 	"strconv"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
 	"github.com/dondakeshimo/todo-cli/pkg/writer"
 	"github.com/urfave/cli/v2"
 )
 
 // List is a function that show task list.
 func List(c *cli.Context) error {
-	h, err := task.NewHandler()
+	jc, err := json.NewClient()
+	if err != nil {
+		return err
+	}
+
+	h, err := task.NewHandler(jc)
 	if err != nil {
 		return err
 	}
@@ -23,7 +29,7 @@ func List(c *cli.Context) error {
 	}
 
 	for _, t := range h.GetTasks() {
-		if err := w.Write([]string{strconv.Itoa(t.ID), t.Task, t.RemindTime, t.Reminder}); err != nil {
+		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder())}); err != nil {
 			return err
 		}
 	}
