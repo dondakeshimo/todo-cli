@@ -76,7 +76,7 @@ func (h *Handler) AppendTask(t Task) {
 // RemoveTask is a function that remove a task matched the given uuid.
 // Do not use this func in loop. Use RemoveTasks instead.
 func (h *Handler) RemoveTask(id int) error {
-	if id > len(h.tasks) || id <= 1 {
+	if id > len(h.tasks) || id < 1 {
 		return fmt.Errorf("invalid id [%d]", id)
 	}
 
