@@ -20,9 +20,8 @@ jobs:
       run: |
         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
         PRETAG=$(git tag | tail -1)
-        CHANGELOG=$(git diff $PRETAG..${{ github.sha }} CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
+        git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g' > tmp-changelog.txt
         echo ::set-output name=version::$VERSION
-        echo ::set-output name=changelog::$CHANGELOG
 
     - name: Tag
       id: tag_version
@@ -38,6 +37,6 @@ jobs:
           CHANGELOG.md
           LICENSE
         tag_name: ${{ steps.tag_version.outputs.new_tag }}
-        body: ${{ steps.version.outputs.changelog }}
+        body_path: tmp-changelog.txt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
