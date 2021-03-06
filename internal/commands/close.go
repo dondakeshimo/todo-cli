@@ -38,7 +38,7 @@ func Close(c *cli.Context) error {
 		}
 
 		// NOTE: ignore err message
-		if err := s.RemoveWithID(t.UUID()); err != nil {
+		if err := t.RemoveReminder(s); err != nil {
 			continue
 		}
 	}
