@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/values/remindtime"
+	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 

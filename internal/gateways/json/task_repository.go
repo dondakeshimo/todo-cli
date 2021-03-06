@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/values/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/values/remindtime"
+	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
+	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
 	"github.com/google/uuid"
 )
 
