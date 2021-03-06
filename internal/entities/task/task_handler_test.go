@@ -116,9 +116,13 @@ func TestRemoveTask(t *testing.T) {
 	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", ""))
 	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", ""))
 
-	tasksSuccess := []task.Task{}
-	tasksSuccess = append(tasksSuccess, task.NewTask(1, "", "", "uuid1", ""))
-	tasksSuccess = append(tasksSuccess, task.NewTask(2, "", "", "uuid3", ""))
+	tasksSuccess1 := []task.Task{}
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "", "uuid2", ""))
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(2, "", "", "uuid3", ""))
+
+	tasksSuccess2 := []task.Task{}
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(1, "", "", "uuid1", ""))
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(2, "", "", "uuid3", ""))
 
 	tests := []struct {
 		name      string
@@ -128,9 +132,16 @@ func TestRemoveTask(t *testing.T) {
 		err       error
 	}{
 		{
-			name:      "Success",
+			name:      "Success1",
+			id:        1,
+			want:      tasksSuccess1,
+			wantError: false,
+			err:       nil,
+		},
+		{
+			name:      "Success2",
 			id:        2,
-			want:      tasksSuccess,
+			want:      tasksSuccess2,
 			wantError: false,
 			err:       nil,
 		},
