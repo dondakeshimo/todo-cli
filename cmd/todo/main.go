@@ -10,10 +10,9 @@ import (
 
 func main() {
 	flagTask := &cli.StringFlag{
-		Name:     "task",
-		Aliases:  []string{"t"},
-		Usage:    "write task contents",
-		Required: true,
+		Name:    "task",
+		Aliases: []string{"t"},
+		Usage:   "write task contents",
 	}
 	flagRemindTime := &cli.StringFlag{
 		Name:    "remind_time",
@@ -42,11 +41,16 @@ func main() {
 		Usage:    "task's UUID",
 		Required: true,
 	}
+	flagRemoveReminder := &cli.BoolFlag{
+		Name:  "remove-reminder",
+		Usage: "remove reminder. this option overrides reminder option",
+	}
 
 	app := &cli.App{
-		Name:    "todo",
-		Usage:   "Manage Your TODO",
-		Version: "0.0.1",
+		Name:                 "todo",
+		Usage:                "Manage Your TODO",
+		Version:              "0.0.1",
+		EnableBashCompletion: true,
 		Commands: []*cli.Command{
 			{
 				Name:    "list",
@@ -60,7 +64,6 @@ func main() {
 				Usage:   "Add a task",
 				Action:  commands.Add,
 				Flags: []cli.Flag{
-					flagTask,
 					flagRemindTime,
 					flagReminder,
 				},
@@ -84,6 +87,7 @@ func main() {
 					flagTask,
 					flagRemindTime,
 					flagReminder,
+					flagRemoveReminder,
 				},
 			},
 			{

@@ -9,8 +9,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 
+	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/entities/timestr"
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
@@ -19,9 +19,6 @@ func TestSetReminder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get executable: %#v", err)
 	}
-
-	const invalidTime = "2020/12/05 00:26 invalid"
-	_, parseErr := timestr.Parse(invalidTime)
 
 	tests := []struct {
 		name           string
@@ -33,10 +30,7 @@ func TestSetReminder(t *testing.T) {
 	}{
 		{
 			name: "Success",
-			task: task.Task{
-				UUID:       "uuid",
-				RemindTime: "2020/12/05 00:26",
-			},
+			task: task.NewTask(0, "", remindtime.RemindTime("2020/12/05 00:26"), "uuid", ""),
 			request: scheduler.Request{
 				ID:       "uuid",
 				DateTime: time.Date(2020, 12, 5, 00, 26, 00, 00, time.Local),
@@ -47,32 +41,17 @@ func TestSetReminder(t *testing.T) {
 					EXPECT().
 					Register(r).
 					Return(nil)
+				m.
+					EXPECT().
+					ClearExpired().
+					Times(1)
 			},
 			wantError: false,
 			err:       nil,
 		},
 		{
-			name: "HasErrorTimeParse",
-			task: task.Task{
-				UUID:       "uuid",
-				RemindTime: invalidTime,
-			},
-			request: scheduler.Request{},
-			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
-				m.
-					EXPECT().
-					Register(gomock.Any()).
-					Times(0)
-			},
-			wantError: true,
-			err:       parseErr,
-		},
-		{
 			name: "HasErrorRegister",
-			task: task.Task{
-				UUID:       "uuid",
-				RemindTime: "2020/12/05 00:26",
-			},
+			task: task.NewTask(0, "", remindtime.RemindTime("2020/12/05 00:26"), "uuid", ""),
 			request: scheduler.Request{
 				ID:       "uuid",
 				DateTime: time.Date(2020, 12, 5, 00, 26, 00, 00, time.Local),
@@ -110,14 +89,43 @@ func TestSetReminder(t *testing.T) {
 
 }
 
-func TestIsValidReminder(t *testing.T) {
+func TestRemoveReminder(t *testing.T) {
 	tests := []struct {
-		name string
-		in   string
-		want bool
+		name           string
+		task           task.Task
+		request        scheduler.Request
+		buildScheduler func(m *scheduler.MockScheduler, r scheduler.Request)
+		wantError      bool
+		err            error
 	}{
-		{"TrueMacos", "macos", true},
-		{"Fail", "invalid", false},
+		{
+			name: "Success",
+			task: task.NewTask(0, "", "", "uuid", ""),
+			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
+				m.
+					EXPECT().
+					RemoveWithID("uuid").
+					Return(nil)
+				m.
+					EXPECT().
+					ClearExpired().
+					Times(1)
+			},
+			wantError: false,
+			err:       nil,
+		},
+		{
+			name: "HasErrorRegister",
+			task: task.NewTask(0, "", "", "uuid", ""),
+			buildScheduler: func(m *scheduler.MockScheduler, r scheduler.Request) {
+				m.
+					EXPECT().
+					RemoveWithID("uuid").
+					Return(errors.New("error test"))
+			},
+			wantError: true,
+			err:       errors.New("error test"),
+		},
 	}
 
 	for _, tt := range tests {
@@ -125,11 +133,18 @@ func TestIsValidReminder(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := task.IsValidReminder(tt.in)
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
 
-			if got != tt.want {
-				t.Fatalf("want %v, but %v", tt.want, got)
+			s := scheduler.NewMockScheduler(ctrl)
+			tt.buildScheduler(s, tt.request)
+
+			err := tt.task.RemoveReminder(s)
+
+			if tt.wantError && err.Error() != tt.err.Error() {
+				t.Fatalf("want %#v, but %#v", tt.err.Error(), err.Error())
 			}
 		})
 	}
+
 }
