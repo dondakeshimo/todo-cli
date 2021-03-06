@@ -20,7 +20,7 @@ jobs:
       run: |
         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
         PRETAG=$(git tag | tail -1)
-        CHANGELOG=$(git diff $PRETAG CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
+        CHANGELOG=$(git diff $PRETAG..${{ github.sha }} CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
         echo ::set-output name=version::$VERSION
         echo ::set-output name=changelog::$CHANGELOG
 
