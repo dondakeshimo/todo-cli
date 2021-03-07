@@ -25,20 +25,20 @@ jobs:
         echo ::set-output name=version::$VERSION
         echo ::set-output name=changelog::$CHANGELOG
 
-     - name: Tag
-       id: tag_version
-       uses: mathieudutour/github-tag-action@v5.2
-       with:
-         custom_tag: ${{ steps.version.outputs.version }}
-         github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.2
+      with:
+        custom_tag: ${{ steps.version.outputs.version }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
  
-     - name: Release
-       uses: softprops/action-gh-release@v1
-       with:
-         files: |
-           CHANGELOG.md
-           LICENSE
-         tag_name: ${{ steps.tag_version.outputs.new_tag }}
-         body: ${{ steps.version.outputs.changelog }}
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          CHANGELOG.md
+          LICENSE
+        tag_name: ${{ steps.tag_version.outputs.new_tag }}
+        body: ${{ steps.version.outputs.changelog }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
