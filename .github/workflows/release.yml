@@ -20,6 +20,7 @@ jobs:
       id: version
       run: |
         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
+        echo "$VERSION"
         PRETAG=$(git tag | tail -1)
         echo "$PRETAG"
         CHANGELOG=$(git diff $PRETAG..${{ github.sha }} CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
