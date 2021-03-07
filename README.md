@@ -10,7 +10,7 @@ Manage TODO List At CLI
 
 ![result](https://user-images.githubusercontent.com/23194960/110241420-fc9d0100-7f93-11eb-82df-2e3903d38166.gif)
 
-## Installation
+## Install
 #### go get
 This is a simple way, but require [golang](https://golang.org/) .
 
@@ -87,6 +87,17 @@ will allow the auto-completion to persist across new shells.
 PROG=todo
 _CLI_ZSH_AUTOCOMPLETE_HACK=1
 source path/to/todo-cli/scripts/zsh_autocomplete
+```
+
+## Uninstall
+```bash
+$ make uninstall
+```
+
+If you installed todo-cli from downloading binary, please remove the binary by your hand.
+
+```bash
+$ rm path/to/your/todo/binary
 ```
 
 ## Contributing
