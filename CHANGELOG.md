@@ -1,3 +1,6 @@
+## Version 0.0.6
+* fix release flow
+
 ## Version 0.0.5
 * test this release flow
 
