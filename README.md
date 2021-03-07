@@ -1,34 +1,38 @@
-[![Go][go-test-image]][go-test-url]
-[![golangci-lint][golangci-lint-image]][golangci-lint-url]
-
-[go-test-image]: https://github.com/dondakeshimo/todo-cli/workflows/Go/badge.svg
-[go-test-url]: https://github.com/dondakeshimo/todo-cli/actions?query=workflow%3AGo
-[golangci-lint-image]: https://github.com/dondakeshimo/todo-cli/workflows/golangci-lint/badge.svg
-[golangci-lint-url]: https://github.com/dondakeshimo/todo-cli/actions?query=workflow%3Agolangci-lint
-
-
 # todo-cli
 Manage TODO List At CLI
 
+[![Go][go-test-image]][go-test-url]
+
+[go-test-image]: https://github.com/dondakeshimo/todo-cli/workflows/Go/badge.svg
+[go-test-url]: https://github.com/dondakeshimo/todo-cli/actions?query=workflow%3AGo
+
 :warning: only support MacOS now...
 
-![result](https://user-images.githubusercontent.com/23194960/110210135-a49ec580-7ed3-11eb-8edb-7c7509847d8d.gif)
+![result](https://user-images.githubusercontent.com/23194960/110241420-fc9d0100-7f93-11eb-82df-2e3903d38166.gif)
 
 ## Installation
-Use the `go get` or `make install` after cloning from GitHub
+#### go get
+This is a simple way, but require [golang](https://golang.org/) .
 
 ```bash
-go get github.com/dondakeshimo/todo-cli/cmd/todo 
-```
-OR
-```bash
-make install
+$ go get github.com/dondakeshimo/todo-cli/cmd/todo
 ```
 
-make sure that you have already added binary path to your PATH
+Make sure that you have already added binary path to your PATH.
 
 ```bash
-export PATH=$PATH:$(go env GOPATH)/bin
+$ export PATH=$PATH:$(go env GOPATH)/bin
+```
+
+#### download binary
+You can download binary from our repository.
+
+```bash
+$ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v0.0.8/todo-0.0.8.macos-10.15.tar.gz
+
+$ tar -xvf todo-0.0.8.macos-10.15.tar.gz
+
+$ mv todo path/to/your/$PATH
 ```
 
 ## Usage
