@@ -4,16 +4,18 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
 
   build:
     name: Build
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-10.15]
     steps:
 
-    - name: Set up Go 1.4
+    - name: Set up Go 1.14
       uses: actions/setup-go@v2
       with:
         go-version: ^1.14
@@ -21,16 +23,15 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
-    - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
+    - name: Lint
+      uses: golangci/golangci-lint-action@v2
+      with:
+        version: v1.31
 
     - name: Build
-      run: make build
+      run: |
+        make get
+        make build
 
     - name: Unit Test
       run: make test
