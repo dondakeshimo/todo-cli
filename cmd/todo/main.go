@@ -71,7 +71,7 @@ func main() {
 			{
 				Name:    "close",
 				Aliases: []string{"c"},
-				Usage:   "Close a task",
+				Usage:   "Close tasks",
 				Action:  commands.Close,
 				Flags: []cli.Flag{
 					flagIDs,
