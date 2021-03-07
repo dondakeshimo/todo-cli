@@ -19,7 +19,7 @@ init: ## initilize developper environment
 
 .PHONY: get
 get: ## go get dependencies
-	$(GOGET) -v -t ./...
+	$(GOGET) -v -t -d ./...
 
 .PHONY: install
 install: ## go install

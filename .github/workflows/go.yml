@@ -17,9 +17,6 @@ jobs:
         os: [macos-latest, ubuntu-latest]
     steps:
 
-    - name: aaaa
-      run: echo ${{ runner.os }}
-
     - name: Set up Go 1.4
       uses: actions/setup-go@v2
       with:

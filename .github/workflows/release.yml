@@ -1,43 +1,82 @@
 name: Release
 
 on:
+  pull_request:
   push:
     branches: [ master ]
     paths: ['CHANGELOG.md']
 
 jobs:
 
-  build:
-    name: Release
-    runs-on: ubuntu-latest
+  #   release:
+  #     name: Release
+  #     runs-on: ubuntu-latest
+  #     steps:
+  # 
+  #     - name: Check out
+  #       uses: actions/checkout@v2
+  # 
+  #     - name: Extract CHANGELOG
+  #       id: versioning
+  #       run: |
+  #         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
+  #         git fetch --prune --unshallow
+  #         PRETAG=$(git describe --tags --abbrev=0)
+  #         git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g' > diff-changelog.txt
+  #         echo ::set-output name=version::$VERSION
+  # 
+  #     - name: Tag
+  #       id: tag_version
+  #       uses: mathieudutour/github-tag-action@v5.2
+  #       with:
+  #         custom_tag: ${{ steps.versioning.outputs.version }}
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  # 
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         files: |
+  #           CHANGELOG.md
+  #           LICENSE
+  #         tag_name: ${{ steps.tag_version.outputs.new_tag }}
+  #         body_path: diff-changelog.txt
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  assets:
+    name: Assets
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 1  # avoid to overwrite binary
+      matrix:
+        os: [macos-10.15, ubuntu-11.0, ubuntu-18.04]
     steps:
 
-    - name: Check out
+    - name: Set up Go 1.4
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.14
+
+    - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
-    - name: Extract CHANGELOG
-      id: versioning
+    - name: Build
+      id: build
       run: |
+        make get
+        make build
         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
-        git fetch --prune --unshallow
-        PRETAG=$(git describe --tags --abbrev=0)
-        git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g' > diff-changelog.txt
+        TAG_NAME=v$VERSION
+        tar -zcvf todo-$VERSION.${{ matrix.os }}.tar.gz todo
         echo ::set-output name=version::$VERSION
-
-    - name: Tag
-      id: tag_version
-      uses: mathieudutour/github-tag-action@v5.2
-      with:
-        custom_tag: ${{ steps.versioning.outputs.version }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        echo ::set-output name=tag_name::$TAG_NAME
 
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          CHANGELOG.md
-          LICENSE
-        tag_name: ${{ steps.tag_version.outputs.new_tag }}
-        body_path: diff-changelog.txt
+          todo-${{ steps.build.outputs.version }}.${{ matrix.os }}.tar.gz
+        tag_name: ${{ steps.build.outputs.tag_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
