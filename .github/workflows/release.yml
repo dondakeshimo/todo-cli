@@ -22,30 +22,27 @@ jobs:
         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
         git fetch --prune --unshallow
         PRETAG=$(git describe --tags --abbrev=0)
-        git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md
-        CHANGELOG=$(git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
-        echo "$CHANGELOG"
+        git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g' > diff-changelog.txt
         echo ::set-output name=version::$VERSION
-        echo ::set-output name=changelog::$CHANGELOG
 
     - name: test
       run: |
         echo ${{ steps.version.outputs.changelog }}
 
-        #- name: Tag
-        #  id: tag_version
-        #  uses: mathieudutour/github-tag-action@v5.2
-        #  with:
-        #    custom_tag: ${{ steps.version.outputs.version }}
-        #    github_token: ${{ secrets.GITHUB_TOKEN }}
- 
-        #- name: Release
-        #  uses: softprops/action-gh-release@v1
-        #  with:
-        #    files: |
-        #      CHANGELOG.md
-        #      LICENSE
-        #    tag_name: ${{ steps.tag_version.outputs.new_tag }}
-        #    body: ${{ steps.version.outputs.changelog }}
-        #  env:
-        #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.2
+      with:
+        custom_tag: ${{ steps.version.outputs.version }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          CHANGELOG.md
+          LICENSE
+        tag_name: ${{ steps.tag_version.outputs.new_tag }}
+        body_path: diff-changelog.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
