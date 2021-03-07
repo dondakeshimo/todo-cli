@@ -8,7 +8,11 @@
 
 
 # todo-cli
-manage todo list at cli
+Manage TODO List At CLI
+
+:warning: only support MacOS now...
+
+![result](https://user-images.githubusercontent.com/23194960/110210135-a49ec580-7ed3-11eb-8edb-7c7509847d8d.gif)
 
 ## Installation
 Use the `go get` or `make install` after cloning from GitHub
@@ -27,7 +31,33 @@ make sure that you have already added binary path to your PATH
 export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
-### Completion
+## Usage
+
+```bash
+$ todo --help
+NAME:
+   todo - Manage Your TODO
+
+USAGE:
+   todo [global options] command [command options] [arguments...]
+
+VERSION:
+   0.0.1
+
+COMMANDS:
+   list, l    List tasks
+   add, a     Add a task
+   close, c   Close a task
+   modify, m  Modify a task
+   notify     Notify a task (basicaly be used by system)
+   help, h    Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h     show help (default: false)
+   --version, -v  print the version (default: false)
+```
+
+## Completion
 You can use completion with bash or zsh.
 
 ##### :warning: zsh completion
@@ -53,12 +83,6 @@ will allow the auto-completion to persist across new shells.
 PROG=todo
 _CLI_ZSH_AUTOCOMPLETE_HACK=1
 source path/to/todo-cli/scripts/zsh_autocomplete
-```
-
-## Usage
-
-```bash
-todo [global options] command [command options] [arguments...]
 ```
 
 ## Contributing
