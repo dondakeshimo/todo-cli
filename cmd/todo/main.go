@@ -12,17 +12,17 @@ func main() {
 	flagTask := &cli.StringFlag{
 		Name:    "task",
 		Aliases: []string{"t"},
-		Usage:   "write task contents",
+		Usage:   "task contents",
 	}
 	flagRemindTime := &cli.StringFlag{
 		Name:    "remind_time",
 		Aliases: []string{"d"},
-		Usage:   "write remind_time format -> \"2020/10/27 19:35\"",
+		Usage:   "remind_time (2021/3/3 03:03, 2021/3/3, +2h3m, task-4h15m)",
 	}
 	flagReminder := &cli.StringFlag{
 		Name:    "reminder",
 		Aliases: []string{"r"},
-		Usage:   "choose reminder from [macos, slack]",
+		Usage:   "choose reminder from [macos]",
 	}
 	flagID := &cli.IntFlag{
 		Name:     "id",
