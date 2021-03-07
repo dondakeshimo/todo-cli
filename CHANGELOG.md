@@ -1,3 +1,6 @@
+## Version 0.1.0
+* first product release
+
 ## Version 0.0.8
 * fix release description
 
