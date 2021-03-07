@@ -1,6 +1,7 @@
 name: Release
 
 on:
+  pull_request:
   push:
     branches: [ master ]
     paths: ['CHANGELOG.md']
@@ -21,7 +22,8 @@ jobs:
         VERSION=$(head -1 CHANGELOG.md | sed -e 's/^.*Version //g')
         git fetch --prune --unshallow
         PRETAG=$(git describe --tags --abbrev=0)
-        CHANGELOG=$(git diff $PRETAG..${{ github.sha }} CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
+        CHANGELOG=$(git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g')
+        echo "$CHANGELOG"
         echo ::set-output name=version::$VERSION
         echo ::set-output name=changelog::$CHANGELOG
 
