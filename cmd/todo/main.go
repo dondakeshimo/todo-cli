@@ -49,7 +49,7 @@ func main() {
 	app := &cli.App{
 		Name:                 "todo",
 		Usage:                "Manage Your TODO",
-		Version:              "0.0.1",
+		Version:              "0.1.0",
 		EnableBashCompletion: true,
 		Commands: []*cli.Command{
 			{

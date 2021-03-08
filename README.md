@@ -46,12 +46,12 @@ USAGE:
    todo [global options] command [command options] [arguments...]
 
 VERSION:
-   0.0.1
+   0.1.0
 
 COMMANDS:
    list, l    List tasks
    add, a     Add a task
-   close, c   Close a task
+   close, c   Close tasks
    modify, m  Modify a task
    notify     Notify a task (basicaly be used by system)
    help, h    Shows a list of commands or help for one command
