@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"sort"
 	"strconv"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
@@ -23,13 +24,24 @@ func List(c *cli.Context) error {
 
 	w := writer.NewTSVWriter()
 
-	header := []string{"ID", "Task", "RemindTime", "reminder"}
+	header := []string{"ID", "Task", "RemindTime", "reminder", "Priority"}
 	if err := w.Write(header); err != nil {
 		return err
 	}
 
-	for _, t := range h.GetTasks() {
-		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder())}); err != nil {
+	tasks := h.GetTasks()
+	sort.SliceStable(tasks, func(i, j int) bool {
+		switch c.String("order") {
+		case "priority":
+			return tasks[i].Priority() < tasks[j].Priority()
+		case "id":
+			return tasks[i].ID() < tasks[j].ID()
+		default: // same as the case of "priority"
+			return tasks[i].Priority() < tasks[j].Priority()
+		}
+	})
+	for _, t := range tasks {
+		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder()), strconv.Itoa(t.Priority())}); err != nil {
 			return err
 		}
 	}

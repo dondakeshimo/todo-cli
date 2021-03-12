@@ -19,6 +19,7 @@ type Task struct {
 	RemindTime string `json:"remindtime"`
 	UUID       string `json:"uuid"`
 	Reminder   string `json:"reminder"`
+	Priority   int    `json:"priority"`
 }
 
 // Client is a struct to manage JSON I/O.
@@ -57,7 +58,7 @@ func (c *Client) Read() ([]task.Task, error) {
 	var ts []task.Task
 	for _, t := range tjs {
 		ts = append(ts, task.NewTask(
-			t.ID, t.Task, remindtime.RemindTime(t.RemindTime), t.UUID, reminder.Reminder(t.Reminder)))
+			t.ID, t.Task, remindtime.RemindTime(t.RemindTime), t.UUID, reminder.Reminder(t.Reminder), t.Priority))
 	}
 
 	return ts, nil
@@ -154,5 +155,6 @@ func convertToJSONTask(t task.Task) Task {
 		RemindTime: string(t.RemindTime()),
 		UUID:       t.UUID(),
 		Reminder:   string(t.Reminder()),
+		Priority:   t.Priority(),
 	}
 }

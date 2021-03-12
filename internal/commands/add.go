@@ -20,6 +20,7 @@ type addParams struct {
 	isRelativeTime bool
 	reminder       reminder.Reminder
 	isReminder     bool
+	priority       int
 }
 
 func newAddParams(c *cli.Context) (*addParams, error) {
@@ -71,6 +72,8 @@ func newAddParams(c *cli.Context) (*addParams, error) {
 		p.isReminder = true
 	}
 
+	p.priority = c.Int("priority")
+
 	return p, nil
 }
 
@@ -114,7 +117,7 @@ func Add(c *cli.Context) error {
 		return err
 	}
 
-	nt := task.NewTask(0, p.task, rt, uu.String(), rm)
+	nt := task.NewTask(0, p.task, rt, uu.String(), rm, p.priority)
 
 	h.AppendTask(nt)
 

@@ -17,16 +17,18 @@ type Task struct {
 	remindTime remindtime.RemindTime
 	uuid       string
 	reminder   reminder.Reminder
+	priority   int
 }
 
 // NewTask is a constructor for Task.
-func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder) Task {
+func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder, p int) Task {
 	return Task{
 		id:         i,
 		task:       t,
 		remindTime: rt,
 		uuid:       uuid,
 		reminder:   rm,
+		priority:   p,
 	}
 }
 
@@ -55,6 +57,11 @@ func (t Task) Reminder() reminder.Reminder {
 	return t.reminder
 }
 
+// Priority is a getter for priority.
+func (t Task) Priority() int {
+	return t.priority
+}
+
 func (t Task) alterID(id int) Task {
 	return Task{
 		id:         id,
@@ -62,6 +69,7 @@ func (t Task) alterID(id int) Task {
 		remindTime: t.remindTime,
 		uuid:       t.uuid,
 		reminder:   t.reminder,
+		priority:   t.priority,
 	}
 }
 
