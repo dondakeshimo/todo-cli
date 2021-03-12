@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"text/tabwriter"
+
+	"github.com/WeiZhang555/tabwriter"
 )
 
 // Writer is a interface that write something to somewhere.
