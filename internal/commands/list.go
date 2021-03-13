@@ -23,13 +23,13 @@ func List(c *cli.Context) error {
 
 	w := writer.NewTSVWriter()
 
-	header := []string{"ID", "Task", "RemindTime", "reminder"}
+	header := []string{"ID", "Task", "RemindTime", "reminder", "Priority"}
 	if err := w.Write(header); err != nil {
 		return err
 	}
 
 	for _, t := range h.GetTasks() {
-		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder())}); err != nil {
+		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder()), strconv.Itoa(t.Priority())}); err != nil {
 			return err
 		}
 	}

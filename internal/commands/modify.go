@@ -22,6 +22,7 @@ type modifyParams struct {
 	isRemoveReminder bool
 	reminder         reminder.Reminder
 	isReminder       bool
+	priority         int
 }
 
 func newModifyParams(c *cli.Context) (*modifyParams, error) {
@@ -76,6 +77,10 @@ func newModifyParams(c *cli.Context) (*modifyParams, error) {
 		}
 		p.reminder = rm
 		p.isReminder = true
+	}
+
+	if c.IsSet("priority") {
+		p.priority = c.Int("priority")
 	}
 
 	return p, nil
@@ -150,7 +155,12 @@ func Modify(c *cli.Context) error {
 		newReminder = p.reminder
 	}
 
-	nt := task.NewTask(t.ID(), newTask, newRemindTime, t.UUID(), newReminder)
+	newPriority := t.Priority()
+	if c.IsSet("priority") {
+		newPriority = p.priority
+	}
+
+	nt := task.NewTask(t.ID(), newTask, newRemindTime, t.UUID(), newReminder, newPriority)
 
 	if !p.isRemoveReminder && p.isReminder {
 		if err := nt.SetReminder(s); err != nil {

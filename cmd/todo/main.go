@@ -45,6 +45,12 @@ func main() {
 		Name:  "remove-reminder",
 		Usage: "remove reminder. this option overrides reminder option",
 	}
+	flagPriority := &cli.IntFlag{
+		Name:    "priority",
+		Value:   100,
+		Aliases: []string{"p"},
+		Usage:   "task's priority. Lower number means high priority.",
+	}
 
 	app := &cli.App{
 		Name:                 "todo",
@@ -66,6 +72,7 @@ func main() {
 				Flags: []cli.Flag{
 					flagRemindTime,
 					flagReminder,
+					flagPriority,
 				},
 			},
 			{
@@ -88,6 +95,7 @@ func main() {
 					flagRemindTime,
 					flagReminder,
 					flagRemoveReminder,
+					flagPriority,
 				},
 			},
 			{
