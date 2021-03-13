@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"sort"
 	"strconv"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
@@ -29,18 +28,7 @@ func List(c *cli.Context) error {
 		return err
 	}
 
-	tasks := h.GetTasks()
-	sort.SliceStable(tasks, func(i, j int) bool {
-		switch c.String("order") {
-		case "priority":
-			return tasks[i].Priority() < tasks[j].Priority()
-		case "id":
-			return tasks[i].ID() < tasks[j].ID()
-		default: // same as the case of "priority"
-			return tasks[i].Priority() < tasks[j].Priority()
-		}
-	})
-	for _, t := range tasks {
+	for _, t := range h.GetTasks() {
 		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder()), strconv.Itoa(t.Priority())}); err != nil {
 			return err
 		}

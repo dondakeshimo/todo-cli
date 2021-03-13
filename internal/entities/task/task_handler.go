@@ -125,5 +125,11 @@ func (h *Handler) align() {
 	for i, t := range h.tasks {
 		ts = append(ts, t.alterID(i+1))
 	}
+
+	// Sorted by priority.
+	sort.SliceStable(ts, func(i, j int) bool {
+		return ts[i].Priority() < ts[j].Priority()
+	})
+
 	h.tasks = ts
 }
