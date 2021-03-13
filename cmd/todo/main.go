@@ -51,12 +51,6 @@ func main() {
 		Aliases: []string{"p"},
 		Usage:   "task's priority. Lower number means high priority.",
 	}
-	flagOrder := &cli.StringFlag{
-		Name:    "order",
-		Value:   "priority",
-		Aliases: []string{"o"},
-		Usage:   "choose in which order tasks are listed from [priority, id].",
-	}
 
 	app := &cli.App{
 		Name:                 "todo",
@@ -69,9 +63,6 @@ func main() {
 				Aliases: []string{"l"},
 				Usage:   "List tasks",
 				Action:  commands.List,
-				Flags: []cli.Flag{
-					flagOrder,
-				},
 			},
 			{
 				Name:    "add",
