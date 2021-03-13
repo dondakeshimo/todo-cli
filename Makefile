@@ -34,11 +34,11 @@ mockgen: ## generate mock
 	$(GOGEN) ./...
 
 .PHONY: test
-test: ## go test
+test: build ## go test
 	$(GOTEST) -v ./...
 
 .PHONY: scenario-test
-scenario-test: ## run scenario test
+scenario-test: build ## run scenario test
 	$(GOTEST) -v $(SCENARIO_DIR) -tags scenario
 
 .PHONY: clean
