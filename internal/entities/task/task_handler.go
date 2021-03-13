@@ -121,9 +121,15 @@ func (h *Handler) Commit() error {
 
 // align is a function that redefine ids according to order.
 func (h *Handler) align() {
+	// Sorted by priority.
+	sort.SliceStable(h.tasks, func(i, j int) bool {
+		return h.tasks[i].Priority() < h.tasks[j].Priority()
+	})
+
 	var ts []Task
 	for i, t := range h.tasks {
 		ts = append(ts, t.alterID(i+1))
 	}
+
 	h.tasks = ts
 }
