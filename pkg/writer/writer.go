@@ -1,46 +1,49 @@
 package writer
 
 import (
-	"fmt"
 	"os"
-	"strings"
 
-	"github.com/WeiZhang555/tabwriter"
+	"github.com/olekukonko/tablewriter"
 )
 
 // Writer is a interface that write something to somewhere.
 type Writer interface {
+	Header([]string) error
 	Write([]string) error
 	Flush() error
 }
 
 // TSVWriter is a struct that write tab separate table to stdout.
 type TSVWriter struct {
-	w *tabwriter.Writer
+	w *tablewriter.Table
 }
 
 // NewTSVWriter is a constructor that make new TSVWriter.
 func NewTSVWriter() *TSVWriter {
-	return &TSVWriter{
-		w: tabwriter.NewWriter(os.Stdout, 0, 4, 2, ' ', 0),
+	tsvw := &TSVWriter{
+		w: tablewriter.NewWriter(os.Stdout),
 	}
+	tsvw.w.SetAutoFormatHeaders(false) // for preventing header from being made upper case automatically
+	return tsvw
+}
+
+// Header is a function that write header string slice to buffer.
+func (w *TSVWriter) Header(record []string) error {
+	w.w.SetHeader(record)
+
+	return nil
 }
 
 // Write is a function that write string slice to buffer.
 func (w *TSVWriter) Write(record []string) error {
-	str := strings.Join(record[:], "\t")
-	if _, err := fmt.Fprintln(w.w, str); err != nil {
-		return err
-	}
+	w.w.Append(record)
 
 	return nil
 }
 
 // Flush is a function that write buffet to stdout.
 func (w *TSVWriter) Flush() error {
-	if err := w.w.Flush(); err != nil {
-		return err
-	}
+	w.w.Render()
 
 	return nil
 }

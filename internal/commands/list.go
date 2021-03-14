@@ -24,7 +24,7 @@ func List(c *cli.Context) error {
 	w := writer.NewTSVWriter()
 
 	header := []string{"ID", "Task", "RemindTime", "reminder", "Priority"}
-	if err := w.Write(header); err != nil {
+	if err := w.Header(header); err != nil {
 		return err
 	}
 
