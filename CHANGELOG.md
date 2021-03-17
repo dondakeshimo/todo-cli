@@ -1,3 +1,7 @@
+## Version 0.2.0
+* add priority and sort
+* change tabwriter to tablewriter because of CJK character
+
 ## Version 0.1.0
 * first product release
 
