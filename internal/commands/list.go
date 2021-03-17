@@ -1,11 +1,12 @@
 package commands
 
 import (
+	"os"
 	"strconv"
 
 	"github.com/dondakeshimo/todo-cli/internal/entities/task"
 	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
-	"github.com/dondakeshimo/todo-cli/pkg/writer"
+	"github.com/olekukonko/tablewriter"
 	"github.com/urfave/cli/v2"
 )
 
@@ -21,22 +22,16 @@ func List(c *cli.Context) error {
 		return err
 	}
 
-	w := writer.NewTSVWriter()
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetAutoFormatHeaders(false) // for preventing header from being made upper case automatically
 
-	header := []string{"ID", "Task", "RemindTime", "reminder", "Priority"}
-	if err := w.Write(header); err != nil {
-		return err
-	}
+	table.SetHeader([]string{"ID", "Task", "RemindTime", "reminder", "Priority"})
 
 	for _, t := range h.GetTasks() {
-		if err := w.Write([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder()), strconv.Itoa(t.Priority())}); err != nil {
-			return err
-		}
+		table.Append([]string{strconv.Itoa(t.ID()), t.Task(), string(t.RemindTime()), string(t.Reminder()), strconv.Itoa(t.Priority())})
 	}
 
-	if err := w.Flush(); err != nil {
-		return err
-	}
+	table.Render()
 
 	return nil
 }

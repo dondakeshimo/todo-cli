@@ -33,7 +33,13 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list initial sample",
 			command:   []string{"l"},
 			hasOutput: true,
-			want:      "ID  Task                                                RemindTime      reminder  Priority\n1   deleting or modifying this task is your first TODO  2099/1/1 00:00            0\n",
+			want: `+----+--------------------------------+----------------+----------+----------+
+| ID |              Task              |   RemindTime   | reminder | Priority |
++----+--------------------------------+----------------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
+|    | task is your first TODO        |                |          |          |
++----+--------------------------------+----------------+----------+----------+
+`,
 			wantError: false,
 			err:       "",
 		},
@@ -86,10 +92,28 @@ func TestWithoutReminder(t *testing.T) {
 			err:       "",
 		},
 		{
+			name:      "add task 7 in Japanese",
+			command:   []string{"a", "シナリオテスト 7"},
+			hasOutput: false,
+			want:      "",
+			wantError: false,
+			err:       "",
+		},
+		{
 			name:      "list added tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want:      "ID  Task                                                RemindTime      reminder  Priority\n1   deleting or modifying this task is your first TODO  2099/1/1 00:00            0\n2   scenario test 6                                                               50\n3   scenario test 1                                                               100\n4   scenario test 2                                     2099/1/1 00:00  macos     100\n",
+			want: `+----+--------------------------------+----------------+----------+----------+
+| ID |              Task              |   RemindTime   | reminder | Priority |
++----+--------------------------------+----------------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
+|    | task is your first TODO        |                |          |          |
+|  2 | scenario test 6                |                |          |       50 |
+|  3 | scenario test 1                |                |          |      100 |
+|  4 | scenario test 2                | 2099/1/1 00:00 | macos    |      100 |
+|  5 | シナリオテスト 7               |                |          |      100 |
++----+--------------------------------+----------------+----------+----------+
+`,
 			wantError: false,
 			err:       "",
 		},
@@ -105,13 +129,23 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list modified tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want:      "ID  Task                                                RemindTime      reminder  Priority\n1   deleting or modifying this task is your first TODO  2099/1/1 00:00            0\n2   scenario test 6                                                               50\n3   scenario test modified 1                            2099/1/1 12:00            100\n4   scenario test 2                                     2099/1/1 00:00  macos     100\n",
+			want: `+----+--------------------------------+----------------+----------+----------+
+| ID |              Task              |   RemindTime   | reminder | Priority |
++----+--------------------------------+----------------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
+|    | task is your first TODO        |                |          |          |
+|  2 | scenario test 6                |                |          |       50 |
+|  3 | scenario test modified 1       | 2099/1/1 12:00 |          |      100 |
+|  4 | scenario test 2                | 2099/1/1 00:00 | macos    |      100 |
+|  5 | シナリオテスト 7               |                |          |      100 |
++----+--------------------------------+----------------+----------+----------+
+`,
 			wantError: false,
 			err:       "",
 		},
 		{
 			name:      "clear tasks",
-			command:   []string{"c", "-i=1", "-i=3", "-i=4"},
+			command:   []string{"c", "-i=1", "-i=3", "-i=4", "-i=5"},
 			hasOutput: false,
 			want:      "",
 			wantError: false,
@@ -129,7 +163,11 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list modified tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want:      "ID  Task  RemindTime  reminder  Priority\n",
+			want: `+----+------+------------+----------+----------+
+| ID | Task | RemindTime | reminder | Priority |
++----+------+------------+----------+----------+
++----+------+------------+----------+----------+
+`,
 			wantError: false,
 			err:       "",
 		},
