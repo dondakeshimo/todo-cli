@@ -9,10 +9,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Modify invoke usecases.Modify with parameter from cli.
 func Modify(c *cli.Context) error {
     var r usecases.ModifyRequest
 
-	r.Id = c.Int("id") // required
+	r.ID = c.Int("id") // required
 
 	r.Task = c.String("task")
 	r.IsTask = r.Task != ""

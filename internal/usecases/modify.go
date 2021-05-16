@@ -10,8 +10,9 @@ import (
 	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
 )
 
+// ModifyRequest is a request parameter to invoke Modify.
 type ModifyRequest struct {
-	Id               int
+	ID               int
 	Task             string
 	IsTask           bool
 	RemindTime       remindtime.RemindTime
@@ -41,7 +42,7 @@ func Modify(r ModifyRequest) error {
 		return err
 	}
 
-	t, err := h.GetTask(r.Id)
+	t, err := h.GetTask(r.ID)
 	if err != nil {
 		return err
 	}

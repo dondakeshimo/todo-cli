@@ -9,17 +9,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type addParams struct {
-	task           string
-	remindTime     remindtime.RemindTime
-	isRemindTime   bool
-	relativeTime   remindtime.RelativeTime
-	isRelativeTime bool
-	reminder       reminder.Reminder
-	isReminder     bool
-	priority       int
-}
-
+// Add invoke usecases.Add with parameter from cli.
 func Add(c *cli.Context) error {
     var r usecases.AddRequest
 

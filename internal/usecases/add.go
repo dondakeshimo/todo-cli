@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// AddRequest is a request parameter to invoke Add.
 type AddRequest struct {
 	Task           string
 	RemindTime     remindtime.RemindTime
