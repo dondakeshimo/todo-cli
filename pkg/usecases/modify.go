@@ -3,11 +3,11 @@ package usecases
 import (
 	"fmt"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
-	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/task"
+	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 )
 
 // ModifyRequest is a request parameter to invoke Modify.

@@ -3,9 +3,9 @@ package commands
 import (
 	"fmt"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
-	"github.com/dondakeshimo/todo-cli/internal/usecases"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/usecases"
 	"github.com/urfave/cli/v2"
 )
 

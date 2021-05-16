@@ -1,9 +1,9 @@
 package usecases
 
 import (
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
-	"github.com/dondakeshimo/todo-cli/pkg/notifier"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/notifier"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/task"
+	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 )
 
 // Notify is a function that notify a task.

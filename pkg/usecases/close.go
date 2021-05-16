@@ -1,9 +1,9 @@
 package usecases
 
 import (
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
-	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/task"
+	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 )
 
 // Close is a function that close a task or tasks.

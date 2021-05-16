@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
-	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/entities/scheduler"
 )
 
 // Task is a struct that describe task.
