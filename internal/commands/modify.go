@@ -69,5 +69,5 @@ func Modify(c *cli.Context) error {
 		r.Priority = c.Int("priority")
 	}
 
-	return nil
+	return usecases.Modify(r)
 }
