@@ -34,7 +34,7 @@ func TestWithoutReminder(t *testing.T) {
 			command:   []string{"l"},
 			hasOutput: true,
 			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | reminder | Priority |
+| ID |              Task              |   RemindTime   | Reminder | Priority |
 +----+--------------------------------+----------------+----------+----------+
 |  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
 |    | task is your first TODO        |                |          |          |
@@ -104,7 +104,7 @@ func TestWithoutReminder(t *testing.T) {
 			command:   []string{"l"},
 			hasOutput: true,
 			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | reminder | Priority |
+| ID |              Task              |   RemindTime   | Reminder | Priority |
 +----+--------------------------------+----------------+----------+----------+
 |  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
 |    | task is your first TODO        |                |          |          |
@@ -130,7 +130,7 @@ func TestWithoutReminder(t *testing.T) {
 			command:   []string{"l"},
 			hasOutput: true,
 			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | reminder | Priority |
+| ID |              Task              |   RemindTime   | Reminder | Priority |
 +----+--------------------------------+----------------+----------+----------+
 |  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
 |    | task is your first TODO        |                |          |          |
@@ -164,7 +164,7 @@ func TestWithoutReminder(t *testing.T) {
 			command:   []string{"l"},
 			hasOutput: true,
 			want: `+----+------+------------+----------+----------+
-| ID | Task | RemindTime | reminder | Priority |
+| ID | Task | RemindTime | Reminder | Priority |
 +----+------+------------+----------+----------+
 +----+------+------------+----------+----------+
 `,
