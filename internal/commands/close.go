@@ -9,5 +9,5 @@ import (
 func Close(c *cli.Context) error {
 	ids := c.IntSlice("ids")
 
-    return usecases.Close(ids)
+	return usecases.Close(ids)
 }

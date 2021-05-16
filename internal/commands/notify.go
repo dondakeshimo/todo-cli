@@ -10,5 +10,5 @@ import (
 func Notify(c *cli.Context) error {
 	uuid := c.String("uuid")
 
-    return usecases.Notify(uuid)
+	return usecases.Notify(uuid)
 }

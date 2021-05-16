@@ -11,7 +11,7 @@ import (
 
 // Add invoke usecases.Add with parameter from cli.
 func Add(c *cli.Context) error {
-    var r usecases.AddRequest
+	var r usecases.AddRequest
 
 	r.Task = c.Args().Get(0)
 	if r.Task == "" {
@@ -61,5 +61,5 @@ func Add(c *cli.Context) error {
 
 	r.Priority = c.Int("priority")
 
-    return usecases.Add(r)
+	return usecases.Add(r)
 }

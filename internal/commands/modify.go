@@ -11,7 +11,7 @@ import (
 
 // Modify invoke usecases.Modify with parameter from cli.
 func Modify(c *cli.Context) error {
-    var r usecases.ModifyRequest
+	var r usecases.ModifyRequest
 
 	r.ID = c.Int("id") // required
 
@@ -64,7 +64,7 @@ func Modify(c *cli.Context) error {
 		r.IsReminder = true
 	}
 
-    r.IsPriority = c.IsSet("priority")
+	r.IsPriority = c.IsSet("priority")
 	if r.IsPriority {
 		r.Priority = c.Int("priority")
 	}

@@ -7,5 +7,5 @@ import (
 
 // List is a function that show task list.
 func List(c *cli.Context) error {
-    return usecases.List()
+	return usecases.List()
 }
