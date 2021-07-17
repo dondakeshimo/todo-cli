@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
 
 // TODO: UpdateTask, FindTaskWithUUID, AppendTask

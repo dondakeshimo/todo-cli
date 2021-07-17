@@ -7,7 +7,7 @@ import (
 )
 
 // Scheduler is a interface that schedule command.
-//go:generate mockgen -destination=./mock_scheduler.go -package=scheduler . Scheduler
+//go:generate mockgen -destination=./mock_scheduler.go -package=scheduler -self_package=github.com/dondakeshimo/todo-cli/pkg/domain/scheduler . Scheduler
 type Scheduler interface {
 	Register(Request) error
 	ClearExpired()

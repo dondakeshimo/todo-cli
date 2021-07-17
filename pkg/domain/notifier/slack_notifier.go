@@ -1,7 +1,7 @@
 package notifier
 
 import (
-	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 )
 
 // SlackNotifier is a struct that notify with slack.

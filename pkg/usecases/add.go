@@ -1,11 +1,11 @@
 package usecases
 
 import (
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
-	"github.com/dondakeshimo/todo-cli/pkg/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
+	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 	"github.com/google/uuid"
 )
 

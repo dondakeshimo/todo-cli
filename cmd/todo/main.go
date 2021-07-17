@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/dondakeshimo/todo-cli/internal/commands"
+	"github.com/dondakeshimo/todo-cli/pkg/commands"
 	"github.com/urfave/cli/v2"
 )
 

@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/dondakeshimo/todo-cli/internal/usecases"
+	"github.com/dondakeshimo/todo-cli/pkg/usecases"
 	"github.com/urfave/cli/v2"
 )
 

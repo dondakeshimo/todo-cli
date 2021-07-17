@@ -3,20 +3,20 @@ package commands
 import (
 	"fmt"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
-	"github.com/dondakeshimo/todo-cli/internal/usecases"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/usecases"
 	"github.com/urfave/cli/v2"
 )
 
-// Modify invoke usecases.Modify with parameter from cli.
-func Modify(c *cli.Context) error {
-	var r usecases.ModifyRequest
+// Add invoke usecases.Add with parameter from cli.
+func Add(c *cli.Context) error {
+	var r usecases.AddRequest
 
-	r.ID = c.Int("id") // required
-
-	r.Task = c.String("task")
-	r.IsTask = r.Task != ""
+	r.Task = c.Args().Get(0)
+	if r.Task == "" {
+		return fmt.Errorf("`$ todo add` need an argument what represents a task")
+	}
 
 	crt := c.String("remind_time")
 	if crt == "" {
@@ -24,7 +24,7 @@ func Modify(c *cli.Context) error {
 		r.IsRelativeTime = false
 	}
 
-	if crt != "" && remindtime.IsValidRelativeTime(crt) {
+	if crt != "" && remindtime.IsRelativeToNow(crt) {
 		td, err := remindtime.NewRelativeTime(crt)
 		if err != nil {
 			return err
@@ -34,7 +34,7 @@ func Modify(c *cli.Context) error {
 		r.IsRemindTime = false
 	}
 
-	if crt != "" && !remindtime.IsValidRelativeTime(crt) {
+	if crt != "" && !remindtime.IsRelativeToNow(crt) {
 		rt, err := remindtime.NewRemindTime(crt)
 		if err != nil {
 			return err
@@ -49,13 +49,8 @@ func Modify(c *cli.Context) error {
 		return fmt.Errorf("internal command error")
 	}
 
-	r.IsRemoveReminder = false
-	if c.Bool("remove_reminder") {
-		r.IsRemoveReminder = true
-	}
-
 	r.IsReminder = false
-	if !r.IsRemoveReminder && c.String("reminder") != "" {
+	if c.String("reminder") != "" {
 		rm, err := reminder.NewReminder(c.String("reminder"))
 		if err != nil {
 			return err
@@ -64,10 +59,7 @@ func Modify(c *cli.Context) error {
 		r.IsReminder = true
 	}
 
-	r.IsPriority = c.IsSet("priority")
-	if r.IsPriority {
-		r.Priority = c.Int("priority")
-	}
+	r.Priority = c.Int("priority")
 
-	return usecases.Modify(r)
+	return usecases.Add(r)
 }
