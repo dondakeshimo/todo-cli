@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 	"github.com/google/uuid"
 )
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
 )
 
 func TestIsValidReminder(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 )
 
 func TestNewRemindTime(t *testing.T) {

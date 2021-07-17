@@ -4,8 +4,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/dondakeshimo/todo-cli/internal/entities/task"
-	"github.com/dondakeshimo/todo-cli/internal/gateways/json"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
+	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 	"github.com/olekukonko/tablewriter"
 )
 
