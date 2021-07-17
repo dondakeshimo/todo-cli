@@ -6,19 +6,53 @@ import (
 	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/usecases"
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 )
 
-// Modify invoke usecases.Modify with parameter from cli.
-func Modify(c *cli.Context) error {
+var modifyCmd = &cobra.Command{
+	Use:     "modify",
+	Short:   "Modify a task",
+	Aliases: []string{"m"},
+	RunE:    modifyHandler,
+}
+
+func init() {
+	rootCmd.AddCommand(modifyCmd)
+
+	modifyCmd.Flags().IntP("id", "i", -1, "task's ID")
+	modifyCmd.Flags().StringP("task", "t", "", "task contents")
+	modifyCmd.Flags().StringP("remind_time", "d", "", "remind_time (2021/3/3 03:03, 2021/3/3, +2h3m, task-4h15m)")
+	modifyCmd.Flags().StringP("reminder", "r", "", "choose reminder from [macos]")
+	modifyCmd.Flags().Bool("remove_reminder", false, "remove reminder. this option overrides reminder option")
+	modifyCmd.Flags().IntP("priority", "p", 100, "task's priority. Lower number means high priority.")
+
+	if err := modifyCmd.MarkFlagRequired("id"); err != nil {
+		// NOTE: err is set when "id" is not found in flags.
+		//       so, this block never work.
+		fmt.Println(err)
+	}
+}
+
+// modifyHandler invoke usecases.Modify with parameter from cli.
+func modifyHandler(c *cobra.Command, args []string) error {
 	var r usecases.ModifyRequest
 
-	r.ID = c.Int("id") // required
+	id, err := c.Flags().GetInt("id") // required
+	if err != nil {
+		return err
+	}
+	r.ID = id
 
-	r.Task = c.String("task")
+	r.Task, err = c.Flags().GetString("task")
+	if err != nil {
+		return err
+	}
 	r.IsTask = r.Task != ""
 
-	crt := c.String("remind_time")
+	crt, err := c.Flags().GetString("remind_time")
+	if err != nil {
+		return err
+	}
 	if crt == "" {
 		r.IsRemindTime = false
 		r.IsRelativeTime = false
@@ -50,13 +84,21 @@ func Modify(c *cli.Context) error {
 	}
 
 	r.IsRemoveReminder = false
-	if c.Bool("remove_reminder") {
+	crr, err := c.Flags().GetBool("remove_reminder")
+	if err != nil {
+		return err
+	}
+	if crr {
 		r.IsRemoveReminder = true
 	}
 
 	r.IsReminder = false
-	if !r.IsRemoveReminder && c.String("reminder") != "" {
-		rm, err := reminder.NewReminder(c.String("reminder"))
+	cr, err := c.Flags().GetString("reminder")
+	if err != nil {
+		return err
+	}
+	if !r.IsRemoveReminder && cr != "" {
+		rm, err := reminder.NewReminder(cr)
 		if err != nil {
 			return err
 		}
@@ -64,9 +106,12 @@ func Modify(c *cli.Context) error {
 		r.IsReminder = true
 	}
 
-	r.IsPriority = c.IsSet("priority")
+	r.IsPriority = c.Flags().Changed("priority")
 	if r.IsPriority {
-		r.Priority = c.Int("priority")
+		r.Priority, err = c.Flags().GetInt("priority")
+		if err != nil {
+			return err
+		}
 	}
 
 	return usecases.Modify(r)
