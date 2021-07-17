@@ -1,3 +1,7 @@
+## Version 0.3.0
+* improve arguments of add-command more comfortable
+* can chose multiple ids in comma separated list
+
 ## Version 0.2.0
 * add priority and sort
 * change tabwriter to tablewriter because of CJK character
