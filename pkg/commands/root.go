@@ -39,8 +39,8 @@ func initConfig() {
 	viper.SetConfigType(c.configType)
 	viper.AddConfigPath(c.configPath)
 
-	viper.SetDefault("HideReminder", false)
-	viper.SetDefault("HidePriority", false)
+	viper.SetDefault("HideReminder", usecases.DefaultConfig.HideReminder)
+	viper.SetDefault("HidePriority", usecases.DefaultConfig.HidePriority)
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {

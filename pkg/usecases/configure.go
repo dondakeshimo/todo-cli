@@ -6,6 +6,11 @@ type Config struct {
 	HidePriority bool
 }
 
+var DefaultConfig = Config{
+    HideReminder: false,
+    HidePriority: false,
+}
+
 // config is a protected member in usecases, which is readable from the other usecases.
 var config Config
 
