@@ -7,7 +7,6 @@ import (
 	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
-	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 )
 
 // ModifyRequest is a request parameter to invoke Modify.
@@ -28,12 +27,7 @@ type ModifyRequest struct {
 
 // Modify is a function that modify a task.
 func Modify(r ModifyRequest) error {
-	jc, err := json.NewClient()
-	if err != nil {
-		return err
-	}
-
-	h, err := task.NewHandler(jc)
+	h, err := task.NewHandler(taskRepository)
 	if err != nil {
 		return err
 	}

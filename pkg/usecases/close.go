@@ -3,17 +3,11 @@ package usecases
 import (
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
-	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 )
 
 // Close is a function that close a task or tasks.
 func Close(ids []int) error {
-	jc, err := json.NewClient()
-	if err != nil {
-		return err
-	}
-
-	h, err := task.NewHandler(jc)
+	h, err := task.NewHandler(taskRepository)
 	if err != nil {
 		return err
 	}

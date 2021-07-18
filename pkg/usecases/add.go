@@ -5,7 +5,6 @@ import (
 	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
-	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 	"github.com/google/uuid"
 )
 
@@ -23,12 +22,7 @@ type AddRequest struct {
 
 // Add is a function that add a task (and reminder).
 func Add(r AddRequest) error {
-	jc, err := json.NewClient()
-	if err != nil {
-		return err
-	}
-
-	h, err := task.NewHandler(jc)
+	h, err := task.NewHandler(taskRepository)
 	if err != nil {
 		return err
 	}
