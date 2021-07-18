@@ -38,6 +38,9 @@ func configureHandler(c *cobra.Command, args []string) error {
 		viper.Set("HidePriority", f)
 	}
 
-	viper.WriteConfig()
+	if err := viper.WriteConfig(); err != nil {
+		return err
+	}
+
 	return nil
 }

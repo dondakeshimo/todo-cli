@@ -36,7 +36,9 @@ func initConfig() {
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			viper.SafeWriteConfig()
+			if err := viper.SafeWriteConfig(); err != nil {
+				log.Fatalln(err)
+			}
 		} else {
 			log.Fatalln(err)
 		}

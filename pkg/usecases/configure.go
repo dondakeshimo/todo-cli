@@ -5,18 +5,20 @@ import (
 	"path/filepath"
 )
 
-// configStruct is an application configuration.
+// Config is an application configuration.
 type Config struct {
 	HideReminder bool
 	HidePriority bool
 }
 
+// ConfigFile is information of config file location.
 type ConfigFile struct {
 	ConfigName string
 	ConfigType string
 	ConfigPath string
 }
 
+// DefaultConfig is a default config.
 var DefaultConfig = Config{
 	HideReminder: false,
 	HidePriority: false,
@@ -48,7 +50,7 @@ func FindConfigFile() ConfigFile {
 
 func findDataDir() string {
 	const (
-		xdg_data_home   = "XDG_DATA_HOME"
+		xdgDataHome     = "XDG_DATA_HOME"
 		appDir          = "todo"
 		defaultDataHome = ".local/share/"
 	)
@@ -56,7 +58,7 @@ func findDataDir() string {
 	var homeDir, _ = os.UserHomeDir()
 	configPath := filepath.Join(homeDir, defaultDataHome, appDir)
 
-	if dataHome := os.Getenv(xdg_data_home); dataHome != "" {
+	if dataHome := os.Getenv(xdgDataHome); dataHome != "" {
 		configPath = filepath.Join(dataHome, appDir)
 	}
 
