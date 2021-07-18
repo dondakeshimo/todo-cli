@@ -27,20 +27,12 @@ type Client struct {
 	path string
 }
 
-const (
-	jsonFile        = "todo/todo.json"
-	defaultDataHome = ".local/share/"
-)
-
 // NewClient is a constructor for Client.
-func NewClient() (*Client, error) {
-	c := new(Client)
-
-	if err := c.exploreJSONPath(); err != nil {
+func NewClient(path string) (*Client, error) {
+	if err := createJSONFileIfNotExist(path); err != nil {
 		return nil, err
 	}
-
-	return c, nil
+	return &Client{path: path}, nil
 }
 
 // Read is a function that read tasks from JSON file.
@@ -84,27 +76,8 @@ func (c *Client) Write(ts []task.Task) error {
 	return nil
 }
 
-// exploreJSONPath is a function that set JSONPath.
-func (c *Client) exploreJSONPath() error {
-	dataHome := os.Getenv("XDG_DATA_HOME")
-	var jsonPath string
-	var homeDir, _ = os.UserHomeDir()
-	if dataHome != "" {
-		jsonPath = filepath.Join(dataHome, jsonFile)
-	} else {
-		jsonPath = filepath.Join(homeDir, defaultDataHome, jsonFile)
-	}
-
-	if err := createJSONFile(jsonPath); err != nil {
-		return err
-	}
-
-	c.path = jsonPath
-	return nil
-}
-
-// createJSONFile is a function that make new JSON file.
-func createJSONFile(path string) error {
+// createJSONFileIfNotExist is a function that make new JSON file if not exist.
+func createJSONFileIfNotExist(path string) error {
 	if _, err := os.Stat(filepath.Dir(path)); err != nil {
 		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
 			return err

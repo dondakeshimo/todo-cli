@@ -9,6 +9,7 @@ import (
 type Config struct {
 	HideReminder bool
 	HidePriority bool
+	TaskFilePath string
 }
 
 // ConfigFile is information of config file location.
@@ -22,6 +23,7 @@ type ConfigFile struct {
 var DefaultConfig = Config{
 	HideReminder: false,
 	HidePriority: false,
+	TaskFilePath: filepath.Join(findDataDir(), "todo.json"),
 }
 
 // config is a protected member in usecases, which is readable from the other usecases.
@@ -30,6 +32,11 @@ var config Config
 // SetConfig is a setter to config.
 func SetConfig(c Config) {
 	config = c
+}
+
+// GetTaskFilePath is a getter config.TaskFilePath.
+func GetTaskFilePath() string {
+	return config.TaskFilePath
 }
 
 // FindConfigFile return ConfigFile in which ConfigPath is set according to XDG_DATA_HOME.
