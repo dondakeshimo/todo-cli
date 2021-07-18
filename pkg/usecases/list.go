@@ -56,11 +56,11 @@ func List() error {
 func buildRowAccordingToConfig(row columns) []string {
 	builtRow := []string{row.id, row.task, row.remindTime}
 
-	if !config.hideReminder {
+	if !config.HideReminder {
 		builtRow = append(builtRow, row.reminder)
 	}
 
-	if !config.hidePriority {
+	if !config.HidePriority {
 		builtRow = append(builtRow, row.priority)
 	}
 

@@ -1,16 +1,15 @@
 package usecases
 
 // configStruct is an application configuration.
-type configStruct struct {
-	hideReminder bool
-	hidePriority bool
+type Config struct {
+	HideReminder bool
+	HidePriority bool
 }
 
 // config is a protected member in usecases, which is readable from the other usecases.
-var config configStruct
+var config Config
 
 // SetConfig is a setter to config.
-func SetConfig(hideReminder bool, hidePriority bool) {
-	config.hideReminder = hideReminder
-	config.hidePriority = hidePriority
+func SetConfig(c Config) {
+	config = c
 }
