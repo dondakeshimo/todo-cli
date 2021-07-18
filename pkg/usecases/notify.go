@@ -3,18 +3,12 @@ package usecases
 import (
 	"github.com/dondakeshimo/todo-cli/pkg/domain/notifier"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
-	"github.com/dondakeshimo/todo-cli/pkg/gateways/json"
 )
 
 // Notify is a function that notify a task.
 // It should be called internal only.
 func Notify(uuid string) error {
-	jc, err := json.NewClient()
-	if err != nil {
-		return err
-	}
-
-	h, err := task.NewHandler(jc)
+	h, err := task.NewHandler(taskRepository)
 	if err != nil {
 		return err
 	}
