@@ -53,7 +53,7 @@ func buildText(contents string, mentionTo string) string {
 	text := ""
 
 	if mentionTo != "" {
-		text = fmt.Sprintf("@%s\n", mentionTo)
+		text = fmt.Sprintf("<@%s>\n", mentionTo)
 	}
 
 	text += contents

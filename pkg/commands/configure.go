@@ -23,7 +23,7 @@ func init() {
 	configureCmd.Flags().Bool("hide_priority", false, "hide a priority column when show a list")
 	configureCmd.Flags().String("task_file_path", "", "the absolute path of your task json file. if not exist, create new directories and a file at the given path.")
 	configureCmd.Flags().String("slack_webhook_url", "", "slack webhookURL which can be gotten from Incoming Webhook")
-	configureCmd.Flags().String("slack_mention_to", "", "configure the user name whom mention to in slack message")
+	configureCmd.Flags().String("slack_mention_to", "", "member ID of you if you want to be mentioned to in slack message")
 	configureCmd.Flags().Bool("reset_config", false, "reset config to default")
 	configureCmd.Flags().Bool("show_config", false, "show your config after setting up given change")
 }
