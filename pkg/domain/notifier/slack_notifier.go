@@ -44,7 +44,10 @@ func (sn *SlackNotifier) Push(r Request) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer res.Body.Close()
+
+	if err := res.Body.Close(); err != nil {
+		return "", err
+	}
 
 	return "", nil
 }
