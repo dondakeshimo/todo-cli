@@ -20,7 +20,7 @@ func init() {
 	rootCmd.AddCommand(addCmd)
 
 	addCmd.Flags().StringP("remind_time", "d", "", "remind_time (2021/3/3 03:03, 2021/3/3, +2h3m, task-4h15m)")
-	addCmd.Flags().StringP("reminder", "r", "", "choose reminder from [macos]")
+	addCmd.Flags().StringP("reminder", "r", "", "choose reminder from [macos, slack]")
 	addCmd.Flags().IntP("priority", "p", 100, "task's priority. Lower number means high priority.")
 }
 
