@@ -6,17 +6,14 @@ Manage TODO List At CLI
 [go-test-image]: https://github.com/dondakeshimo/todo-cli/workflows/Go/badge.svg
 [go-test-url]: https://github.com/dondakeshimo/todo-cli/actions?query=workflow%3AGo
 
-:warning: only support MacOS now...
-
-![result](https://user-images.githubusercontent.com/23194960/110241420-fc9d0100-7f93-11eb-82df-2e3903d38166.gif)
+## Why todo-cli
+- simple and light
+- supply shell completion
+- not show information if you not need
 
 ## Install
-#### go get
+#### go installation
 This is a simple way, but require [golang](https://golang.org/) .
-
-```bash
-$ go get github.com/dondakeshimo/todo-cli/cmd/todo
-```
 
 Make sure that you have already added binary path to your PATH.
 
@@ -24,13 +21,26 @@ Make sure that you have already added binary path to your PATH.
 $ export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
+##### Go version \< 1.16
+```bash
+$ go get -u github.com/dondakeshimo/todo-cli/cmd/todo
+```
+
+##### Go 1.16+
+```bash
+$ go install github.com/dondakeshimo/todo-cli/cmd/todo@latest
+```
+
 #### download binary
 You can download binary from our repository.
+Bellow example is for MaxOS.
 
 ```bash
-$ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v0.0.8/todo-0.0.8.macos-10.15.tar.gz
+$ TODO_VERSION=0.4.0
 
-$ tar -xvf todo-0.0.8.macos-10.15.tar.gz
+$ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v${TODO_VERSION}/todo-${TODO_VERSION}.macos-10.15.tar.gz
+
+$ tar -xvf todo-${TODO_VERSION}.macos-10.15.tar.gz
 
 $ mv todo path/to/your/$PATH
 ```
@@ -39,28 +49,96 @@ $ mv todo path/to/your/$PATH
 
 ```bash
 $ todo --help
-NAME:
-   todo - Manage Your TODO
+Manage Your TODO
 
-USAGE:
-   todo [global options] command [command options] [arguments...]
+Usage:
+  todo [command]
 
-VERSION:
-   0.1.0
+Available Commands:
+  add         Add a task
+  close       Close tasks
+  completion  generate the autocompletion script for the specified shell
+  configure   Configure your todo-cli
+  help        Help about any command
+  list        List tasks
+  modify      Modify a task
+  notify      Notify a task (basicaly be used by system)
 
-COMMANDS:
-   list, l    List tasks
-   add, a     Add a task
-   close, c   Close tasks
-   modify, m  Modify a task
-   notify     Notify a task (basicaly be used by system)
-   help, h    Shows a list of commands or help for one command
+Flags:
+  -h, --help   help for todo
 
-GLOBAL OPTIONS:
-   --help, -h     show help (default: false)
-   --version, -v  print the version (default: false)
+Use "todo [command] --help" for more information about a command.
 ```
 
+```bash
+$ todo list
++----+--------------------------------+----------------+----------+----------+
+| ID |              Task              |   RemindTime   | Reminder | Priority |
++----+--------------------------------+----------------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
+|    | task is your first TODO        |                |          |          |
++----+--------------------------------+----------------+----------+----------+
+
+$ todo close -i=1
+
+$ todo l
++----+------+------------+----------+----------+
+| ID | Task | RemindTime | Reminder | Priority |
++----+------+------------+----------+----------+
++----+------+------------+----------+----------+
+
+$ todo add "must task" -d="2021/03/03 12:00" -p=0
+
+$ todo l
++----+-----------+----------------+----------+----------+
+| ID |   Task    |   RemindTime   | Reminder | Priority |
++----+-----------+----------------+----------+----------+
+|  1 | must task | 2021/3/3 12:00 |          |        0 |
++----+-----------+----------------+----------+----------+
+
+$ todo a "boring task"
+
+$ todo a "important task" -d="2022/01/01" -p=50
+
+$ todo l
++----+----------------+----------------+----------+----------+
+| ID |      Task      |   RemindTime   | Reminder | Priority |
++----+----------------+----------------+----------+----------+
+|  1 | must task      | 2021/3/3 12:00 |          |        0 |
+|  2 | important task | 2022/1/1 00:00 |          |       50 |
+|  3 | boring task    |                |          |      100 |
++----+----------------+----------------+----------+----------+
+
+$ todo m -i=1 -t="should task" -p=10
+
+$ todo l
++----+----------------+----------------+----------+----------+
+| ID |      Task      |   RemindTime   | Reminder | Priority |
++----+----------------+----------------+----------+----------+
+|  1 | should task    | 2021/3/3 12:00 |          |       10 |
+|  2 | important task | 2022/1/1 00:00 |          |       50 |
+|  3 | boring task    |                |          |      100 |
++----+----------------+----------------+----------+----------+
+
+$ todo conf --hide_reminder=true --show_config
+taskfilepath: /home/dondakeshimo/.local/share/todo/todo.json
+hidepriority: false
+hidereminder: true
+
+$ todo l
++----+----------------+----------------+----------+
+| ID |      Task      |   RemindTime   | Priority |
++----+----------------+----------------+----------+
+|  1 | should task    | 2021/3/3 12:00 |       10 |
+|  2 | important task | 2022/1/1 00:00 |       50 |
+|  3 | boring task    |                |      100 |
++----+----------------+----------------+----------+
+```
+
+:warning: **reminder feature is only supported by macos**
+
+<!--
+TODO: rewrite for cobra
 ## Completion
 You can use completion with bash or zsh.
 
@@ -87,7 +165,9 @@ will allow the auto-completion to persist across new shells.
 PROG=todo
 _CLI_ZSH_AUTOCOMPLETE_HACK=1
 source path/to/todo-cli/scripts/zsh_autocomplete
+source $(todo completion zsh)
 ```
+-->
 
 ## Uninstall
 ```bash
