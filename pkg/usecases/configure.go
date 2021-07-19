@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -70,4 +71,30 @@ func findDataDir() string {
 	}
 
 	return configPath
+}
+
+// ValidateTaskFilePath judges that a given path is valid for TaskFilePath.
+func ValidateTaskFilePath(path string) error {
+	// only allow absolute path
+	absPath, err := filepath.Abs(path)
+	if err != nil {
+		return err
+	}
+	if path != absPath {
+		return fmt.Errorf("TaskFilePath only support an absolute path")
+	}
+
+	// only allow JSON file
+	fInfo, err := os.Stat(path)
+	if err != nil {
+		if os.IsExist(err) {
+			// it is invalid that the file is exist and occurs an error
+			return err
+		}
+	}
+	if fInfo.IsDir() {
+		return fmt.Errorf("%s is a directory", path)
+	}
+
+	return nil
 }

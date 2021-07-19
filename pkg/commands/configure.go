@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"github.com/dondakeshimo/todo-cli/pkg/usecases"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -18,6 +19,7 @@ func init() {
 
 	configureCmd.Flags().Bool("hide_reminder", false, "hide a reminder column when show a list")
 	configureCmd.Flags().Bool("hide_priority", false, "hide a priority column when show a list")
+	configureCmd.Flags().String("task_file_path", "", "the absolute path of your task json file. if not exist, create new directories and a file at the given path.")
 }
 
 // configureHandler overwrites viper config and writes out.
@@ -36,6 +38,17 @@ func configureHandler(c *cobra.Command, args []string) error {
 			return err
 		}
 		viper.Set("HidePriority", f)
+	}
+
+	if c.Flags().Changed("task_file_path") {
+		f, err := c.Flags().GetString("task_file_path")
+		if err != nil {
+			return err
+		}
+		if err := usecases.ValidateTaskFilePath(f); err != nil {
+			return err
+		}
+		viper.Set("TaskFilePath", f)
 	}
 
 	if err := viper.WriteConfig(); err != nil {
