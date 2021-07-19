@@ -159,6 +159,8 @@ After 1 minute, you will get a message like bellow.
 
 ![notification](https://user-images.githubusercontent.com/23194960/126190791-be2dae4a-5e56-4e59-8151-a6d88e48f0e9.png)
 
+If you push `done` button, the task will be closed.
+
 
 #### slack
 You have to configure Slack App.
