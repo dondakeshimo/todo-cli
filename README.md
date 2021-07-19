@@ -135,7 +135,59 @@ $ todo l
 +----+----------------+----------------+----------+
 ```
 
+### Reminder
 :warning: **reminder feature is only supported by macos**
+
+You can choose reminder from macos or slack.
+
+#### macos
+You don't have to any configuration.
+You just add a task with option `-r=macos`.
+
+```bash
+$ todo a "remind me this task" -r=macos -d=+1m
+
+$ todo l
++----+---------------------+-----------------+----------+----------+
+| ID |        Task         |   RemindTime    | Reminder | Priority |
++----+---------------------+-----------------+----------+----------+
+|  1 | remind me this task | 2021/3/3 01:01  | macos    |      100 |
++----+---------------------+-----------------+----------+----------+
+```
+
+After 1 minute, you will get a message like bellow.
+
+![notification](https://user-images.githubusercontent.com/23194960/126190791-be2dae4a-5e56-4e59-8151-a6d88e48f0e9.png)
+
+If you push `done` button, the task will be closed.
+
+
+#### slack
+You have to configure Slack App.
+Install Incomming Webhook to your workspace from [here](https://slack.com/apps) and configure information for todo-cli.
+Member ID of slack shown by profile is set to `--slack_mention_to` option but it is not required.
+
+```bash
+$ todo conf --slack_webhook_url="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX" --slack_mention_to=XXXXXXXXXX
+```
+
+Then, add a task with `-r=slack` option.
+
+```bash
+$ todo a "remind me this task in slack\!" -r=slack -d=+1m
+
+$ todo l
++----+-------------------------------+-----------------+----------+----------+
+| ID |             Task              |   RemindTime    | Reminder | Priority |
++----+-------------------------------+-----------------+----------+----------+
+|  1 | remind me this task in slack! | 2021/7/20 01:11 | slack    |      100 |
++----+-------------------------------+-----------------+----------+----------+
+```
+
+you will get a message in slack.
+
+![notification in slack](https://user-images.githubusercontent.com/23194960/126192217-cee8469b-b917-4770-ab76-f604556bd3e2.png)
+
 
 <!--
 TODO: rewrite for cobra

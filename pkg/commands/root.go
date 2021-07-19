@@ -29,6 +29,8 @@ func initConfig() {
 	viper.SetDefault("HideReminder", usecases.DefaultConfig.HideReminder)
 	viper.SetDefault("HidePriority", usecases.DefaultConfig.HidePriority)
 	viper.SetDefault("TaskFilePath", usecases.DefaultConfig.TaskFilePath)
+	viper.SetDefault("SlackWebhookURL", usecases.DefaultConfig.SlackWebhookURL)
+	viper.SetDefault("SlackMentionTo", usecases.DefaultConfig.SlackMentionTo)
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
