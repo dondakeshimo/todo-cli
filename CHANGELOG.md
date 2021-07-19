@@ -1,3 +1,8 @@
+## Version 0.4.0
+* add configure command
+* can hide reminder and priority from list
+* can specify todo file path
+
 ## Version 0.3.0
 * improve arguments of add-command more comfortable
 * can chose multiple ids in comma separated list
