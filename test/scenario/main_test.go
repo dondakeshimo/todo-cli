@@ -25,7 +25,8 @@ func setup() (func(), error) {
 	const binaryDir = "../../"
 	const varName = "XDG_DATA_HOME"
 	const jsonFilename = "todo.json"
-	const jsonDir = "todo"
+	const configFilename = "config.yaml"
+	const appDir = "todo"
 
 	dir, err := os.Getwd()
 	if err != nil {
@@ -44,7 +45,15 @@ func setup() (func(), error) {
 		return nil, err
 	}
 
-	p = filepath.Join(dir, jsonDir, jsonFilename)
+	p = filepath.Join(dir, appDir, jsonFilename)
+	_, err = os.Stat(p)
+	if err == nil || os.IsExist(err) {
+		if err := os.Remove(p); err != nil {
+			log.Fatalf("could not remove [%s]: %s", p, err.Error())
+		}
+	}
+
+	p = filepath.Join(dir, appDir, configFilename)
 	_, err = os.Stat(p)
 	if err == nil || os.IsExist(err) {
 		if err := os.Remove(p); err != nil {
@@ -53,11 +62,19 @@ func setup() (func(), error) {
 	}
 
 	return func() {
-		p := filepath.Join(dir, jsonDir, jsonFilename)
+		p := filepath.Join(dir, appDir, jsonFilename)
 		_, err = os.Stat(p)
 		if err == nil || os.IsExist(err) {
 			if err := os.Remove(p); err != nil {
 				log.Printf("could not remove [%s]: %s", p, err.Error())
+			}
+		}
+
+		p = filepath.Join(dir, appDir, configFilename)
+		_, err = os.Stat(p)
+		if err == nil || os.IsExist(err) {
+			if err := os.Remove(p); err != nil {
+				log.Fatalf("could not remove [%s]: %s", p, err.Error())
 			}
 		}
 

@@ -144,8 +144,60 @@ func TestWithoutReminder(t *testing.T) {
 			err:       "",
 		},
 		{
+			name:      "config Hide",
+			command:   []string{"conf", "--hide_reminder=true", "--hide_priority=true"},
+			hasOutput: false,
+			want:      "",
+			wantError: false,
+			err:       "",
+		},
+		{
+			name:      "list hided tasks",
+			command:   []string{"l"},
+			hasOutput: true,
+			want: `+----+--------------------------------+----------------+
+| ID |              Task              |   RemindTime   |
++----+--------------------------------+----------------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |
+|    | task is your first TODO        |                |
+|  2 | scenario test 6                |                |
+|  3 | scenario test modified 1       | 2099/1/1 12:00 |
+|  4 | scenario test 2                | 2099/1/1 00:00 |
+|  5 | シナリオテスト 7               |                |
++----+--------------------------------+----------------+
+`,
+			wantError: false,
+			err:       "",
+		},
+		{
+			name:      "reset config",
+			command:   []string{"conf", "--reset_config=true"},
+			hasOutput: false,
+			want:      "",
+			wantError: false,
+			err:       "",
+		},
+		{
+			name:      "list not hided tasks",
+			command:   []string{"l"},
+			hasOutput: true,
+			want: `+----+--------------------------------+----------------+----------+----------+
+| ID |              Task              |   RemindTime   | Reminder | Priority |
++----+--------------------------------+----------------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
+|    | task is your first TODO        |                |          |          |
+|  2 | scenario test 6                |                |          |       50 |
+|  3 | scenario test modified 1       | 2099/1/1 12:00 |          |      100 |
+|  4 | scenario test 2                | 2099/1/1 00:00 | macos    |      100 |
+|  5 | シナリオテスト 7               |                |          |      100 |
++----+--------------------------------+----------------+----------+----------+
+`,
+			wantError: false,
+			err:       "",
+		},
+		{
 			name:      "clear tasks",
-			command:   []string{"c", "-i=1", "-i=3", "-i=4", "-i=5"},
+			command:   []string{"c", "-i=1,3,5"},
 			hasOutput: false,
 			want:      "",
 			wantError: false,
@@ -153,7 +205,7 @@ func TestWithoutReminder(t *testing.T) {
 		},
 		{
 			name:      "clear task 2",
-			command:   []string{"c", "-i=1"},
+			command:   []string{"c", "-i=1", "-i=2"},
 			hasOutput: false,
 			want:      "",
 			wantError: false,
