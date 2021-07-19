@@ -56,7 +56,7 @@ fmt: ## format go files
 # this command just run golangci-lint
 # so, if you hate docker, you can run equivalent this installing golangci-lint locally
 lint: ## check lint, format
-	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.31.0 golangci-lint run -v
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.41.0 golangci-lint run -v
 
 uninstall: ## uninstall todo-cli
 	./scripts/uninstall.sh
