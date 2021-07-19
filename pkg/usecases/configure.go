@@ -8,9 +8,11 @@ import (
 
 // Config is an application configuration.
 type Config struct {
-	HideReminder bool
-	HidePriority bool
-	TaskFilePath string
+	HideReminder    bool
+	HidePriority    bool
+	TaskFilePath    string
+	SlackWebhookURL string
+	SlackMentionTo  string
 }
 
 // ConfigFile is information of config file location.
@@ -22,9 +24,11 @@ type ConfigFile struct {
 
 // DefaultConfig is a default config.
 var DefaultConfig = Config{
-	HideReminder: false,
-	HidePriority: false,
-	TaskFilePath: filepath.Join(findDataDir(), "todo.json"),
+	HideReminder:    false,
+	HidePriority:    false,
+	TaskFilePath:    filepath.Join(findDataDir(), "todo.json"),
+	SlackWebhookURL: "",
+	SlackMentionTo:  "",
 }
 
 // config is a protected member in usecases, which is readable from the other usecases.

@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"github.com/dondakeshimo/todo-cli/pkg/domain/notifier"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
 
@@ -25,8 +26,17 @@ func Notify(uuid string) error {
 	}
 
 	var n notifier.Notifier
-	if t.Reminder() == "macos" {
-		n = &notifier.OsascriptNotifier{}
+	if t.Reminder() == reminder.MacOS {
+		n, err = notifier.NewOsascriptNotifier()
+		if err != nil {
+			return err
+		}
+	}
+	if t.Reminder() == reminder.Slack {
+		n, err = notifier.NewSlackNotifier(config.SlackWebhookURL, config.SlackMentionTo)
+		if err != nil {
+			return err
+		}
 	}
 
 	reply, err := n.Push(r)
