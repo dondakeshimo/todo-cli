@@ -15,11 +15,11 @@ all: help
 
 .PHONY: init
 init: ## initilize developper environment
-	go install github.com/golang/mock/mockgen
+	go install github.com/golang/mock/mockgen@latest
 
 .PHONY: get
 get: ## go get dependencies
-	$(GOGET) -v -t -d ./...
+	$(GOGET) -u -v -t -d ./...
 
 .PHONY: install
 install: ## go install
