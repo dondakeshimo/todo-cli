@@ -7,6 +7,11 @@ import (
 // Reminder is a Value Object.
 type Reminder string
 
+const (
+	MacOS = Reminder("macos")
+	Slack = Reminder("slack")
+)
+
 // NewReminder is a constructor for Rminder.
 func NewReminder(str string) (Reminder, error) {
 	if !isValidReminder(str) {
@@ -18,9 +23,9 @@ func NewReminder(str string) (Reminder, error) {
 
 // IsValidReminder is a function that judge a reminder valid.
 func isValidReminder(str string) bool {
-	allowReminders := [1]string{"macos"}
+	allowReminders := [2]Reminder{MacOS, Slack}
 	for _, a := range allowReminders {
-		if str == a {
+		if str == string(a) {
 			return true
 		}
 	}
