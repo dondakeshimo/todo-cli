@@ -9,6 +9,11 @@ import (
 // OsascriptNotifier is a struct that notify with osascript.
 type OsascriptNotifier struct{}
 
+// NewOsascriptNotifier is a constructor for OsascriptNotifier.
+func NewOsascriptNotifier() (*OsascriptNotifier, error) {
+	return new(OsascriptNotifier), nil
+}
+
 // Push is a function that push notification.
 func (on *OsascriptNotifier) Push(r Request) (string, error) {
 	out, err := exec.Command("osascript", "-e", buildScript(r)).Output()
