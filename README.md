@@ -40,7 +40,7 @@ $ TODO_VERSION=0.4.0
 
 $ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v${TODO_VERSION}/todo-${TODO_VERSION}.macos-10.15.tar.gz
 
-$ tar -xvf todo-0.0.8.macos-10.15.tar.gz
+$ tar -xvf todo-${TODO_VERSION}.macos-10.15.tar.gz
 
 $ mv todo path/to/your/$PATH
 ```
