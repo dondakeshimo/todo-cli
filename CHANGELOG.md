@@ -1,3 +1,6 @@
+## Version 0.5.0
+* add slack reminder
+
 ## Version 0.4.0
 * add configure command
 * can hide reminder and priority from list
