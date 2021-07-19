@@ -8,7 +8,9 @@ import (
 type Reminder string
 
 const (
+	// MacOS is a type of reminder.
 	MacOS = Reminder("macos")
+	// Slack is a type of reminder.
 	Slack = Reminder("slack")
 )
 
