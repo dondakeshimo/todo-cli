@@ -11,6 +11,7 @@ import (
 // AddRequest is a request parameter to invoke Add.
 type AddRequest struct {
 	Task           string
+	Group          string
 	RemindTime     remindtime.RemindTime
 	IsRemindTime   bool
 	RelativeTime   remindtime.RelativeTime
@@ -50,7 +51,7 @@ func Add(r AddRequest) error {
 		return err
 	}
 
-	nt := task.NewTask(0, r.Task, rt, uu.String(), rm, r.Priority)
+	nt := task.NewTask(0, r.Task, r.Group, rt, uu.String(), rm, r.Priority)
 
 	h.AppendTask(nt)
 

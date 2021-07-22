@@ -14,6 +14,7 @@ import (
 type Task struct {
 	id         int
 	task       string
+	group      string
 	remindTime remindtime.RemindTime
 	uuid       string
 	reminder   reminder.Reminder
@@ -21,10 +22,11 @@ type Task struct {
 }
 
 // NewTask is a constructor for Task.
-func NewTask(i int, t string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder, p int) Task {
+func NewTask(i int, t string, g string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder, p int) Task {
 	return Task{
 		id:         i,
 		task:       t,
+		group:      g,
 		remindTime: rt,
 		uuid:       uuid,
 		reminder:   rm,
@@ -40,6 +42,11 @@ func (t Task) ID() int {
 // Task is a getter for task.
 func (t Task) Task() string {
 	return t.task
+}
+
+// Grou@ is a getter for group.
+func (t Task) Group() string {
+	return t.group
 }
 
 // RemindTime is a getter for remindTime.
@@ -66,6 +73,7 @@ func (t Task) alterID(id int) Task {
 	return Task{
 		id:         id,
 		task:       t.task,
+		group:      t.group,
 		remindTime: t.remindTime,
 		uuid:       t.uuid,
 		reminder:   t.reminder,

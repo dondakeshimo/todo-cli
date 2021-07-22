@@ -12,9 +12,9 @@ import (
 
 func TestGetTask(t *testing.T) {
 	tasks := []task.Task{}
-	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", "", 1))
-	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", "", 2))
-	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", "", 3))
+	tasks = append(tasks, task.NewTask(1, "", "", "", "uuid1", "", 1))
+	tasks = append(tasks, task.NewTask(2, "", "", "", "uuid2", "", 2))
+	tasks = append(tasks, task.NewTask(3, "", "", "", "uuid3", "", 3))
 
 	handler := task.Handler{}
 
@@ -76,9 +76,9 @@ func TestGetTask(t *testing.T) {
 
 func TestGetTasks(t *testing.T) {
 	tasks := []task.Task{}
-	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", "", 1))
-	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", "", 2))
-	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", "", 3))
+	tasks = append(tasks, task.NewTask(1, "", "", "", "uuid1", "", 1))
+	tasks = append(tasks, task.NewTask(2, "", "", "", "uuid2", "", 2))
+	tasks = append(tasks, task.NewTask(3, "", "", "", "uuid3", "", 3))
 
 	handler := task.Handler{}
 
@@ -110,19 +110,77 @@ func TestGetTasks(t *testing.T) {
 	}
 }
 
-func TestRemoveTask(t *testing.T) {
+func TestGetTasksInGroup(t *testing.T) {
 	tasks := []task.Task{}
-	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", "", 1))
-	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", "", 2))
-	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", "", 3))
+	tasks = append(tasks, task.NewTask(1, "", "group1", "", "uuid1", "", 1))
+	tasks = append(tasks, task.NewTask(2, "", "group2", "", "uuid2", "", 2))
+	tasks = append(tasks, task.NewTask(3, "", "group1", "", "uuid3", "", 3))
+	tasks = append(tasks, task.NewTask(4, "", "group1", "", "uuid4", "", 3))
+	tasks = append(tasks, task.NewTask(5, "", "", "", "uuid4", "", 3))
 
 	tasksSuccess1 := []task.Task{}
-	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "", "uuid2", "", 2))
-	tasksSuccess1 = append(tasksSuccess1, task.NewTask(2, "", "", "uuid3", "", 3))
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "group1", "", "uuid1", "", 1))
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(3, "", "group1", "", "uuid3", "", 3))
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(4, "", "group1", "", "uuid4", "", 3))
 
 	tasksSuccess2 := []task.Task{}
-	tasksSuccess2 = append(tasksSuccess2, task.NewTask(1, "", "", "uuid1", "", 1))
-	tasksSuccess2 = append(tasksSuccess2, task.NewTask(2, "", "", "uuid3", "", 3))
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(2, "", "group2", "", "uuid2", "", 2))
+
+	handler := task.Handler{}
+
+	for _, ts := range tasks {
+		handler.AppendTask(ts)
+	}
+
+	tests := []struct {
+		name  string
+		group string
+		want  []task.Task
+	}{
+		{
+			name:  "Success1",
+			group: "group1",
+			want:  tasksSuccess1,
+		},
+		{
+			name:  "Success2",
+			group: "group2",
+			want:  tasksSuccess2,
+		},
+		{
+			name:  "Success3",
+			group: "group3",
+			want:  []task.Task{},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt // set local scope for parallel test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			got := handler.GetTasksInGroup(tt.group)
+
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Fatalf("want %#v, but %#v", tt.want, got)
+			}
+		})
+	}
+}
+
+func TestRemoveTask(t *testing.T) {
+	tasks := []task.Task{}
+	tasks = append(tasks, task.NewTask(1, "", "", "", "uuid1", "", 1))
+	tasks = append(tasks, task.NewTask(2, "", "", "", "uuid2", "", 2))
+	tasks = append(tasks, task.NewTask(3, "", "", "", "uuid3", "", 3))
+
+	tasksSuccess1 := []task.Task{}
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "", "", "uuid2", "", 2))
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(2, "", "", "", "uuid3", "", 3))
+
+	tasksSuccess2 := []task.Task{}
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(1, "", "", "", "uuid1", "", 1))
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(2, "", "", "", "uuid3", "", 3))
 
 	tests := []struct {
 		name      string
@@ -167,9 +225,9 @@ func TestRemoveTask(t *testing.T) {
 			t.Parallel()
 
 			tasks := []task.Task{}
-			tasks = append(tasks, task.NewTask(1, "", "", "uuid1", "", 1))
-			tasks = append(tasks, task.NewTask(2, "", "", "uuid2", "", 2))
-			tasks = append(tasks, task.NewTask(3, "", "", "uuid3", "", 3))
+			tasks = append(tasks, task.NewTask(1, "", "", "", "uuid1", "", 1))
+			tasks = append(tasks, task.NewTask(2, "", "", "", "uuid2", "", 2))
+			tasks = append(tasks, task.NewTask(3, "", "", "", "uuid3", "", 3))
 
 			handler := task.Handler{}
 			for _, ts := range tasks {
@@ -204,15 +262,15 @@ func TestRemoveTask(t *testing.T) {
 
 func TestRemoveTasks(t *testing.T) {
 	tasks := []task.Task{}
-	tasks = append(tasks, task.NewTask(1, "", "", "uuid1", "", 1))
-	tasks = append(tasks, task.NewTask(2, "", "", "uuid2", "", 2))
-	tasks = append(tasks, task.NewTask(3, "", "", "uuid3", "", 3))
+	tasks = append(tasks, task.NewTask(1, "", "", "", "uuid1", "", 1))
+	tasks = append(tasks, task.NewTask(2, "", "", "", "uuid2", "", 2))
+	tasks = append(tasks, task.NewTask(3, "", "", "", "uuid3", "", 3))
 
 	tasksSuccess1 := []task.Task{}
-	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "", "uuid2", "", 2))
+	tasksSuccess1 = append(tasksSuccess1, task.NewTask(1, "", "", "", "uuid2", "", 2))
 
 	tasksSuccess2 := []task.Task{}
-	tasksSuccess2 = append(tasksSuccess2, task.NewTask(1, "", "", "uuid3", "", 3))
+	tasksSuccess2 = append(tasksSuccess2, task.NewTask(1, "", "", "", "uuid3", "", 3))
 
 	tests := []struct {
 		name      string
@@ -257,9 +315,9 @@ func TestRemoveTasks(t *testing.T) {
 			t.Parallel()
 
 			tasks := []task.Task{}
-			tasks = append(tasks, task.NewTask(1, "", "", "uuid1", "", 1))
-			tasks = append(tasks, task.NewTask(2, "", "", "uuid2", "", 2))
-			tasks = append(tasks, task.NewTask(3, "", "", "uuid3", "", 3))
+			tasks = append(tasks, task.NewTask(1, "", "", "", "uuid1", "", 1))
+			tasks = append(tasks, task.NewTask(2, "", "", "", "uuid2", "", 2))
+			tasks = append(tasks, task.NewTask(3, "", "", "", "uuid3", "", 3))
 
 			handler := task.Handler{}
 			for _, ts := range tasks {

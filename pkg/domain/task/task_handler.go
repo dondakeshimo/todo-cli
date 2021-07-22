@@ -46,6 +46,16 @@ func (h *Handler) GetTasks() []Task {
 	return h.tasks
 }
 
+func (h *Handler) GetTasksInGroup(group string) []Task {
+	ts := []Task{}
+	for _, t := range h.tasks {
+		if t.group == group {
+			ts = append(ts, t)
+		}
+	}
+	return ts
+}
+
 // UpdateTask is a function that overwrite task with id.
 func (h *Handler) UpdateTask(id int, t Task) error {
 	if id > len(h.tasks) || id < 0 {
