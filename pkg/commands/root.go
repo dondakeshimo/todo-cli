@@ -11,8 +11,10 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "todo",
-	Short: "Manage Your TODO",
+	Use:        "todo",
+	Short:      "Manage Your TODO",
+	ValidArgs:  []string{"add", "close", "configure", "list", "modify"},
+	ArgAliases: []string{"add", "a", "close", "c", "configure", "config", "conf", "list", "l", "modify", "m"},
 }
 
 // init is a Main Component, which injects dependencies.
