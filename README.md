@@ -36,7 +36,7 @@ You can download binary from our repository.
 Bellow example is for MaxOS.
 
 ```bash
-$ TODO_VERSION=0.4.0
+$ TODO_VERSION=0.5.0
 
 $ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v${TODO_VERSION}/todo-${TODO_VERSION}.macos-10.15.tar.gz
 
@@ -136,9 +136,9 @@ $ todo l
 ```
 
 ### Reminder
-:warning: **reminder feature is only supported by macos**
-
 You can choose reminder from macos or slack.
+
+If you use linux OS, reminder feature needs cron daemon.
 
 #### macos
 You don't have to any configuration.

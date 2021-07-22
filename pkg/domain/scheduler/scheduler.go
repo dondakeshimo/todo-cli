@@ -27,5 +27,15 @@ func NewScheduler() (Scheduler, error) {
 		return NewLaunchdScheduler(), nil
 	}
 
+	if runtime.GOOS == "linux" {
+		return NewCronScheduler(), nil
+	}
+
 	return nil, fmt.Errorf("no appropriate scheduler with [%s]", runtime.GOOS)
+}
+
+// isExpired is a function that judge plist file is enough old.
+func isExpired(t time.Time) bool {
+	deadline := time.Now().Add(-time.Duration(1) * time.Minute).Unix()
+	return t.Unix() < deadline
 }
