@@ -13,6 +13,7 @@ type Config struct {
 	TaskFilePath    string
 	SlackWebhookURL string
 	SlackMentionTo  string
+	ColumnWidth     int
 }
 
 // ConfigFile is information of config file location.
@@ -29,6 +30,7 @@ var DefaultConfig = Config{
 	TaskFilePath:    filepath.Join(findDataDir(), "todo.json"),
 	SlackWebhookURL: "",
 	SlackMentionTo:  "",
+	ColumnWidth:     30,
 }
 
 // config is a protected member in usecases, which is readable from the other usecases.
