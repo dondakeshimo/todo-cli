@@ -1,3 +1,6 @@
+## Version 0.6.0
+* add cron scheduler
+
 ## Version 0.5.0
 * add slack reminder
 
