@@ -23,15 +23,18 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 	cronCmdStartlineNum = 6
 )
 
+// CronScheduler is a scheduler for command with cron.
 type CronScheduler struct {
 	templateVar map[string]string
 	cronFile    string
 }
 
+// NewCronScheduler is a constructor that make new CronScheduler.
 func NewCronScheduler() *CronScheduler {
 	return &CronScheduler{}
 }
 
+// Register set schedule to cron.
 func (cs *CronScheduler) Register(r Request) error {
 	cs.cronFile = cronPreSettings + cronCmdTemplate
 	cs.renderCmdTemplate(r)
@@ -53,6 +56,7 @@ func (cs *CronScheduler) Register(r Request) error {
 	return nil
 }
 
+// ClearExpired remove enough old cron line.
 func (cs *CronScheduler) ClearExpired() {
 	cs.cronFile = cronPreSettings
 
@@ -65,10 +69,9 @@ func (cs *CronScheduler) ClearExpired() {
 	}
 
 	var _ = cs.setCrontab()
-
-	return
 }
 
+// RemoveWithID is a function that remove cron line with ID.
 func (cs *CronScheduler) RemoveWithID(uuid string) error {
 	cs.cronFile = cronPreSettings
 
@@ -90,6 +93,7 @@ func (cs *CronScheduler) RemoveWithID(uuid string) error {
 	return nil
 }
 
+// setCrontab set a cron file made by todo-cli to crontab.
 func (cs *CronScheduler) setCrontab() error {
 	if err := ioutil.WriteFile(cronFileTmpPath, []byte(cs.cronFile), 0644); err != nil {
 		return err
@@ -106,6 +110,7 @@ func (cs *CronScheduler) setCrontab() error {
 	return nil
 }
 
+// renderCmdTemplate render request information to cronCmdTemplate.
 func (cs *CronScheduler) renderCmdTemplate(r Request) {
 	cs.templateVar = make(map[string]string)
 
@@ -121,6 +126,7 @@ func (cs *CronScheduler) renderCmdTemplate(r Request) {
 	}
 }
 
+// extractCronCmd get command lines from existing crontab.
 func (cs *CronScheduler) extractCronCmd(cron string) []string {
 	cron = strings.TrimSpace(cron)
 	cl := strings.Split(cron, "\n")
@@ -142,6 +148,7 @@ func (cs *CronScheduler) extractCronCmd(cron string) []string {
 	return ec
 }
 
+// getExistingCron returns `crontab -l` result.
 func getExistingCron() (string, error) {
 	out, err := exec.Command("crontab", "-l").CombinedOutput()
 	cron := string(out)
@@ -158,6 +165,7 @@ func getExistingCron() (string, error) {
 	return cron, nil
 }
 
+// equalToPreSettings compares a existing cron file to cronPreSettings for validation to overwrite.
 func equalToPreSettings(cron string) bool {
 	user := strings.Split(cron, "\n")
 	this := strings.Split(cronPreSettings, "\n")
@@ -175,6 +183,7 @@ func equalToPreSettings(cron string) bool {
 	return true
 }
 
+// filterWithUUID remove a cron command line with the given UUID.
 func filterWithUUID(cmds []string, uuid string) []string {
 	var fc []string
 	for _, c := range cmds {
@@ -190,6 +199,7 @@ func filterWithUUID(cmds []string, uuid string) []string {
 	return fc
 }
 
+// extractCronTime returns time.Time read from cron.
 func extractCronTime(line string) time.Time {
 	cl := strings.Split(line, " ")[:4]
 	var mo, _ = strconv.Atoi(cl[3])
