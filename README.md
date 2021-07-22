@@ -189,37 +189,9 @@ you will get a message in slack.
 ![notification in slack](https://user-images.githubusercontent.com/23194960/126192217-cee8469b-b917-4770-ab76-f604556bd3e2.png)
 
 
-<!--
-TODO: rewrite for cobra
-## Completion
-You can use completion with bash or zsh.
-
-##### :warning: zsh completion
-ZSH completion may show inappropriate candidates
-if you didn't configure below setting.  
-We recommend that you set zsh-completion configuration.
-
-#### Bash
-Set `PROG=todo` and load `scripts/bash_autocomplete`.
-Adding the following lines to your BASH configuration file (usually `.bash_profile` )
-will allow the auto-completion to persist across new shells.
-
-```bash
-PROG=todo source path/to/todo-cli/scripts/bash_autocomplete
-```
-
-#### Zsh
-Set `PROG=todo` and `_CLI_ZSH_AUTOCOMPLETE_HACK=1` , then load `scripts/zsh_autocomplete`.
-Adding the following lines to your BASH configuration file (usually `.zshrc` )
-will allow the auto-completion to persist across new shells.
-
-```bash
-PROG=todo
-_CLI_ZSH_AUTOCOMPLETE_HACK=1
-source path/to/todo-cli/scripts/zsh_autocomplete
-source $(todo completion zsh)
-```
--->
+### Completion
+todo-cli is made with cobra, and cobra support generate completion files.
+look at [https://github.com/spf13/cobra/blob/master/shell_completions.md].
 
 ## Uninstall
 ```bash
