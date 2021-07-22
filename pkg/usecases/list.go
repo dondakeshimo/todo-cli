@@ -25,6 +25,7 @@ func List() error {
 
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetAutoFormatHeaders(false) // for preventing header from being made upper case automatically
+	table.SetColWidth(config.ColumnWidth)
 
 	header := columns{
 		id:         "ID",

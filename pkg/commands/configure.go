@@ -24,6 +24,7 @@ func init() {
 	configureCmd.Flags().String("task_file_path", "", "the absolute path of your task json file. if not exist, create new directories and a file at the given path.")
 	configureCmd.Flags().String("slack_webhook_url", "", "slack webhookURL which can be gotten from Incoming Webhook")
 	configureCmd.Flags().String("slack_mention_to", "", "member ID of you if you want to be mentioned to in slack message")
+	configureCmd.Flags().Int("column_width", 30, "default column width")
 	configureCmd.Flags().Bool("reset_config", false, "reset config to default")
 	configureCmd.Flags().Bool("show_config", false, "show your config after setting up given change")
 }
@@ -71,6 +72,14 @@ func configureHandler(c *cobra.Command, args []string) error {
 			return err
 		}
 		viper.Set("SlackMentionTo", f)
+	}
+
+	if c.Flags().Changed("column_width") {
+		f, err := c.Flags().GetInt("column_width")
+		if err != nil {
+			return err
+		}
+		viper.Set("ColumnWidth", f)
 	}
 
 	if c.Flags().Changed("reset_config") {

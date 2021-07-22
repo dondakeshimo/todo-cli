@@ -33,6 +33,7 @@ func initConfig() {
 	viper.SetDefault("TaskFilePath", usecases.DefaultConfig.TaskFilePath)
 	viper.SetDefault("SlackWebhookURL", usecases.DefaultConfig.SlackWebhookURL)
 	viper.SetDefault("SlackMentionTo", usecases.DefaultConfig.SlackMentionTo)
+	viper.SetDefault("ColumnWidth", usecases.DefaultConfig.ColumnWidth)
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
