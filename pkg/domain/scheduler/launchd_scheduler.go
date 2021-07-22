@@ -86,7 +86,7 @@ func (ls *LaunchdScheduler) buildPlist(r Request) {
 
 	ls.templateVar["{{label}}"] = strconv.FormatInt(r.DateTime.Unix(), 10)
 
-	ls.templateVar["{{command}}"] = buildCommand(r.Command)
+	ls.templateVar["{{command}}"] = buildPlistCommand(r.Command)
 
 	ls.templateVar["{{month}}"] = strconv.Itoa(int(r.DateTime.Month()))
 	ls.templateVar["{{day}}"] = strconv.Itoa(r.DateTime.Day())
@@ -101,7 +101,7 @@ func (ls *LaunchdScheduler) buildPlist(r Request) {
 }
 
 // buildCommand is a function that make command to set launchd.
-func buildCommand(str string) string {
+func buildPlistCommand(str string) string {
 	command := ""
 	for _, s := range strings.Split(str, " ") {
 		command = command + "        <string>" + s + "</string>\n"
@@ -156,10 +156,4 @@ func extractIDAndTime(path string) (string, time.Time) {
 
 	t, _ := strconv.ParseInt(s[1], 10, 64)
 	return s[0], time.Unix(t, 0)
-}
-
-// isExpired is a function that judge plist file is enough old.
-func isExpired(t time.Time) bool {
-	deadline := time.Now().Add(-time.Duration(1) * time.Minute).Unix()
-	return t.Unix() < deadline
 }
