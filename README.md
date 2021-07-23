@@ -218,8 +218,8 @@ you will get a message in slack.
 
 <a id="sec0-3-2-0"></a>
 ### Completion
-todo-cli is made with cobra, and cobra support generate completion files.
-look at [https://github.com/spf13/cobra/blob/master/shell_completions.md].
+todo-cli is made with cobra, then cobra supports generating completion files.
+look at [cobra document](https://github.com/spf13/cobra/blob/master/shell_completions.md).
 
 <a id="sec0-4-0-0"></a>
 ## Uninstall
