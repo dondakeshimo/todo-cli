@@ -46,6 +46,7 @@ func (h *Handler) GetTasks() []Task {
 	return h.tasks
 }
 
+// GetTasksInGroup returns tasks match the give group.
 func (h *Handler) GetTasksInGroup(group string) []Task {
 	ts := []Task{}
 	for _, t := range h.tasks {
