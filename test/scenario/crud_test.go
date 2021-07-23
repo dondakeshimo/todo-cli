@@ -33,12 +33,12 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list initial sample",
 			command:   []string{"l"},
 			hasOutput: true,
-			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | Reminder | Priority |
-+----+--------------------------------+----------------+----------+----------+
-|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
-|    | task is your first TODO        |                |          |          |
-+----+--------------------------------+----------------+----------+----------+
+			want: `+----+--------------------------------+----------------+-------+----------+----------+
+| ID |              Task              |   RemindTime   | Group | Reminder | Priority |
++----+--------------------------------+----------------+-------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |       |          |        0 |
+|    | task is your first TODO        |                |       |          |          |
++----+--------------------------------+----------------+-------+----------+----------+
 `,
 			wantError: false,
 			err:       "",
@@ -100,19 +100,41 @@ func TestWithoutReminder(t *testing.T) {
 			err:       "",
 		},
 		{
+			name:      "add task 8 with group",
+			command:   []string{"a", "シナリオテスト 8", "-g", "scenario"},
+			hasOutput: false,
+			want:      "",
+			wantError: false,
+			err:       "",
+		},
+		{
 			name:      "list added tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | Reminder | Priority |
-+----+--------------------------------+----------------+----------+----------+
-|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
-|    | task is your first TODO        |                |          |          |
-|  2 | scenario test 6                |                |          |       50 |
-|  3 | scenario test 1                |                |          |      100 |
-|  4 | scenario test 2                | 2099/1/1 00:00 | macos    |      100 |
-|  5 | シナリオテスト 7               |                |          |      100 |
-+----+--------------------------------+----------------+----------+----------+
+            want: `+----+--------------------------------+----------------+----------+----------+----------+
+| ID |              Task              |   RemindTime   |  Group   | Reminder | Priority |
++----+--------------------------------+----------------+----------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |          |        0 |
+|    | task is your first TODO        |                |          |          |          |
+|  2 | scenario test 6                |                |          |          |       50 |
+|  3 | scenario test 1                |                |          |          |      100 |
+|  4 | scenario test 2                | 2099/1/1 00:00 |          | macos    |      100 |
+|  5 | シナリオテスト 7               |                |          |          |      100 |
+|  6 | シナリオテスト 8               |                | scenario |          |      100 |
++----+--------------------------------+----------------+----------+----------+----------+
+`,
+			wantError: false,
+			err:       "",
+		},
+		{
+			name:      "list filtered tasks",
+			command:   []string{"l", "-g", "scenario"},
+			hasOutput: true,
+            want: `+----+------------------+------------+----------+----------+----------+
+| ID |       Task       | RemindTime |  Group   | Reminder | Priority |
++----+------------------+------------+----------+----------+----------+
+|  6 | シナリオテスト 8 |            | scenario |          |      100 |
++----+------------------+------------+----------+----------+----------+
 `,
 			wantError: false,
 			err:       "",
@@ -129,23 +151,24 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list modified tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | Reminder | Priority |
-+----+--------------------------------+----------------+----------+----------+
-|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
-|    | task is your first TODO        |                |          |          |
-|  2 | scenario test 6                |                |          |       50 |
-|  3 | scenario test modified 1       | 2099/1/1 12:00 |          |      100 |
-|  4 | scenario test 2                | 2099/1/1 00:00 | macos    |      100 |
-|  5 | シナリオテスト 7               |                |          |      100 |
-+----+--------------------------------+----------------+----------+----------+
+            want: `+----+--------------------------------+----------------+----------+----------+----------+
+| ID |              Task              |   RemindTime   |  Group   | Reminder | Priority |
++----+--------------------------------+----------------+----------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |          |        0 |
+|    | task is your first TODO        |                |          |          |          |
+|  2 | scenario test 6                |                |          |          |       50 |
+|  3 | scenario test modified 1       | 2099/1/1 12:00 |          |          |      100 |
+|  4 | scenario test 2                | 2099/1/1 00:00 |          | macos    |      100 |
+|  5 | シナリオテスト 7               |                |          |          |      100 |
+|  6 | シナリオテスト 8               |                | scenario |          |      100 |
++----+--------------------------------+----------------+----------+----------+----------+
 `,
 			wantError: false,
 			err:       "",
 		},
 		{
 			name:      "config Hide",
-			command:   []string{"conf", "--hide_reminder=true", "--hide_priority=true"},
+			command:   []string{"conf", "--hide_group=true", "--hide_reminder=true", "--hide_priority=true"},
 			hasOutput: false,
 			want:      "",
 			wantError: false,
@@ -164,6 +187,7 @@ func TestWithoutReminder(t *testing.T) {
 |  3 | scenario test modified 1       | 2099/1/1 12:00 |
 |  4 | scenario test 2                | 2099/1/1 00:00 |
 |  5 | シナリオテスト 7               |                |
+|  6 | シナリオテスト 8               |                |
 +----+--------------------------------+----------------+
 `,
 			wantError: false,
@@ -181,16 +205,17 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list not hided tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want: `+----+--------------------------------+----------------+----------+----------+
-| ID |              Task              |   RemindTime   | Reminder | Priority |
-+----+--------------------------------+----------------+----------+----------+
-|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |        0 |
-|    | task is your first TODO        |                |          |          |
-|  2 | scenario test 6                |                |          |       50 |
-|  3 | scenario test modified 1       | 2099/1/1 12:00 |          |      100 |
-|  4 | scenario test 2                | 2099/1/1 00:00 | macos    |      100 |
-|  5 | シナリオテスト 7               |                |          |      100 |
-+----+--------------------------------+----------------+----------+----------+
+            want: `+----+--------------------------------+----------------+----------+----------+----------+
+| ID |              Task              |   RemindTime   |  Group   | Reminder | Priority |
++----+--------------------------------+----------------+----------+----------+----------+
+|  1 | deleting or modifying this     | 2099/1/1 00:00 |          |          |        0 |
+|    | task is your first TODO        |                |          |          |          |
+|  2 | scenario test 6                |                |          |          |       50 |
+|  3 | scenario test modified 1       | 2099/1/1 12:00 |          |          |      100 |
+|  4 | scenario test 2                | 2099/1/1 00:00 |          | macos    |      100 |
+|  5 | シナリオテスト 7               |                |          |          |      100 |
+|  6 | シナリオテスト 8               |                | scenario |          |      100 |
++----+--------------------------------+----------------+----------+----------+----------+
 `,
 			wantError: false,
 			err:       "",
@@ -205,7 +230,7 @@ func TestWithoutReminder(t *testing.T) {
 		},
 		{
 			name:      "clear task 2",
-			command:   []string{"c", "-i=1", "-i=2"},
+			command:   []string{"c", "-i=1", "-i=2,3"},
 			hasOutput: false,
 			want:      "",
 			wantError: false,
@@ -215,10 +240,10 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list modified tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want: `+----+------+------------+----------+----------+
-| ID | Task | RemindTime | Reminder | Priority |
-+----+------+------------+----------+----------+
-+----+------+------------+----------+----------+
+            want: `+----+------+------------+-------+----------+----------+
+| ID | Task | RemindTime | Group | Reminder | Priority |
++----+------+------------+-------+----------+----------+
++----+------+------------+-------+----------+----------+
 `,
 			wantError: false,
 			err:       "",
@@ -241,13 +266,15 @@ func TestWithoutReminder(t *testing.T) {
 			}
 
 			if sc.wantError && err.Error() != sc.err {
-				fmt.Println(11)
 				t.Fatalf("want %#v, but %#v", sc.err, err.Error())
 			}
 
 			if sc.hasOutput {
 				if string(got) != sc.want {
-					t.Fatalf("want %#v, but %#v", sc.want, string(got))
+                    t.Log("want")
+                    t.Log(sc.want)
+                    t.Log("got")
+                    t.Fatal(string(got))
 				}
 			}
 		})
