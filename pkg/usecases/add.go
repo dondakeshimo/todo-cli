@@ -1,8 +1,6 @@
 package usecases
 
 import (
-	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 	"github.com/google/uuid"
@@ -12,11 +10,11 @@ import (
 type AddRequest struct {
 	Task           string
 	Group          string
-	RemindTime     remindtime.RemindTime
+	RemindTime     task.RemindTime
 	IsRemindTime   bool
-	RelativeTime   remindtime.RelativeTime
+	RelativeTime   task.RelativeTime
 	IsRelativeTime bool
-	Reminder       reminder.Reminder
+	Reminder       task.Reminder
 	IsReminder     bool
 	Priority       int
 }
@@ -28,7 +26,7 @@ func Add(r AddRequest) error {
 		return err
 	}
 
-	rt := remindtime.RemindTime("")
+	rt := task.RemindTime("")
 	if r.IsRelativeTime {
 		nrt, err := rt.AddTime(r.RelativeTime)
 		if err != nil {
@@ -41,7 +39,7 @@ func Add(r AddRequest) error {
 		rt = r.RemindTime
 	}
 
-	rm := reminder.Reminder("")
+	rm := task.Reminder("")
 	if r.IsReminder {
 		rm = r.Reminder
 	}

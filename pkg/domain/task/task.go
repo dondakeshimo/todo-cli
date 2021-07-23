@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 )
 
@@ -15,14 +13,14 @@ type Task struct {
 	id         int
 	task       string
 	group      string
-	remindTime remindtime.RemindTime
+	remindTime RemindTime
 	uuid       string
-	reminder   reminder.Reminder
+	reminder   Reminder
 	priority   int
 }
 
 // NewTask is a constructor for Task.
-func NewTask(i int, t string, g string, rt remindtime.RemindTime, uuid string, rm reminder.Reminder, p int) Task {
+func NewTask(i int, t string, g string, rt RemindTime, uuid string, rm Reminder, p int) Task {
 	return Task{
 		id:         i,
 		task:       t,
@@ -50,7 +48,7 @@ func (t Task) Group() string {
 }
 
 // RemindTime is a getter for remindTime.
-func (t Task) RemindTime() remindtime.RemindTime {
+func (t Task) RemindTime() RemindTime {
 	return t.remindTime
 }
 
@@ -60,7 +58,7 @@ func (t Task) UUID() string {
 }
 
 // Reminder is a getter for reminder.
-func (t Task) Reminder() reminder.Reminder {
+func (t Task) Reminder() Reminder {
 	return t.reminder
 }
 

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
 
 func TestIsValidRelativeTime(t *testing.T) {
@@ -26,7 +26,7 @@ func TestIsValidRelativeTime(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := remindtime.IsValidRelativeTime(tt.str)
+			got := task.IsValidRelativeTime(tt.str)
 
 			if got != tt.want {
 				t.Fatalf("want %v, but %v", tt.want, got)
@@ -39,35 +39,35 @@ func TestNewRelativeTime(t *testing.T) {
 	tests := []struct {
 		name      string
 		str       string
-		want      remindtime.RelativeTime
+		want      task.RelativeTime
 		wantError bool
 		err       error
 	}{
 		{
 			name:      "SuccessTaskBase",
 			str:       "task-1h1m",
-			want:      remindtime.RelativeTime{-(time.Hour + time.Minute), true},
+			want:      task.RelativeTime{-(time.Hour + time.Minute), true},
 			wantError: false,
 			err:       nil,
 		},
 		{
 			name:      "SuccessTaskNow",
 			str:       "now+1h1m",
-			want:      remindtime.RelativeTime{time.Hour + time.Minute, false},
+			want:      task.RelativeTime{time.Hour + time.Minute, false},
 			wantError: false,
 			err:       nil,
 		},
 		{
 			name:      "HasErrorNoBase",
 			str:       "1h1m",
-			want:      remindtime.RelativeTime{},
+			want:      task.RelativeTime{},
 			wantError: true,
 			err:       errors.New("could not convert to time.Duration: 1h1m"),
 		},
 		{
 			name:      "HasErrorParseTimeDuration",
 			str:       "now+invalid",
-			want:      remindtime.RelativeTime{},
+			want:      task.RelativeTime{},
 			wantError: true,
 			err:       errors.New("time: invalid duration \"+invalid\""),
 		},
@@ -78,7 +78,7 @@ func TestNewRelativeTime(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := remindtime.NewRelativeTime(tt.str)
+			got, err := task.NewRelativeTime(tt.str)
 			t.Logf("got: %#v, err: %#v", got, err)
 
 			if !tt.wantError && err != nil {

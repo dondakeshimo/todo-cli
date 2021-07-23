@@ -5,20 +5,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
 
 func TestNewRemindTime(t *testing.T) {
 	tests := []struct {
 		name      string
 		in        string
-		want      remindtime.RemindTime
+		want      task.RemindTime
 		wantError bool
 		err       error
 	}{
-		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", remindtime.RemindTime("2020/12/4 23:29"), false, nil},
-		{"SuccessDay", "2020/1/4", remindtime.RemindTime("2020/1/4 00:00"), false, nil},
-		{"SuccessDayZeroPadding", "2020/12/04", remindtime.RemindTime("2020/12/4 00:00"), false, nil},
+		{"SuccessMinutesZeroPadding", "2020/12/04 23:29", task.RemindTime("2020/12/4 23:29"), false, nil},
+		{"SuccessDay", "2020/1/4", task.RemindTime("2020/1/4 00:00"), false, nil},
+		{"SuccessDayZeroPadding", "2020/12/04", task.RemindTime("2020/12/4 00:00"), false, nil},
 		{"HasErrorInvalidLayout", "invalid layout", "", true, errors.New("invalid time layout: [minutes layout]: parsing time \"invalid layout\" as \"2006/1/2 15:04\": cannot parse \"invalid layout\" as \"2006\", [day layout]: parsing time \"invalid layout\" as \"2006/1/2\": cannot parse \"invalid layout\" as \"2006\"")},
 	}
 
@@ -27,7 +27,7 @@ func TestNewRemindTime(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := remindtime.NewRemindTime(tt.in)
+			got, err := task.NewRemindTime(tt.in)
 
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)
@@ -47,17 +47,17 @@ func TestNewRemindTime(t *testing.T) {
 func TestAddTime(t *testing.T) {
 	tests := []struct {
 		name         string
-		relativeTime remindtime.RelativeTime
-		remindTime   remindtime.RemindTime
-		want         remindtime.RemindTime
+		relativeTime task.RelativeTime
+		remindTime   task.RemindTime
+		want         task.RemindTime
 		wantError    bool
 		err          error
 	}{
 		{
 			name:         "SuccessTaskBase",
-			relativeTime: remindtime.RelativeTime{2 * time.Minute, true},
-			remindTime:   remindtime.RemindTime("2020/12/31 23:58"),
-			want:         remindtime.RemindTime("2021/1/1 00:00"),
+			relativeTime: task.RelativeTime{2 * time.Minute, true},
+			remindTime:   task.RemindTime("2020/12/31 23:58"),
+			want:         task.RemindTime("2021/1/1 00:00"),
 			wantError:    false,
 			err:          nil,
 		},

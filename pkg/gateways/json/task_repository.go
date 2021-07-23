@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 	"github.com/google/uuid"
 )
@@ -51,7 +49,7 @@ func (c *Client) Read() ([]task.Task, error) {
 	var ts []task.Task
 	for _, t := range tjs {
 		ts = append(ts, task.NewTask(
-			t.ID, t.Task, t.Group, remindtime.RemindTime(t.RemindTime), t.UUID, reminder.Reminder(t.Reminder), t.Priority))
+			t.ID, t.Task, t.Group, task.RemindTime(t.RemindTime), t.UUID, task.Reminder(t.Reminder), t.Priority))
 	}
 
 	return ts, nil
