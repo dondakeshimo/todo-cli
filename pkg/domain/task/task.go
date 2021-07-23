@@ -44,7 +44,7 @@ func (t Task) Task() string {
 	return t.task
 }
 
-// Grou@ is a getter for group.
+// Group is a getter for group.
 func (t Task) Group() string {
 	return t.group
 }
