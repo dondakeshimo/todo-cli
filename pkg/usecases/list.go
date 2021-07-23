@@ -11,13 +11,14 @@ import (
 type columns struct {
 	id         string
 	task       string
+	group      string
 	remindTime string
 	reminder   string
 	priority   string
 }
 
 // List is a function that show task list.
-func List() error {
+func List(group string) error {
 	h, err := task.NewHandler(taskRepository)
 	if err != nil {
 		return err
@@ -30,16 +31,23 @@ func List() error {
 	header := columns{
 		id:         "ID",
 		task:       "Task",
+		group:      "Group",
 		remindTime: "RemindTime",
 		reminder:   "Reminder",
 		priority:   "Priority",
 	}
 	table.SetHeader(buildRowAccordingToConfig(header))
 
-	for _, t := range h.GetTasks() {
+    tasks := h.GetTasks()
+    if group != "" {
+        tasks = h.GetTasksInGroup(group)
+    }
+
+	for _, t := range tasks {
 		row := columns{
 			id:         strconv.Itoa(t.ID()),
 			task:       t.Task(),
+			group:      t.Group(),
 			remindTime: string(t.RemindTime()),
 			reminder:   string(t.Reminder()),
 			priority:   strconv.Itoa(t.Priority()),
@@ -56,6 +64,10 @@ func List() error {
 // this function define column order.
 func buildRowAccordingToConfig(row columns) []string {
 	builtRow := []string{row.id, row.task, row.remindTime}
+
+	if !config.HideGroup {
+		builtRow = append(builtRow, row.group)
+	}
 
 	if !config.HideReminder {
 		builtRow = append(builtRow, row.reminder)

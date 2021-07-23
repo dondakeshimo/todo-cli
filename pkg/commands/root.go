@@ -30,6 +30,7 @@ func initConfig() {
 
 	viper.SetDefault("HideReminder", usecases.DefaultConfig.HideReminder)
 	viper.SetDefault("HidePriority", usecases.DefaultConfig.HidePriority)
+	viper.SetDefault("HideGroup", usecases.DefaultConfig.HideGroup)
 	viper.SetDefault("TaskFilePath", usecases.DefaultConfig.TaskFilePath)
 	viper.SetDefault("SlackWebhookURL", usecases.DefaultConfig.SlackWebhookURL)
 	viper.SetDefault("SlackMentionTo", usecases.DefaultConfig.SlackMentionTo)
