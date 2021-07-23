@@ -1,5 +1,5 @@
 # todo-cli  <!-- exclude-toc -->
-Manage TODO List At CLI
+Manage TODO List at CLI
 
 [![Go][go-test-image]][go-test-url]
 
@@ -56,7 +56,7 @@ You can download binary from our repository.
 Bellow example is for MaxOS.
 
 ```bash
-$ TODO_VERSION=0.5.0
+$ TODO_VERSION=1.0.0
 
 $ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v${TODO_VERSION}/todo-${TODO_VERSION}.macos-10.15.tar.gz
 
@@ -218,8 +218,8 @@ you will get a message in slack.
 
 <a id="sec0-3-2-0"></a>
 ### Completion
-todo-cli is made with cobra, and cobra support generate completion files.
-look at [https://github.com/spf13/cobra/blob/master/shell_completions.md].
+todo-cli is made with cobra, then cobra supports generating completion files.
+look at [cobra document](https://github.com/spf13/cobra/blob/master/shell_completions.md).
 
 <a id="sec0-4-0-0"></a>
 ## Uninstall
