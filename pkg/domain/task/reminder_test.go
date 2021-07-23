@@ -1,21 +1,21 @@
-package reminder_test
+package task_test
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
 
 func TestIsValidReminder(t *testing.T) {
 	tests := []struct {
 		name      string
 		in        string
-		want      reminder.Reminder
+		want      task.Reminder
 		wantError bool
 		err       error
 	}{
-		{"TrueMacos", "macos", reminder.Reminder("macos"), false, nil},
+		{"TrueMacos", "macos", task.Reminder("macos"), false, nil},
 		{"HasErrorInvalid", "invalid", "", true, errors.New("invalid reminder: invalid")},
 	}
 
@@ -24,7 +24,7 @@ func TestIsValidReminder(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got, err := reminder.NewReminder(tt.in)
+			got, err := task.NewReminder(tt.in)
 
 			if !tt.wantError && err != nil {
 				t.Fatalf("want no err, but has error %#v", err)

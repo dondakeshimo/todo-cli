@@ -9,7 +9,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
@@ -30,7 +29,7 @@ func TestSetReminder(t *testing.T) {
 	}{
 		{
 			name: "Success",
-			task: task.NewTask(0, "", "", remindtime.RemindTime("2020/12/05 00:26"), "uuid", "", 0),
+			task: task.NewTask(0, "", "", task.RemindTime("2020/12/05 00:26"), "uuid", "", 0),
 			request: scheduler.Request{
 				ID:       "uuid",
 				DateTime: time.Date(2020, 12, 5, 00, 26, 00, 00, time.Local),
@@ -51,7 +50,7 @@ func TestSetReminder(t *testing.T) {
 		},
 		{
 			name: "HasErrorRegister",
-			task: task.NewTask(0, "", "", remindtime.RemindTime("2020/12/05 00:26"), "uuid", "", 0),
+			task: task.NewTask(0, "", "", task.RemindTime("2020/12/05 00:26"), "uuid", "", 0),
 			request: scheduler.Request{
 				ID:       "uuid",
 				DateTime: time.Date(2020, 12, 5, 00, 26, 00, 00, time.Local),

@@ -3,8 +3,7 @@ package commands
 import (
 	"fmt"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
+	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 	"github.com/dondakeshimo/todo-cli/pkg/usecases"
 	"github.com/spf13/cobra"
 )
@@ -65,8 +64,8 @@ func modifyHandler(c *cobra.Command, args []string) error {
 		r.IsRelativeTime = false
 	}
 
-	if crt != "" && remindtime.IsValidRelativeTime(crt) {
-		td, err := remindtime.NewRelativeTime(crt)
+	if crt != "" && task.IsValidRelativeTime(crt) {
+		td, err := task.NewRelativeTime(crt)
 		if err != nil {
 			return err
 		}
@@ -75,8 +74,8 @@ func modifyHandler(c *cobra.Command, args []string) error {
 		r.IsRemindTime = false
 	}
 
-	if crt != "" && !remindtime.IsValidRelativeTime(crt) {
-		rt, err := remindtime.NewRemindTime(crt)
+	if crt != "" && !task.IsValidRelativeTime(crt) {
+		rt, err := task.NewRemindTime(crt)
 		if err != nil {
 			return err
 		}
@@ -105,7 +104,7 @@ func modifyHandler(c *cobra.Command, args []string) error {
 		return err
 	}
 	if !r.IsRemoveReminder && cr != "" {
-		rm, err := reminder.NewReminder(cr)
+		rm, err := task.NewReminder(cr)
 		if err != nil {
 			return err
 		}

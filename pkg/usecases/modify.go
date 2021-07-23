@@ -3,8 +3,6 @@ package usecases
 import (
 	"fmt"
 
-	"github.com/dondakeshimo/todo-cli/pkg/domain/reminder"
-	"github.com/dondakeshimo/todo-cli/pkg/domain/remindtime"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/scheduler"
 	"github.com/dondakeshimo/todo-cli/pkg/domain/task"
 )
@@ -16,12 +14,12 @@ type ModifyRequest struct {
 	IsTask           bool
 	Group            string
 	IsGroup          bool
-	RemindTime       remindtime.RemindTime
+	RemindTime       task.RemindTime
 	IsRemindTime     bool
-	RelativeTime     remindtime.RelativeTime
+	RelativeTime     task.RelativeTime
 	IsRelativeTime   bool
 	IsRemoveReminder bool
-	Reminder         reminder.Reminder
+	Reminder         task.Reminder
 	IsReminder       bool
 	Priority         int
 	IsPriority       bool
