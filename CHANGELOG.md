@@ -1,3 +1,6 @@
+## Version 1.0.0
+* add group
+
 ## Version 0.6.0
 * add cron scheduler
 
