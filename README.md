@@ -25,8 +25,8 @@ Manage TODO List at CLI
 <a id="sec0-1-0-0"></a>
 ## Why todo-cli
 - simple and light
-- supply shell completion
-- not show information if you not need
+- remind the task with MacOS popup or slack
+- only show tasks you want to check
 
 <a id="sec0-2-0-0"></a>
 ## Install
@@ -36,17 +36,17 @@ This is a simple way, but require [golang](https://golang.org/) .
 
 Make sure that you have already added binary path to your PATH.
 
-```bash
+```
 $ export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
 ##### Go version \< 1.16
-```bash
+```
 $ go get -u github.com/dondakeshimo/todo-cli/cmd/todo
 ```
 
 ##### Go 1.16+
-```bash
+```
 $ go install github.com/dondakeshimo/todo-cli/cmd/todo@latest
 ```
 
@@ -55,7 +55,7 @@ $ go install github.com/dondakeshimo/todo-cli/cmd/todo@latest
 You can download binary from our repository.
 Bellow example is for MaxOS.
 
-```bash
+```
 $ TODO_VERSION=1.0.0
 
 $ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v${TODO_VERSION}/todo-${TODO_VERSION}.macos-10.15.tar.gz
@@ -68,7 +68,7 @@ $ mv todo path/to/your/$PATH
 <a id="sec0-3-0-0"></a>
 ## Usage
 
-```bash
+```
 $ todo --help
 Manage Your TODO
 
@@ -91,7 +91,7 @@ Flags:
 Use "todo [command] --help" for more information about a command.
 ```
 
-```bash
+```
 $ todo list
 +----+--------------------------------+----------------+-------+----------+----------+
 | ID |              Task              |   RemindTime   | Group | Reminder | Priority |
@@ -170,7 +170,7 @@ If you use linux OS, reminder feature needs cron daemon.
 You don't have to any configuration.
 You just add a task with option `-r=macos`.
 
-```bash
+```
 $ todo a "remind me this task" -r=macos -d=+1m
 
 $ todo l
@@ -194,13 +194,13 @@ You have to configure Slack App.
 Install Incomming Webhook to your workspace from [here](https://slack.com/apps) and configure information for todo-cli.
 Member ID of slack shown by profile is set to `--slack_mention_to` option but it is not required.
 
-```bash
+```
 $ todo conf --slack_webhook_url="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX" --slack_mention_to=XXXXXXXXXX
 ```
 
 Then, add a task with `-r=slack` option.
 
-```bash
+```
 $ todo a "remind me this task in slack\!" -r=slack -d=+1m
 
 $ todo l
@@ -223,13 +223,13 @@ look at [cobra document](https://github.com/spf13/cobra/blob/master/shell_comple
 
 <a id="sec0-4-0-0"></a>
 ## Uninstall
-```bash
+```
 $ make uninstall
 ```
 
 If you installed todo-cli from downloading binary, please remove the binary by your hand.
 
-```bash
+```
 $ rm path/to/your/todo/binary
 ```
 
