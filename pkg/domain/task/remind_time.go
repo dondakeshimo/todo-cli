@@ -1,4 +1,4 @@
-package remindtime
+package task
 
 import (
 	"fmt"

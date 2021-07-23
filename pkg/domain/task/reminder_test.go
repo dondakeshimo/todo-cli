@@ -1,4 +1,4 @@
-package reminder_test
+package task_test
 
 import (
 	"errors"

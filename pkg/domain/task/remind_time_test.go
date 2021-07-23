@@ -1,4 +1,4 @@
-package remindtime_test
+package task_test
 
 import (
 	"errors"
