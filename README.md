@@ -1,5 +1,5 @@
 # todo-cli  <!-- exclude-toc -->
-Manage TODO List At CLI
+Manage TODO List at CLI
 
 [![Go][go-test-image]][go-test-url]
 
