@@ -14,6 +14,8 @@ type ModifyRequest struct {
 	ID               int
 	Task             string
 	IsTask           bool
+	Group            string
+	IsGroup          bool
 	RemindTime       remindtime.RemindTime
 	IsRemindTime     bool
 	RelativeTime     remindtime.RelativeTime
@@ -44,6 +46,11 @@ func Modify(r ModifyRequest) error {
 	newTask := t.Task()
 	if r.IsTask {
 		newTask = r.Task
+	}
+
+	newGroup := t.Group()
+	if r.IsGroup {
+		newGroup = r.Group
 	}
 
 	newRemindTime := t.RemindTime()
@@ -93,7 +100,7 @@ func Modify(r ModifyRequest) error {
 		newPriority = r.Priority
 	}
 
-	nt := task.NewTask(t.ID(), newTask, newRemindTime, t.UUID(), newReminder, newPriority)
+	nt := task.NewTask(t.ID(), newTask, newGroup, newRemindTime, t.UUID(), newReminder, newPriority)
 
 	if !r.IsRemoveReminder && r.IsReminder {
 		if err := nt.SetReminder(s); err != nil {

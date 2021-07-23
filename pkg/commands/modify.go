@@ -21,6 +21,7 @@ func init() {
 
 	modifyCmd.Flags().IntP("id", "i", -1, "task's ID")
 	modifyCmd.Flags().StringP("task", "t", "", "task contents")
+	modifyCmd.Flags().StringP("group", "g", "", "task group. you can get filtered list by group.")
 	modifyCmd.Flags().StringP("remind_time", "d", "", "remind_time (2021/3/3 03:03, 2021/3/3, +2h3m, task-4h15m)")
 	modifyCmd.Flags().StringP("reminder", "r", "", "choose reminder from [macos, slack]")
 	modifyCmd.Flags().Bool("remove_reminder", false, "remove reminder. this option overrides reminder option")
@@ -48,6 +49,12 @@ func modifyHandler(c *cobra.Command, args []string) error {
 		return err
 	}
 	r.IsTask = r.Task != ""
+
+	r.Group, err = c.Flags().GetString("group")
+	if err != nil {
+		return err
+	}
+	r.IsGroup = r.Group != ""
 
 	crt, err := c.Flags().GetString("remind_time")
 	if err != nil {

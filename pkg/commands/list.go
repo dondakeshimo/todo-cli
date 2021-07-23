@@ -15,9 +15,16 @@ var listCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+
+	listCmd.Flags().StringP("group", "g", "", "group you want to check")
 }
 
 // listHandler invoke usecases.List
 func listHandler(c *cobra.Command, args []string) error {
-	return usecases.List()
+	group, err := c.Flags().GetString("group")
+	if err != nil {
+		return err
+	}
+
+	return usecases.List(group)
 }

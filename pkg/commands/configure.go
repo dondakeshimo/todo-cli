@@ -19,6 +19,7 @@ var configureCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(configureCmd)
 
+	configureCmd.Flags().Bool("hide_group", false, "hide a group column when show a list")
 	configureCmd.Flags().Bool("hide_reminder", false, "hide a reminder column when show a list")
 	configureCmd.Flags().Bool("hide_priority", false, "hide a priority column when show a list")
 	configureCmd.Flags().String("task_file_path", "", "the absolute path of your task json file. if not exist, create new directories and a file at the given path.")
@@ -31,6 +32,14 @@ func init() {
 
 // configureHandler overwrites viper config and writes out.
 func configureHandler(c *cobra.Command, args []string) error {
+	if c.Flags().Changed("hide_group") {
+		f, err := c.Flags().GetBool("hide_group")
+		if err != nil {
+			return err
+		}
+		viper.Set("HideGroup", f)
+	}
+
 	if c.Flags().Changed("hide_reminder") {
 		f, err := c.Flags().GetBool("hide_reminder")
 		if err != nil {
@@ -89,6 +98,7 @@ func configureHandler(c *cobra.Command, args []string) error {
 		}
 
 		if f {
+			viper.Set("HideGroup", usecases.DefaultConfig.HideGroup)
 			viper.Set("HideReminder", usecases.DefaultConfig.HideReminder)
 			viper.Set("HidePriority", usecases.DefaultConfig.HidePriority)
 			viper.Set("TaskFilePath", usecases.DefaultConfig.TaskFilePath)

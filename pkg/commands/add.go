@@ -19,6 +19,7 @@ var addCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(addCmd)
 
+	addCmd.Flags().StringP("group", "g", "", "task group. you can get filtered list by group.")
 	addCmd.Flags().StringP("remind_time", "d", "", "remind_time (2021/3/3 03:03, 2021/3/3, +2h3m, task-4h15m)")
 	addCmd.Flags().StringP("reminder", "r", "", "choose reminder from [macos, slack]")
 	addCmd.Flags().IntP("priority", "p", 100, "task's priority. Lower number means high priority.")
@@ -36,6 +37,12 @@ func addHandler(c *cobra.Command, args []string) error {
 	if r.Task == "" {
 		return fmt.Errorf("`$ todo add` need an argument what represents a task")
 	}
+
+	g, err := c.Flags().GetString("group")
+	if err != nil {
+		return err
+	}
+	r.Group = g
 
 	crt, err := c.Flags().GetString("remind_time")
 	if err != nil {

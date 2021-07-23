@@ -10,6 +10,7 @@ import (
 type Config struct {
 	HideReminder    bool
 	HidePriority    bool
+	HideGroup       bool
 	TaskFilePath    string
 	SlackWebhookURL string
 	SlackMentionTo  string
@@ -27,6 +28,7 @@ type ConfigFile struct {
 var DefaultConfig = Config{
 	HideReminder:    false,
 	HidePriority:    false,
+	HideGroup:       false,
 	TaskFilePath:    filepath.Join(findDataDir(), "todo.json"),
 	SlackWebhookURL: "",
 	SlackMentionTo:  "",
