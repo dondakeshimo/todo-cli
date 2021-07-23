@@ -56,7 +56,7 @@ You can download binary from our repository.
 Bellow example is for MaxOS.
 
 ```bash
-$ TODO_VERSION=0.5.0
+$ TODO_VERSION=1.0.0
 
 $ curl -O https://github.com/dondakeshimo/todo-cli/releases/download/v${TODO_VERSION}/todo-${TODO_VERSION}.macos-10.15.tar.gz
 
