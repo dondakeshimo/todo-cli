@@ -1,4 +1,4 @@
-# todo-cli
+# todo-cli  <!-- exclude-toc -->
 Manage TODO List At CLI
 
 [![Go][go-test-image]][go-test-url]
@@ -6,12 +6,31 @@ Manage TODO List At CLI
 [go-test-image]: https://github.com/dondakeshimo/todo-cli/workflows/Go/badge.svg
 [go-test-url]: https://github.com/dondakeshimo/todo-cli/actions?query=workflow%3AGo
 
+## Table of Contents  <!-- exclude-toc -->
+  * [Why todo-cli](#sec0-1-0-0)
+  * [Install](#sec0-2-0-0)
+      * [go installation](#sec0-2-0-1)
+      * [download binary](#sec0-2-0-2)
+  * [Usage](#sec0-3-0-0)
+    * [Reminder](#sec0-3-1-0)
+      * [macos](#sec0-3-1-1)
+      * [slack](#sec0-3-1-2)
+    * [Completion](#sec0-3-2-0)
+  * [Uninstall](#sec0-4-0-0)
+  * [Contributing](#sec0-5-0-0)
+  * [License](#sec0-6-0-0)
+
+*created by [tocot](https://pypi.org/project/tocot/)*
+
+<a id="sec0-1-0-0"></a>
 ## Why todo-cli
 - simple and light
 - supply shell completion
 - not show information if you not need
 
+<a id="sec0-2-0-0"></a>
 ## Install
+<a id="sec0-2-0-1"></a>
 #### go installation
 This is a simple way, but require [golang](https://golang.org/) .
 
@@ -31,6 +50,7 @@ $ go get -u github.com/dondakeshimo/todo-cli/cmd/todo
 $ go install github.com/dondakeshimo/todo-cli/cmd/todo@latest
 ```
 
+<a id="sec0-2-0-2"></a>
 #### download binary
 You can download binary from our repository.
 Bellow example is for MaxOS.
@@ -45,6 +65,7 @@ $ tar -xvf todo-${TODO_VERSION}.macos-10.15.tar.gz
 $ mv todo path/to/your/$PATH
 ```
 
+<a id="sec0-3-0-0"></a>
 ## Usage
 
 ```bash
@@ -138,11 +159,13 @@ $ todo l
 +----+----------------+----------------+-----------+----------+
 ```
 
+<a id="sec0-3-1-0"></a>
 ### Reminder
 You can choose reminder from macos or slack.
 
 If you use linux OS, reminder feature needs cron daemon.
 
+<a id="sec0-3-1-1"></a>
 #### macos
 You don't have to any configuration.
 You just add a task with option `-r=macos`.
@@ -165,6 +188,7 @@ After 1 minute, you will get a message like bellow.
 If you push `done` button, the task will be closed.
 
 
+<a id="sec0-3-1-2"></a>
 #### slack
 You have to configure Slack App.
 Install Incomming Webhook to your workspace from [here](https://slack.com/apps) and configure information for todo-cli.
@@ -192,10 +216,12 @@ you will get a message in slack.
 ![notification in slack](https://user-images.githubusercontent.com/23194960/126192217-cee8469b-b917-4770-ab76-f604556bd3e2.png)
 
 
+<a id="sec0-3-2-0"></a>
 ### Completion
 todo-cli is made with cobra, and cobra support generate completion files.
 look at [https://github.com/spf13/cobra/blob/master/shell_completions.md].
 
+<a id="sec0-4-0-0"></a>
 ## Uninstall
 ```bash
 $ make uninstall
@@ -207,10 +233,12 @@ If you installed todo-cli from downloading binary, please remove the binary by y
 $ rm path/to/your/todo/binary
 ```
 
+<a id="sec0-5-0-0"></a>
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
+<a id="sec0-6-0-0"></a>
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
