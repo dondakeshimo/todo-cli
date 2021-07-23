@@ -111,7 +111,7 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list added tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-            want: `+----+--------------------------------+----------------+----------+----------+----------+
+			want: `+----+--------------------------------+----------------+----------+----------+----------+
 | ID |              Task              |   RemindTime   |  Group   | Reminder | Priority |
 +----+--------------------------------+----------------+----------+----------+----------+
 |  1 | deleting or modifying this     | 2099/1/1 00:00 |          |          |        0 |
@@ -130,7 +130,7 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list filtered tasks",
 			command:   []string{"l", "-g", "scenario"},
 			hasOutput: true,
-            want: `+----+------------------+------------+----------+----------+----------+
+			want: `+----+------------------+------------+----------+----------+----------+
 | ID |       Task       | RemindTime |  Group   | Reminder | Priority |
 +----+------------------+------------+----------+----------+----------+
 |  6 | シナリオテスト 8 |            | scenario |          |      100 |
@@ -151,7 +151,7 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list modified tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-            want: `+----+--------------------------------+----------------+----------+----------+----------+
+			want: `+----+--------------------------------+----------------+----------+----------+----------+
 | ID |              Task              |   RemindTime   |  Group   | Reminder | Priority |
 +----+--------------------------------+----------------+----------+----------+----------+
 |  1 | deleting or modifying this     | 2099/1/1 00:00 |          |          |        0 |
@@ -205,7 +205,7 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list not hided tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-            want: `+----+--------------------------------+----------------+----------+----------+----------+
+			want: `+----+--------------------------------+----------------+----------+----------+----------+
 | ID |              Task              |   RemindTime   |  Group   | Reminder | Priority |
 +----+--------------------------------+----------------+----------+----------+----------+
 |  1 | deleting or modifying this     | 2099/1/1 00:00 |          |          |        0 |
@@ -240,7 +240,7 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list modified tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-            want: `+----+------+------------+-------+----------+----------+
+			want: `+----+------+------------+-------+----------+----------+
 | ID | Task | RemindTime | Group | Reminder | Priority |
 +----+------+------------+-------+----------+----------+
 +----+------+------------+-------+----------+----------+
@@ -271,10 +271,10 @@ func TestWithoutReminder(t *testing.T) {
 
 			if sc.hasOutput {
 				if string(got) != sc.want {
-                    t.Log("want")
-                    t.Log(sc.want)
-                    t.Log("got")
-                    t.Fatal(string(got))
+					t.Log("want")
+					t.Log(sc.want)
+					t.Log("got")
+					t.Fatal(string(got))
 				}
 			}
 		})

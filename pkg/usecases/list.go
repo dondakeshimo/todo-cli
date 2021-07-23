@@ -38,10 +38,10 @@ func List(group string) error {
 	}
 	table.SetHeader(buildRowAccordingToConfig(header))
 
-    tasks := h.GetTasks()
-    if group != "" {
-        tasks = h.GetTasksInGroup(group)
-    }
+	tasks := h.GetTasks()
+	if group != "" {
+		tasks = h.GetTasksInGroup(group)
+	}
 
 	for _, t := range tasks {
 		row := columns{

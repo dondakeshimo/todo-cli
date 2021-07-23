@@ -21,10 +21,10 @@ func init() {
 
 // listHandler invoke usecases.List
 func listHandler(c *cobra.Command, args []string) error {
-    group, err := c.Flags().GetString("group")
-    if err != nil {
-        return err
-    }
+	group, err := c.Flags().GetString("group")
+	if err != nil {
+		return err
+	}
 
 	return usecases.List(group)
 }
