@@ -1,10 +1,15 @@
-# todo-cli
+# todo-cli  <!-- exclude-toc -->
 Manage TODO List At CLI
 
 [![Go][go-test-image]][go-test-url]
 
 [go-test-image]: https://github.com/dondakeshimo/todo-cli/workflows/Go/badge.svg
 [go-test-url]: https://github.com/dondakeshimo/todo-cli/actions?query=workflow%3AGo
+
+## Table of Contents
+[TOC]
+
+*created by [tocot](https://pypi.org/project/tocot/)*
 
 ## Why todo-cli
 - simple and light
