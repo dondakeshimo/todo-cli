@@ -168,7 +168,7 @@ func TestWithoutReminder(t *testing.T) {
 		},
 		{
 			name:      "config Hide",
-			command:   []string{"conf", "--hide_group=true", "--hide_reminder=true", "--hide_priority=true"},
+			command:   []string{"conf", "--hide_remind_time=true", "--hide_group=true", "--hide_reminder=true", "--hide_priority=true"},
 			hasOutput: false,
 			want:      "",
 			wantError: false,
@@ -178,17 +178,17 @@ func TestWithoutReminder(t *testing.T) {
 			name:      "list hided tasks",
 			command:   []string{"l"},
 			hasOutput: true,
-			want: `+----+--------------------------------+----------------+
-| ID |              Task              |   RemindTime   |
-+----+--------------------------------+----------------+
-|  1 | deleting or modifying this     | 2099/1/1 00:00 |
-|    | task is your first TODO        |                |
-|  2 | scenario test 6                |                |
-|  3 | scenario test modified 1       | 2099/1/1 12:00 |
-|  4 | scenario test 2                | 2099/1/1 00:00 |
-|  5 | シナリオテスト 7               |                |
-|  6 | シナリオテスト 8               |                |
-+----+--------------------------------+----------------+
+			want: `+----+--------------------------------+
+| ID |              Task              |
++----+--------------------------------+
+|  1 | deleting or modifying this     |
+|    | task is your first TODO        |
+|  2 | scenario test 6                |
+|  3 | scenario test modified 1       |
+|  4 | scenario test 2                |
+|  5 | シナリオテスト 7               |
+|  6 | シナリオテスト 8               |
++----+--------------------------------+
 `,
 			wantError: false,
 			err:       "",
