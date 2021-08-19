@@ -1,3 +1,6 @@
+## Version 1.1.0
+* add --hid\_remind\_time option in configure
+
 ## Version 1.0.0
 * add group
 
