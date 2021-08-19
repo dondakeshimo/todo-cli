@@ -29,6 +29,7 @@ func initConfig() {
 	viper.AddConfigPath(c.ConfigPath)
 
 	viper.SetDefault("HideReminder", usecases.DefaultConfig.HideReminder)
+	viper.SetDefault("HideRemindTime", usecases.DefaultConfig.HideRemindTime)
 	viper.SetDefault("HidePriority", usecases.DefaultConfig.HidePriority)
 	viper.SetDefault("HideGroup", usecases.DefaultConfig.HideGroup)
 	viper.SetDefault("TaskFilePath", usecases.DefaultConfig.TaskFilePath)

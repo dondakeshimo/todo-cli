@@ -63,7 +63,11 @@ func List(group string) error {
 // buildColumnAccordingToSetting build a row of table according to hide-setting.
 // this function define column order.
 func buildRowAccordingToConfig(row columns) []string {
-	builtRow := []string{row.id, row.task, row.remindTime}
+	builtRow := []string{row.id, row.task}
+
+	if !config.HideRemindTime {
+		builtRow = append(builtRow, row.remindTime)
+	}
 
 	if !config.HideGroup {
 		builtRow = append(builtRow, row.group)

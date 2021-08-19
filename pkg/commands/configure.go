@@ -21,6 +21,7 @@ func init() {
 
 	configureCmd.Flags().Bool("hide_group", false, "hide a group column when show a list")
 	configureCmd.Flags().Bool("hide_reminder", false, "hide a reminder column when show a list")
+	configureCmd.Flags().Bool("hide_remind_time", false, "hide a remind time column when show a list")
 	configureCmd.Flags().Bool("hide_priority", false, "hide a priority column when show a list")
 	configureCmd.Flags().String("task_file_path", "", "the absolute path of your task json file. if not exist, create new directories and a file at the given path.")
 	configureCmd.Flags().String("slack_webhook_url", "", "slack webhookURL which can be gotten from Incoming Webhook")
@@ -46,6 +47,14 @@ func configureHandler(c *cobra.Command, args []string) error {
 			return err
 		}
 		viper.Set("HideReminder", f)
+	}
+
+	if c.Flags().Changed("hide_remind_time") {
+		f, err := c.Flags().GetBool("hide_remind_time")
+		if err != nil {
+			return err
+		}
+		viper.Set("HideRemindTime", f)
 	}
 
 	if c.Flags().Changed("hide_priority") {
@@ -100,6 +109,7 @@ func configureHandler(c *cobra.Command, args []string) error {
 		if f {
 			viper.Set("HideGroup", usecases.DefaultConfig.HideGroup)
 			viper.Set("HideReminder", usecases.DefaultConfig.HideReminder)
+			viper.Set("HideRemindTime", usecases.DefaultConfig.HideRemindTime)
 			viper.Set("HidePriority", usecases.DefaultConfig.HidePriority)
 			viper.Set("TaskFilePath", usecases.DefaultConfig.TaskFilePath)
 			viper.Set("SlackWebhookURL", usecases.DefaultConfig.SlackWebhookURL)

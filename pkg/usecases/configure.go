@@ -9,6 +9,7 @@ import (
 // Config is an application configuration.
 type Config struct {
 	HideReminder    bool
+	HideRemindTime  bool
 	HidePriority    bool
 	HideGroup       bool
 	TaskFilePath    string
@@ -27,6 +28,7 @@ type ConfigFile struct {
 // DefaultConfig is a default config.
 var DefaultConfig = Config{
 	HideReminder:    false,
+	HideRemindTime:  false,
 	HidePriority:    false,
 	HideGroup:       false,
 	TaskFilePath:    filepath.Join(findDataDir(), "todo.json"),
