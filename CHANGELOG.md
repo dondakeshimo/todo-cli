@@ -1,3 +1,6 @@
+## Version 1.1.1
+* fix to be able to configure task\_file\_path not existed
+
 ## Version 1.1.0
 * add --hid\_remind\_time option in configure
 
