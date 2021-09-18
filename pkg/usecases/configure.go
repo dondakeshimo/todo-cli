@@ -102,8 +102,10 @@ func ValidateTaskFilePath(path string) error {
 			return err
 		}
 	}
-	if fInfo.IsDir() {
-		return fmt.Errorf("%s is a directory", path)
+	if fInfo != nil {
+		if fInfo.IsDir() {
+			return fmt.Errorf("%s is a directory", path)
+		}
 	}
 
 	return nil
